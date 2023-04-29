@@ -3,9 +3,9 @@ version: '3.7'
 services:
   cognihack:
     container_name: cognihack
-    image: webgrip/cognihack:latest
+    image: webgrip/cognihack
     ports:
-    - 1337:5000
+    - 1337:8000
     build:
       context: .
       dockerfile: Dockerfile

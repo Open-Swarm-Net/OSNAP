@@ -31,5 +31,6 @@ WORKDIR /app
 
 COPY . ./app
 
-#CMD [ "/venv/bin/python", "main.py" ]
-ENTRYPOINT ["tail", "-f", "/dev/null"]
+EXPOSE 8000
+
+CMD [ "uvicorn", "server:app", "--reload" ]
