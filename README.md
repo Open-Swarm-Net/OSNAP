@@ -1,3 +1,10 @@
+# How to run
+
+* `cp .env.example .env`
+* Change env vars
+* `docker-compose up --build`
+
+
 # Open Swarm Network Agent Protocol (OSNAP)
 
 ## Architecture
