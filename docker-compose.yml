@@ -1,9 +1,9 @@
 version: '3.7'
 
 services:
-  cognihack:
-    container_name: cognihack
-    image: webgrip/cognihack
+  cognihack-app:
+    container_name: cognihack-app
+    #image: webgrip/cognihack
     ports:
     - 1337:8000
     build:
@@ -12,3 +12,32 @@ services:
     env_file: .env
     volumes:
       - .:/app
+  cognihack-redis:
+    container_name: cognihack-redis
+    restart: always
+    ports:
+      - '6379:6379'
+    image: "redis:alpine"
+    command: redis-server
+    volumes: 
+      - cache:/data
+      - redis:/var/lib/redis
+      - redis-config:/usr/local/etc/redis/redis.conf
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    restart: always
+    environment:
+      REDIS_HOSTS: cognihack-redis
+      REDIS_HOST: cognihack-redis
+      REDIS_PORT: cognihack-redis:6379
+      #REDIS_PASSWORD: ${REDIS_PASSWORD}
+      HTTP_USER: root
+      HTTP_PASSWORD: root
+    ports:
+      - 8081:8081
+
+volumes:
+  cache:
+    driver: local
+  redis:
+  redis-config:
