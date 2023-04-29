@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - dev 
 
 jobs:
   push_to_registries:
