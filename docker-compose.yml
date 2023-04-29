@@ -3,7 +3,7 @@ version: '3.7'
 services:
   cognihack:
     container_name: cognihack
-    image: webgrip/cognihack
+    image: webgrip/cognihack:latest
     ports:
     - 1337:5000
     build:
