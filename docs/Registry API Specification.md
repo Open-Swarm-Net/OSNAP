@@ -1,5 +1,10 @@
 ## Agent Registry API Specification
 
+### Status Codes
+
+- `SUCCESS`: The operation completed successfully.
+- `ERROR`: An error occurred during the operation.
+
 ### 1. Add Agent
 
 **Endpoint:** `/add_agent`
@@ -18,6 +23,7 @@
   "endpoint": "string",
   "tools": [
     {
+      "tool_id": "string",
       "name": "string",
       "description": "string",
       "endpoint": "string"
@@ -30,7 +36,7 @@
 
 ```json
 {
-  "status": "string",
+  "status": "SUCCESS",
   "agent_id": "string"
 }
 ```
@@ -50,6 +56,7 @@
   "agent_id": "string",
   "tools": [
     {
+      "tool_id": "string",
       "name": "string",
       "description": "string",
       "endpoint": "string"
@@ -62,7 +69,7 @@
 
 ```json
 {
-  "status": "string",
+  "status": "SUCCESS",
   "agent_id": "string"
 }
 ```
@@ -83,7 +90,7 @@
 
 ```json
 {
-  "status": "string",
+  "status": "SUCCESS",
   "agent_id": "string"
 }
 ```
@@ -113,6 +120,7 @@ When searching by agent ID:
   "endpoint": "string",
   "tools": [
     {
+      "tool_id": "string",
       "name": "string",
       "description": "string",
       "endpoint": "string"
@@ -132,6 +140,7 @@ When searching by tool description:
     "endpoint": "string",
     "tools": [
       {
+        "tool_id": "string",
         "name": "string",
         "description": "string",
         "endpoint": "string"
