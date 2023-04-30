@@ -16,28 +16,30 @@ services:
     container_name: cognihack-redis
     restart: always
     ports:
-      - '6379:6379'
-    image: "redis:alpine"
+      - 6379:6379
+    image: redis:alpine
     command: redis-server
     volumes: 
       - cache:/data
       - redis:/var/lib/redis
-      - redis-config:/usr/local/etc/redis/redis.conf
-  redis-commander:
-    image: rediscommander/redis-commander:latest
-    restart: always
-    environment:
-      REDIS_HOSTS: cognihack-redis
-      REDIS_HOST: cognihack-redis
-      REDIS_PORT: cognihack-redis:6379
-      #REDIS_PASSWORD: ${REDIS_PASSWORD}
-      HTTP_USER: root
-      HTTP_PASSWORD: root
-    ports:
-      - 8081:8081
-  
+  #cognihack-redis-stack-server:
+  #  container_name: cognihack-redis-stack-server
+  #  restart: always
+  #  ports:
+  #    - 6379:6379
+  #    - 8001:8001
+  #  image: redis/redis-stack-server:latest
+  #  command: ["redis-server","--loadmodule","/var/redisearch.so"]
+  #  deploy:
+  #    replicas: 1
+  #    restart_policy:
+  #      condition: on-failure
+  #  volumes: 
+  #    - cache:/data
+  #    - redis:/var/lib/redis
+  #    - ./redis/modules/:/var
+
 volumes:
   cache:
     driver: local
   redis:
-  redis-config:
