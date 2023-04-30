@@ -25,9 +25,9 @@ class AgentRegistry:
         return agents
 
     def add_agent(self, agent_id, name, description, invoke_endpoint, tools, scope):
-        agent_key = f'agent:{agent_id}'
+        agent_key = f'agent:{name}'
         agent_data = {
-            'name': name,
+            'agent_id': agent_id,
             'description': description,
             'invoke_endpoint': invoke_endpoint,
             'tools': json.dumps(tools),

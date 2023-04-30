@@ -15,9 +15,18 @@ class OSNAP:
       return decorator
 
 
-  def tools(fn):
-      # takes the fn and registers it
-      pass
+  def tool_invoke():
+      def decorator(func):
+        def wrapper(*args, **kwargs):
+          print("Before calling " + func.__name__)
+          #
+          # OSNAPRequest = *args["request"]
+          func(*args, **kwargs)
+          print("After calling " + func.__name__)
+
+        handler_registry.add(("tool_invoke", wrapper))    
+        return wrapper
+      return decorator
 
   # # TODO: Add the rest of the required endpoints
 

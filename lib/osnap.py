@@ -8,6 +8,7 @@ from cryptography.hazmat.primitives import serialization, hashes
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat, PrivateFormat, NoEncryption
 import rsa
+from pydantic import BaseModel
 
 class OSNAPApp:
     required_handler_types = set([
@@ -38,7 +39,7 @@ class Scope(enum.Enum):
     PRIVATE = "private"
 
     
-class OSNAPResponse:
+class OSNAPResponse(BaseModel):
     def __init__(self, payload: Dict):
         self.payload = json.dumps(payload)
         self.signature = None
@@ -71,7 +72,7 @@ class SignatureUtil:
         except Exception as e:
             return False
 
-class OSNAPRequest:
+class OSNAPRequest(BaseModel):
     def __init__(self, caller_agent_id: str, request_type: str, task_name: str = None, priority: int = 0, request_metadata: Dict = None):
         self.caller_agent_id = caller_agent_id
         self.request_type = request_type
