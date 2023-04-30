@@ -3,7 +3,7 @@ import enum
 import time
 import uuid
 import requests
-from typing import Callable, Dict, Union, List
+from typing import Callable, Dict, Union, List, Any
 from cryptography.hazmat.primitives import serialization, hashes
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat, PrivateFormat, NoEncryption
@@ -133,12 +133,15 @@ class OSNAPAgent:
             "info_endpoint": self.info_endpoint
             #"public_key": self.public_key_pem
         }
-        response = requests.post(f"{self.registry_url}/register", json=data)
-        if response.status_code == 200:
-            self.add_agent_function(self.id,self.name,self.description,self.info_endpoint,self.tools,self.scope.value)
-            print("Agent registered successfully.")
-        else:
-            print("Failed to register agent:", response.text)
+
+        self.add_agent_function(self.id, self.name, self.description, self.info_endpoint, self.tools, self.scope.value)
+
+        # response = requests.post(f"{self.registry_url}/register", json=data)
+        # if response.status_code == 200:
+        #     self.add_agent_function(self.id,self.name,self.description,self.info_endpoint,self.tools,self.scope.value)
+        #     print("Agent registered successfully.")
+        # else:
+        #     print("Failed to register agent:", response.text)
 
     def unregister(self) -> None:
         data = {
@@ -208,13 +211,36 @@ class OSNAPAgent:
         return error
 
 class OSNAPTool:
-    def __init__(self, name: str, description: str, tool_id: str, invoke_endpoint: str, invoke_required_params={}, invoke_optional_params: List[str]=[]):
-        self.name = name
-        self.description = description
-        self.tool_id = tool_id
-        self.invoke_endpoint = invoke_endpoint
-        self.invoke_required_params = invoke_required_params
-        self.invoke_optional_params = invoke_optional_params
+
+    def __new__(cls, name: str, description: str, tool_id: str, invoke_endpoint: str, invoke_required_params: Dict[str, Any] = {}, invoke_optional_params: List[str] = []):
+        instance_dict = {
+            "name": name,
+            "description": description,
+            "tool_id": tool_id,
+            "invoke_endpoint": invoke_endpoint,
+            "invoke_required_params": invoke_required_params,
+            "invoke_optional_params": invoke_optional_params
+        }
+        return json.dumps(instance_dict)
+    #
+    # def __init__(self, name: str, description: str, tool_id: str, invoke_endpoint: str, invoke_required_params={}, invoke_optional_params: List[str]=[]):
+    #     self.name = name
+    #     self.description = description
+    #     self.tool_id = tool_id
+    #     self.invoke_endpoint = invoke_endpoint
+    #     self.invoke_required_params = invoke_required_params
+    #     self.invoke_optional_params = invoke_optional_params
+    #
+    # def __repr__(self):
+    #     return{
+    #         "name": self.name,
+    #         "description": self.description,
+    #         "tool_id": self.tool_id,
+    #         "invoke_endpoint": self.invoke_endpoint,
+    #         "invoke_required_params": self.invoke_required_params,
+    #         "invoke_optional_params": self.invoke_optional_params
+    #     }
+
 
 # Usage Example 
 

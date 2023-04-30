@@ -5,6 +5,7 @@ from fastapi.openapi.utils import get_openapi
 from starlette.responses import RedirectResponse
 from uuid import uuid4
 
+from lib.osnap import OSNAP
 from lib.osnap import OSNAPApp, OSNAPAgent, OSNAPTool, OSNAPRequest, OSNAPResponse, Scope
 from registry import AgentRegistry
 

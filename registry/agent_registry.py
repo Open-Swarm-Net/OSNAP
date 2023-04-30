@@ -33,7 +33,7 @@ class AgentRegistry:
             'tools': json.dumps(tools),
             'scope': scope
         }
-        self.redis_client.hmset(agent_key, agent_data)
+        self.redis_client.hset(agent_key, mapping=agent_data)
         self.redis_client.sadd(f"scope:{scope}:agents", agent_id)
         return agent_key
 
