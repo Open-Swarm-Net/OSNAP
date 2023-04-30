@@ -4,7 +4,7 @@ services:
   cognihack-second-app:
     container_name: cognihack-second-app
     ports:
-    - 1337:8000
+    - 8005:8000
     build:
       context: .
       dockerfile: Dockerfile
@@ -15,8 +15,8 @@ services:
     container_name: cognihack-redis-stack-server
     restart: always
     ports:
-      - 6379:6379
-      - 8001:8001
+      - 6375:6379
+      - 8006:8001
     image: redis/redis-stack:latest # redis/redis-stack-server:latest for prod
     command: ["redis-server", "--requirepass", "redis-stack", "--loadmodule", "/opt/redis-stack/lib/redisearch.so", "--loadmodule", "/opt/redis-stack/lib/rejson.so"]
     volumes: 
