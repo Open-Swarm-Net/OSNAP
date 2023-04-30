@@ -13,7 +13,7 @@ class OSNAP:
         handler_registry.add(("agents", wrapper))    
         return wrapper
       return decorator
-
+  
   def run():
       def decorator(func):
         def wrapper(*args, **kwargs):
