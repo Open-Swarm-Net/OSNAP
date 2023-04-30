@@ -1,5 +1,6 @@
 import os
 from fastapi import FastAPI
+from langchain.vectorstores.redis import List
 from pydantic import BaseModel
 from fastapi.openapi.utils import get_openapi
 from starlette.responses import RedirectResponse
@@ -8,6 +9,8 @@ from uuid import uuid4
 from lib import OSNAP
 from lib.osnap import OSNAPApp, OSNAPAgent, OSNAPTool, OSNAPRequest, OSNAPResponse, Scope
 from registry import AgentRegistry
+
+import httpx
 
 def osnap_schema():
     if app.openapi_schema:
@@ -78,10 +81,25 @@ my_agents = [
 osnap_app = OSNAPApp(agents=my_agents)
 
 
+class SnapTask(BaseModel):
+   task_description: str
+
+
+
 @app.get("/")
 async def root():
     response = RedirectResponse(url='/docs')
     return response
+
+@app.post("/kickoff")
+async def kickOff(task: SnapTask):
+
+    res = await httpx.AsyncClient().get('http://cognihack-app:8000/agents',)
+    print(res)
+
+
+    return res.json()
+
 
 class OSnapEnvironment(BaseModel):
     """Describes the environment, including it's endpoints, OSNAP version, etc."""
@@ -109,7 +127,7 @@ async def root():
 @OSNAP.agents()
 @app.get("/agents")
 async def root():
-    return agent_registry.get_agents()
+    return agent_registry.get_agents('public')
     # TODO: Make me run
     # return agent_registry.get_agents(request)
 

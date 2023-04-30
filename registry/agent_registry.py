@@ -19,7 +19,7 @@ class AgentRegistry:
         agent_ids = self.redis_client.smembers(f"scope:{scope}:agents")
         agents = []
         for agent_id in agent_ids:
-            agent_data = self.hgetall(f"agent:{agent_id.decode('utf-8')}")
+            agent_data = self.redis_client.hgetall(f"agent:{agent_id}")
             agent = {k.decode('utf-8'): v.decode('utf-8') for k, v in agent_data.items()}
             agents.append(agent)
         return agents

@@ -11,8 +11,8 @@ services:
     env_file: .env
     volumes:
       - .:/app
-  cognihack-redis-stack-server:
-    container_name: cognihack-redis-stack-server
+  cognihack-second-redis-stack-server:
+    container_name: cognihack-second-redis-stack-server
     restart: always
     ports:
       - 6375:6379
