@@ -1,6 +1,7 @@
 import os
 from fastapi import FastAPI
-from langchain.vectorstores.redis import List
+from langchain.agents import AgentExecutor
+from langchain.vectorstores.redis import Dict, List
 from pydantic import BaseModel
 from fastapi.openapi.utils import get_openapi
 from starlette.responses import RedirectResponse
@@ -51,18 +52,30 @@ app.openapi = osnap_schema
 #         "Event": "str"
 #       }
 #     },
+
+class OSNAPAdapter():
+    def x(agent_executor: AgentExecutor)-> OSNAPAgent:
+
+        OSNAP_tools = []
+
+        for tool in agent_executor.tools:
+            OSNAP_tools.append(
+                OSNAPTool(
+                    name = tool.name,
+                    description = tool.description,
+                    invoke_endpoint = "http://localhost:8000/{agent_id}/tools/google_calendar_update_event",
+                    tool_id = "google_calendar_update_event",
+                    invoke_required_params = {
+                        "instructions": "str",
+                        "Calendar": "str",
+                        "Event": "str"
+                    }
+                )
+                
+            )
+
 my_tools = [
-    OSNAPTool(
-        name="Google Calendar: Update Event",
-        description="",
-        invoke_endpoint="http://localhost:8000/{agent_id}/tools/google_calendar_update_event",
-        tool_id="google_calendar_update_event",
-        invoke_required_params={
-            "instructions": "str",
-            "Calendar": "str",
-            "Event": "str"
-        }
-    )
+    
 ]
 
 my_agents = [
@@ -80,11 +93,8 @@ my_agents = [
 
 osnap_app = OSNAPApp(agents=my_agents)
 
-
 class SnapTask(BaseModel):
    task_description: str
-
-
 
 @app.get("/")
 async def root():
@@ -154,6 +164,13 @@ async def root(request: OSnapRunRequest):
 
 @app.post("/run/{agent_id}/tool/{tool_id}")
 async def invoke_tool(request: OSNAPRequest) -> OSNAPResponse:
+
+    tool_id = request.tool_id
+
+    x = Dict
+        
+
+
     # make a POST request to the Internal API
     tool_response = update_gcal_event(request.task_payload) 
     res = OSNAPResponse(tool_response)
@@ -173,13 +190,3 @@ async def root():
 @app.get("/tools/{tool_id}")
 async def tool_invoke(request: OSNAPRequest):
     return {"message": "Hello World"}
-
-
-# Internal API
-@app.get("/tools/google_calendar_update_event")
-async def update_gcal_event():
-    return { "message": "I updated the event" }
-
-
-# from alice (planner agent)
-# requests.get('bob.com/run/agent2/tool/google_calendar_update_event')

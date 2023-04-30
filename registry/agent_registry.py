@@ -20,14 +20,15 @@ class AgentRegistry:
         agents = []
         for agent_id in agent_ids:
             agent_data = self.redis_client.hgetall(f"agent:{agent_id}")
-            agent = {k.decode('utf-8'): v.decode('utf-8') for k, v in agent_data.items()}
+            agent = {k: v for k, v in agent_data.items()}
             agents.append(agent)
         return agents
 
     def add_agent(self, agent_id, name, description, invoke_endpoint, tools, scope):
-        agent_key = f'agent:{name}'
+        agent_key = f'agent:{agent_id}'
         agent_data = {
             'agent_id': agent_id,
+            'agent_name': name,
             'description': description,
             'invoke_endpoint': invoke_endpoint,
             'tools': json.dumps(tools),
