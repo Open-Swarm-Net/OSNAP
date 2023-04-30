@@ -3,11 +3,14 @@ import math
 from redis.exceptions import ResponseError
 from langchain import LLMChain, PromptTemplate
 from langchain.agents import ZeroShotAgent, Tool, AgentExecutor
+from registry.agent_registry import AgentRegistry
+from langchain.agents.agent_toolkits import FileManagementToolkit
 from langchain.chains import RetrievalQA
 from langchain.chat_models import ChatOpenAI
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.experimental import BabyAGI
 from langchain.retrievers import TimeWeightedVectorStoreRetriever
+from langchain.tools import ShellTool
 from langchain.vectorstores.redis import Redis
 
 from langchain.agents.agent_toolkits import (
@@ -15,22 +18,17 @@ from langchain.agents.agent_toolkits import (
     VectorStoreToolkit,
     VectorStoreInfo,
 )
+from tempfile import TemporaryDirectory
 
-from registry.agent_registry import AgentRegistry
 
 REDIS_HOST = os.getenv("REDIS_HOST")
 REDIS_PORT = os.getenv("REDIS_PORT")
 REDIS_USERNAME = os.getenv("REDIS_USERNAME")
 REDIS_PASSWORD = os.getenv("REDIS_PASSWORD")
-WEAVIATE_HOST = os.getenv("WEAVIATE_HOST")
-WEAVIATE_VECTORIZER = os.getenv("WEAVIATE_VECTORIZER")
 
 agent_registry = AgentRegistry(REDIS_HOST, REDIS_PORT, REDIS_USERNAME, REDIS_PASSWORD)
 
-
-
 embeddings_model = OpenAIEmbeddings(model="text-embedding-ada-002")
-
 
 def relevance_score_fn(score: float) -> float:
     return 1.0 - score / math.sqrt(2)
@@ -60,27 +58,30 @@ memory_chain = RetrievalQA.from_chain_type(
     retriever=TimeWeightedVectorStoreRetriever(
         vectorstore=vectorstore,
         other_score_keys=["importance"],
-        k=15
+        k=15,
+        decay_rate=0.01
     )
 )
 
-tools = []
+fileManagementToolkit = FileManagementToolkit()
 
-## These are 2 different kinds of memory, I wonder which works better.
+shellTool = ShellTool()
+shellTool.description = shellTool.description + f"args {shellTool.args}".replace("{", "{{").replace("}", "}}")
 
+tools = fileManagementToolkit.get_tools()
+#tools.append(shellTool)
 
-# Option 1: Toolkit
-
-#tools = VectorStoreToolkit(
-#    vectorstore_info=VectorStoreInfo(
-#        name="Memory",
-#        description="Useful for when you need to quickly access memory of events and people and things that happened recently or longer ago. Always do this first whenever you need external information.",
-#        vectorstore=vectorstore
-#    )
-#).get_tools()
-
-# Option 2: Time weighted memory retriever
-
+# Option 1: Complete vectorstore
+#tools.append(
+#    VectorStoreToolkit(
+#        vectorstore_info=VectorStoreInfo(
+#            name="Memory",
+#            description="Useful for when you need to quickly access memory of events and people and things that happened recently or longer ago. Always do this first whenever you need external information.",
+#            vectorstore=vectorstore
+#        )
+#    ).get_tools()
+#)
+# Option 2: Time weigh
 tools.append(
     Tool(
         name="Memory",
@@ -89,26 +90,20 @@ tools.append(
     )
 )
 
-tools_for_registry = [tool.name for tool in tools]
+agent_registry.add_agent(1, 'name', 'description', '/end/1/point', [tool.name for tool in tools])
 
-agent_registry.add_agent(1, 'name', 'description', '/end/1/point', tools_for_registry)
-
-
-
-#todo_chain = LLMChain(
-#    llm=llm,
-#    prompt=PromptTemplate.from_template(
-#        "You are a planner who is an expert at coming up with a todo list for a given objective. Come up with a todo list for this objective: {objective}"
-#    )
-#)
-
-#tools.append(
-#    Tool(
-#        name="TODO",
-#        func=todo_chain,
-#        description="useful for when you need to come up with todo lists. Input: an objective to create a todo list for. Output: a todo list for that objective. Please be very clear what the objective is!",
-#    ),
-#)
+tools.append(
+    Tool(
+        name="TODO",
+        func=LLMChain(
+            llm=llm,
+            prompt=PromptTemplate.from_template(
+                "You are a planner who is an expert at coming up with a todo list for a given objective. Come up with a todo list for this objective: {objective}"
+            )
+        ),
+        description="useful for when you need to come up with todo lists. Input: an objective to create a todo list for. Output: a todo list for that objective. Please be very clear what the objective is!",
+    ),
+)
 
 prefix = """You are an AI who performs one task based on the following objective: {objective}. Take into account these previously completed tasks: {context}."""
 suffix = """Question: {task}
@@ -137,7 +132,6 @@ agent_executor = AgentExecutor.from_agent_and_tools(
 )
 
 OBJECTIVE = "Analyze the repository you're in"
-
 
 baby_agi = BabyAGI.from_llm(
     llm=llm, 
