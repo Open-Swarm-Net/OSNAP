@@ -18,11 +18,10 @@ services:
       - 6379:6379
       - 8001:8001
     image: redis/redis-stack:latest # redis/redis-stack-server:latest for prod
-    command: ["redis-server", "--requirepass", "redis-stack", "--loadmodule", "/var/redisearch.so", "--loadmodule", "/var/rejson.so"]
+    command: ["redis-server", "--requirepass", "redis-stack", "--loadmodule", "/opt/redis-stack/lib/redisearch.so", "--loadmodule", "/opt/redis-stack/lib/rejson.so"]
     volumes: 
       - cache:/data
       - redis:/var/lib/redis
-      - ./redis/modules/:/var
 volumes:
   cache:
     driver: local
