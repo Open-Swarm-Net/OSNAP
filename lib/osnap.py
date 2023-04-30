@@ -1,5 +1,3 @@
-from lib.api import OSNAP
-import os
 import json
 import enum
 import time
@@ -39,8 +37,7 @@ class Scope(enum.Enum):
     PUBLIC = "public"
     PRIVATE = "private"
 
-
-
+    
 class OSNAPResponse:
     def __init__(self, payload: Dict):
         self.payload = json.dumps(payload)
@@ -75,15 +72,15 @@ class SignatureUtil:
             return False
 
 class OSNAPRequest:
-    def __init__(self, requester_id: str, request_type: str, task_name: str = None, priority: int = 0, request_metadata: Dict = None):
-        self.requester_id = requester_id
+    def __init__(self, caller_agent_id: str, request_type: str, task_name: str = None, priority: int = 0, request_metadata: Dict = None):
+        self.caller_agent_id = caller_agent_id
         self.request_type = request_type
         self.task_name = task_name
         self.priority = priority
         self.request_metadata = request_metadata or {}
         self.timestamp = time.time()
         self.payload = json.dumps({
-            "requester_id": self.requester_id,
+            "caller_agent_id": self.caller_agent_id,
             "request_type": self.request_type,
             "task_name": self.task_name,
             "priority": self.priority,
@@ -102,10 +99,11 @@ class OSNAPAgent:
         invoke_endpoint: str,
         registry_url: str, 
         register: Callable, 
+        id: str = str(uuid.uuid4()),
         using_rsa: bool = False, 
         tools: List = []
     ):
-        self.id = str(uuid.uuid4())
+        self.id = id 
         self.name = name
         self.description = description
         self.scope = scope
@@ -185,7 +183,7 @@ class OSNAPAgent:
             return OSNAPError("Invalid request type")
 
     def create_osnap_request(self, request_type: str, task_name: str = None, priority: int = 0, request_metadata: Dict = None) -> OSNAPRequest:
-        request = OSNAPRequest(requester_id=self.id, request_type=request_type, task_name=task_name, priority=priority, request_metadata=request_metadata)
+        request = OSNAPRequest(caller_agent_id=self.id, request_type=request_type, task_name=task_name, priority=priority, request_metadata=request_metadata)
         signature = SignatureUtil.sign_data(self.private_key_pem, request.payload)
         request.signature = signature
         return request
