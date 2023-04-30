@@ -24,7 +24,7 @@ class OSNAPApp:
       # each agent registers itself with the app
       for agent in agents:
         print(agent.name, agent.description)
-        agent.register(agent)
+        OSNAPAgent.register(agent)
 
     def check_api(self):
       handler_types = set([ handler_type for ( handler_type, handler ) in self.handler_registry ])
@@ -97,8 +97,9 @@ class OSNAPAgent:
         scope: Scope, 
         info_endpoint: str,
         invoke_endpoint: str,
-        registry_url: str, 
-        register: Callable, 
+        registry_url: str,
+        #registry : Callable,
+        add_agent_function: Callable,
         id: str = str(uuid.uuid4()),
         using_rsa: bool = False, 
         tools: List = []
@@ -110,7 +111,8 @@ class OSNAPAgent:
         self.info_endpoint = info_endpoint
         self.invoke_endpoint = invoke_endpoint
         self.registry_url = registry_url
-        self.register = register
+        self.add_agent_function = add_agent_function
+        #self.register = register
         self.using_rsa = using_rsa
         self.tools = tools or []
 
@@ -118,17 +120,22 @@ class OSNAPAgent:
             # Generate a key pair
             self.private_key_pem, self.public_key_pem = SignatureUtil.generate_key_pair()
 
+        # Call the register method with required arguments
+       # self.register(agent_id=self.id, name=self.name, description=self.description, invoke_endpoint=self.invoke_endpoint, tools=self.tools, scope=self.scope)
+
+
     def register(self) -> None:
         data = {
             "agent_id": self.id,
             "name": self.name,
             "description": self.description,
             "scope": self.scope.value,
-            "info_endpoint": self.info_endpoint,
-            "public_key": self.public_key_pem
+            "info_endpoint": self.info_endpoint
+            #"public_key": self.public_key_pem
         }
         response = requests.post(f"{self.registry_url}/register", json=data)
         if response.status_code == 200:
+            self.add_agent_function(self.id,self.name,self.description,self.info_endpoint,self.tools,self.scope.value)
             print("Agent registered successfully.")
         else:
             print("Failed to register agent:", response.text)
