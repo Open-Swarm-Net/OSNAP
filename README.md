@@ -2,7 +2,7 @@
 
 * `cp .env.example .env`
 * Change env vars
-* `docker network create cogniswarm-network`
+* `docker network create cognihack-network`
 * `docker-compose up --build`
 
 
