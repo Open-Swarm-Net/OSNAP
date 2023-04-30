@@ -1,8 +1,8 @@
 version: '3.7'
 
 services:
-  cognihack-app:
-    container_name: cognihack-app
+  cognihack-second-app:
+    container_name: cognihack-second-app
     ports:
     - 1337:8000
     build:
@@ -12,7 +12,7 @@ services:
     volumes:
       - .:/app
   cognihack-redis-stack-server:
-    container_name: cognihack-redis-stack-server
+    container_name: cognihack-second-redis-stack-server
     restart: always
     ports:
       - 6379:6379
@@ -39,3 +39,4 @@ networks:
   default:
     name: cognihack-network
     external: true
+    
