@@ -1,6 +1,4 @@
-# OSNAP Protocol for OutboundAgents
-
-## 1. Introduction
+## 1. OSNAP Protocol
 
 This paper proposes a communication protocol designed specifically for OutboundAgents in an AI-driven multi-agent system. The protocol defines a standardized message structure, various message types, and the processes for handling communication between agents. The purpose of this protocol is to facilitate efficient and effective communication between AI agents, enabling them to collaborate, delegate tasks, and share information.
 
@@ -24,24 +22,26 @@ To facilitate efficient communication between agents, we propose a standardized 
 
 #### 3.1.2 Example of Message Structure
 
+```json
 {
-"sender_agent_id": "agent-123",
-"receiver_agent_id": "agent-456",
-"message_type": "task_request",
-"payload": {
-"task_id": "task-789",
-"task_name": "schedule_meeting",
-"task_data": {
-"participants": ["personA@example.com", "personB@example.com"],
-"date": "2023-05-01",
-"time": "14:00"
+  "sender_agent_id": "agent-123",
+  "receiver_agent_id": "agent-456",
+  "message_type": "task_request",
+  "payload": {
+    "task_id": "task-789",
+    "task_name": "schedule_meeting",
+    "task_data": {
+      "participants": ["personA@example.com", "personB@example.com"],
+      "date": "2023-05-01",
+      "time": "14:00"
+    }
+  },
+  "metadata": {
+    "timestamp": "2023-04-29T10:30:00Z",
+    "priority": "medium"
+  }
 }
-},
-"metadata": {
-"timestamp": "2023-04-29T10:30:00Z",
-"priority": "medium"
-}
-}
+```
 
 
 #### 3.1.3 Benefits of the Proposed Message Structure
@@ -64,6 +64,8 @@ The protocol supports a variety of message types to cater to different aspects o
 #### 3.2.1 Examples of Message Types
 
 * Request Message Example
+
+```json
 {
   "sender_agent_id": "agent-123",
   "receiver_agent_id": "agent-456",
@@ -81,10 +83,12 @@ The protocol supports a variety of message types to cater to different aspects o
     "priority": "medium"
   }
 }
+```
 
 
 * Response Message Example
 
+```json
 {
   "sender_agent_id": "agent-456",
   "receiver_agent_id": "agent-123",
@@ -101,11 +105,11 @@ The protocol supports a variety of message types to cater to different aspects o
     "timestamp": "2023-04-29T10:32:00Z"
   }
 }
-
-
+```
 
 * Task Execution Message Example
-
+  
+```json
 {
   "sender_agent_id": "agent-123",
   "receiver_agent_id": "agent-456",
@@ -125,11 +129,11 @@ The protocol supports a variety of message types to cater to different aspects o
     "priority": "high"
   }
 }
-
+```
 
 
 * Status Update Message Example
-
+```json
 {
   "sender_agent_id": "agent-456",
   "receiver_agent_id": "agent-123",
@@ -145,11 +149,11 @@ The protocol supports a variety of message types to cater to different aspects o
     "timestamp": "2023-04-29T10:35:00Z"
   }
 }
-
+```
 
 
 * Error Handling Message Example
-
+```json
 {
   "sender_agent_id": "agent-456",
   "receiver_agent_id": "agent-123",
@@ -164,7 +168,7 @@ The protocol supports a variety of message types to cater to different aspects o
     "timestamp": "2023-04-29T10:33:00Z"
   }
 }
-
+```
 
 ### 3.3 Agents Query and Response
 
@@ -178,7 +182,7 @@ GET /agents
 
 
 2. Agents Response
-
+```json
 [
   {
     "agent_id": "f287b6e8-8a67-4c10-9a45-12a05a8f1b87",
@@ -205,13 +209,15 @@ GET /agents
     "authorized_agents": ["c6a2f2e9-0689-4e7d-8a04-6b3abefc1e3d"]
   }
 ]
+```
 
 ### 3.4 Tools Query and Response
 
 To enable agents to query the tools of other agents, we can introduce a new message type called "tools_query" and its corresponding response message, "tools_response". These messages allow agents to request and provide information about their supported tools, tasks, and SLAs.
 
 1. Get All Agent Tools Query
-
+   
+```json
 {
   "sender_agent_id": "agent-123",
   "receiver_agent_id": "agent-456",
@@ -222,9 +228,11 @@ To enable agents to query the tools of other agents, we can introduce a new mess
     "order": 1
   }
 }
+```
 
-2. Get All Agent Tools Response
+1. Get All Agent Tools Response
 
+```json
 {
   "sender_agent_id": "agent-456",
   "receiver_agent_id": "agent-123",
@@ -257,6 +265,7 @@ To enable agents to query the tools of other agents, we can introduce a new mess
     "timestamp": "2023-04-29T10:32:00Z"
   }
 }
+```
 
 ## 4. Conclusion
 
