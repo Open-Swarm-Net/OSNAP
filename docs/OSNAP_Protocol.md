@@ -6,7 +6,7 @@ This paper proposes a communication protocol designed specifically for OutboundA
 
 ## 2. Background
 
-OutboundAgents are AI systems that have capabilities they can execute on behalf of a user. These capabilities might include gathering information, performing tasks, or interacting with other agents to complete complex actions. In order to collaborate effectively and efficiently, agents need a well-defined communication protocol that allows them to exchange messages, delegate tasks, and share status updates.
+OutboundAgents are AI systems that have tools they can execute on behalf of a user. These tools might include gathering information, performing tasks, or interacting with other agents to complete complex actions. In order to collaborate effectively and efficiently, agents need a well-defined communication protocol that allows them to exchange messages, delegate tasks, and share status updates.
 
 ## 3. Protocol Design
 
@@ -112,6 +112,7 @@ The protocol supports a variety of message types to cater to different aspects o
   "message_type": "task_execution",
   "payload": {
     "task_id": "task-789",
+    "task_invoke_url": "https://example.com/agent-456/task/789",
     "task_name": "schedule_meeting",
     "task_data": {
       "participants": ["personA@example.com", "personB@example.com"],
@@ -165,33 +166,71 @@ The protocol supports a variety of message types to cater to different aspects o
 }
 
 
+### 3.3 Agents Query and Response
 
-### 3.3 Capabilities Query and Response
+Providing an endpoint to get a list of available agents is required to implement the protocol. This endpoint can be used by agents to discover other agents and their tools. To enable this functionality, we can introduce a new message type called "agents_query" and its corresponding response message, "agents_response".
 
-To enable agents to query the capabilities of other agents, we can introduce a new message type called "capabilities_query" and its corresponding response message, "capabilities_response". These messages allow agents to request and provide information about their supported capabilities, tasks, and SLAs.
+1. Agents Query
+GET /agents
 
-1. Capabilities Query
+?capability=example_capability
+?scope=public|private
+
+
+2. Agents Response
+
+[
+  {
+    "agent_id": "f287b6e8-8a67-4c10-9a45-12a05a8f1b87",
+    "agent_name": "Example Agent",
+    "agent_description": "Does lots of nice agent things",
+    "agent_endpoint": "https://example.com/run/f287b6e8-8a67-4c10-9a45-12a05a8f1b87",
+    "tools": {
+      "example_capability": {
+        "description": "An example capability.",
+        "plugin": "ExamplePlugin"
+      }
+    },
+    "scope": "public"
+  },
+  {
+    "agent_id": "184755d2-2f40-4563-96a9-9d30fd6b69ca",
+    "tools": {
+      "example_capability": {
+        "description": "Another example capability.",
+        "plugin": "AnotherExamplePlugin"
+      }
+    },
+    "scope": "private",
+    "authorized_agents": ["c6a2f2e9-0689-4e7d-8a04-6b3abefc1e3d"]
+  }
+]
+
+### 3.4 Tools Query and Response
+
+To enable agents to query the tools of other agents, we can introduce a new message type called "tools_query" and its corresponding response message, "tools_response". These messages allow agents to request and provide information about their supported tools, tasks, and SLAs.
+
+1. Get All Agent Tools Query
 
 {
   "sender_agent_id": "agent-123",
   "receiver_agent_id": "agent-456",
-  "message_type": "capabilities_query",
+  "message_type": "tools_query",
   "metadata": {
     "timestamp": "2023-04-29T10:30:00Z",
-    "priority": "low"
+    "priority": "low",
+    "order": 1
   }
 }
 
-
-
-2. Capabilities Response
+2. Get All Agent Tools Response
 
 {
   "sender_agent_id": "agent-456",
   "receiver_agent_id": "agent-123",
-  "message_type": "capabilities_response",
+  "message_type": "tools_response",
   "payload": {
-    "information_capabilities": [
+    "information_tools": [
       {
         "name": "get_weather",
         "description": "Provides weather information for a given location and date",
@@ -201,7 +240,7 @@ To enable agents to query the capabilities of other agents, we can introduce a n
         }
       }
     ],
-    "task_capabilities": [
+    "task_tools": [
       {
         "name": "schedule_meeting",
         "description": "Schedules a meeting with the specified participants, date, and time",
@@ -219,10 +258,8 @@ To enable agents to query the capabilities of other agents, we can introduce a n
   }
 }
 
-
-
 ## 4. Conclusion
 
-The proposed agent communication protocol provides a standardized and efficient means for AI agents to collaborate, delegate tasks, and share information within a multi-agent system. By implementing this protocol, AI systems can dynamically discover the capabilities of other agents and work together to complete complex tasks and actions
+The proposed agent communication protocol provides a standardized and efficient means for AI agents to collaborate, delegate tasks, and share information within a multi-agent system. By implementing this protocol, AI systems can dynamically discover the tools of other agents and work together to complete complex tasks and actions
 
 
