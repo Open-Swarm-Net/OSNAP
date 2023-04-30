@@ -1,38 +1,31 @@
+from audioop import add
 import os
-from collections import deque
-from typing import Dict, List, Optional, Any
 from redis.exceptions import ResponseError
-
-from langchain import LLMChain, OpenAI, PromptTemplate
-from langchain.embeddings import OpenAIEmbeddings
-from langchain.llms import BaseLLM
-from langchain.vectorstores.base import VectorStore
-from pydantic import BaseModel, Field
-from langchain.chains.base import Chain
-from langchain.experimental import BabyAGI
-
-from langchain.vectorstores import FAISS
-from langchain.docstore import InMemoryDocstore
-from langchain.embeddings import OpenAIEmbeddings
-from langchain.text_splitter import CharacterTextSplitter
-from langchain.vectorstores.redis import Redis
-from langchain.retrievers import TimeWeightedVectorStoreRetriever
+from langchain import LLMChain, PromptTemplate
 from langchain.agents import ZeroShotAgent, Tool, AgentExecutor
-from langchain import OpenAI, SerpAPIWrapper, LLMChain
+from langchain.chains import RetrievalQA
+from langchain.chat_models import ChatOpenAI
+from langchain.embeddings import OpenAIEmbeddings
+from langchain.experimental import BabyAGI
+from langchain.retrievers import TimeWeightedVectorStoreRetriever
+from langchain.vectorstores.redis import Redis
+
 from langchain.agents.agent_toolkits import (
     create_vectorstore_agent,
     VectorStoreToolkit,
     VectorStoreInfo,
 )
-from langchain.experimental.generative_agents import GenerativeAgent, GenerativeAgentMemory
-from langchain.chains import RetrievalQA
-from langchain.chat_models import ChatOpenAI
 
+from registry.agent_registry import AgentRegistry
 
 REDIS_HOST = os.getenv("REDIS_HOST")
 REDIS_PORT = os.getenv("REDIS_PORT")
+REDIS_USERNAME = os.getenv("REDIS_USERNAME")
+REDIS_PASSWORD = os.getenv("REDIS_PASSWORD")
 WEAVIATE_HOST = os.getenv("WEAVIATE_HOST")
 WEAVIATE_VECTORIZER = os.getenv("WEAVIATE_VECTORIZER")
+
+agent_registry = AgentRegistry(REDIS_HOST, REDIS_PORT, REDIS_USERNAME, REDIS_PASSWORD)
 
 embeddings_model = OpenAIEmbeddings(model="text-embedding-ada-002")
 
@@ -50,6 +43,7 @@ except ResponseError:
 
 
 
+    
 
 llm = ChatOpenAI(
     model="gpt-3.5-turbo-0301",

@@ -1,46 +1,46 @@
-# TODO: convert from Flask to FastAPI
+from langchain.indexes.vectorstore import redis
+import json
 
-from flask import Flask, request, jsonify
-import redis
-import pickle
+class AgentRegistry:
 
-app = Flask(__name__)
-redis_client = redis.Redis(host='localhost', port=6379, db=0)
+    def __init__(self, redis_host, redis_port, redis_username, redis_password):
+        self.redis_client = redis.Redis(host=redis_host, port=redis_port, username=redis_username, password=redis_password, decode_responses=True)
 
-# TODO: add an update endpoint
+    def add_agent(self, agent_id, name, description, endpoint, tools):
+        agent_key = f'agent:{agent_id}'
+        agent_data = {
+            'name': name,
+            'description': description,
+            'endpoint': endpoint,
+            'tools': json.dumps(tools)
+        }
+        self.redis_client.hmset(agent_key, agent_data)
+        return agent_key
 
-@app.route('/register_agent', methods=['POST'])
-def register_agent():
-    agent_info = request.get_json()
-    serialized_agent_info = pickle.dumps(agent_info)
-    redis_client.set(agent_info["agent_id"], serialized_agent_info)
-    return jsonify({"status": "success", "agent_id": agent_info["agent_id"]})
+    def update_tools(self, agent_id, tools):
+        agent_key = f'agent:{agent_id}'
+        self.redis_client.hset(agent_key, 'tools', json.dumps(tools))
 
-@app.route('/search_agent', methods=['GET'])
-def search_agent():
-    agent_id = request.args.get('agent_id')
-    capability = request.args.get('capability')
+    def remove_agent(self, agent_id):
+        agent_key = f'agent:{agent_id}'
+        self.redis_client.delete(agent_key)
 
-    if agent_id:
-        serialized_agent_info = redis_client.get(agent_id)
-        if not serialized_agent_info:
-            return jsonify({"status": "error", "message": "Agent not found."}), 404
-        agent_info = pickle.loads(serialized_agent_info)
-        return jsonify(agent_info)
+    def get_agent_by_id(self, agent_id):
+        agent_key = f'agent:{agent_id}'
+        agent_data = self.redis_client.hgetall(agent_key)
+        if agent_data:
+            agent_data['tools'] = json.loads(agent_data['tools'])
+            return agent_data
+        return None
 
-    elif capability:
+    def search_agents_by_tool_description(self, search_query):
         matching_agents = []
-        for agent_id in redis_client.keys():
-            serialized_agent_info = redis_client.get(agent_id)
-            agent_info = pickle.loads(serialized_agent_info)
-            if capability in agent_info["capabilities"]:
-                matching_agents.append(agent_info)
-        if not matching_agents:
-            return jsonify({"status": "error", "message": "No agents found with the specified capability."}), 404
-        return jsonify(matching_agents)
-
-    else:
-        return jsonify({"status": "error", "message": "Specify agent_id or capability for searching."}), 400
-
-if __name__ == "__main__":
-    app.run(debug=True)
+        for key in self.redis_client.scan_iter(match='agent:*'):
+            agent_data = self.redis_client.hgetall(key)
+            tools = json.loads(agent_data['tools'])
+            for tool in tools:
+                if search_query.lower() in tool['description'].lower():
+                    agent_data['tools'] = tools
+                    matching_agents.append(agent_data)
+                    break
+        return matching_agents
