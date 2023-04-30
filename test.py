@@ -26,6 +26,7 @@ from langchain.agents.agent_toolkits import (
 )
 from langchain.experimental.generative_agents import GenerativeAgent, GenerativeAgentMemory
 from langchain.chains import RetrievalQA
+from langchain.chat_models import ChatOpenAI
 
 
 REDIS_HOST = os.getenv("REDIS_HOST")
@@ -37,7 +38,7 @@ embeddings_model = OpenAIEmbeddings(model="text-embedding-ada-002")
 
 vectorstore = Redis(
     embedding_function=embeddings_model.embed_query,
-    redis_url=f"redis://{REDIS_HOST}:{REDIS_PORT}",
+    redis_url=f"redis://default:redis-stack@{REDIS_HOST}:{REDIS_PORT}",
     index_name='link'
 )
 
@@ -50,8 +51,8 @@ except ResponseError:
 
 
 
-llm = OpenAI(
-    model="gpt3.5-turbo",
+llm = ChatOpenAI(
+    model="gpt-3.5-turbo-0301",
     temperature=0,
     #max_tokens=1500,
     #streaming=True
@@ -129,7 +130,7 @@ agent_executor = AgentExecutor.from_agent_and_tools(
     ),
     tools=tools,
     verbose=True,
-    return_intermediate_steps=True,
+    #return_intermediate_steps=True,
     max_iterations=3,
     max_execution_time=60,
     early_stopping_method="generate"
@@ -137,14 +138,13 @@ agent_executor = AgentExecutor.from_agent_and_tools(
 
 OBJECTIVE = "Write a weather report for SF today"
 
-agent_executor.run(OBJECTIVE)
 
-#baby_agi = BabyAGI.from_llm(
-#    llm=llm, 
-#    vectorstore=vectorstore, 
-#    task_execution_chain=agent_executor, 
-#    verbose=False, 
-#    max_iterations=3
-#)
+baby_agi = BabyAGI.from_llm(
+    llm=llm, 
+    vectorstore=vectorstore, 
+    task_execution_chain=agent_executor, 
+    verbose=False, 
+    max_iterations=3
+)
 
-#baby_agi({"objective": OBJECTIVE})
+baby_agi({"objective": OBJECTIVE})

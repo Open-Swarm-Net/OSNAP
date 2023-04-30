@@ -18,8 +18,11 @@ services:
     ports:
       - 6379:6379
       - 8001:8001
-    image: redis/redis-stack-server:latest
-    command: ["redis-server","--loadmodule","/var/redisearch.so", "--protected-mode", "no"]
+    image: redis/redis-stack:latest # redis/redis-stack-server:latest for prod
+    command: ["redis-server", "--requirepass", "redis-stack", "--loadmodule", "/var/redisearch.so", "--loadmodule", "/var/rejson.so"]
+
+    environment:
+    - REDIS_ARGS=""
     deploy:
       replicas: 1
       restart_policy:
@@ -28,7 +31,6 @@ services:
       - cache:/data
       - redis:/var/lib/redis
       - ./redis/modules/:/var
-
 volumes:
   cache:
     driver: local
