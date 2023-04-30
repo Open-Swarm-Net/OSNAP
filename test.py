@@ -1,4 +1,5 @@
 import os
+import math
 from redis.exceptions import ResponseError
 from langchain import LLMChain, PromptTemplate
 from langchain.agents import ZeroShotAgent, Tool, AgentExecutor
@@ -30,10 +31,15 @@ agent_registry = AgentRegistry(REDIS_HOST, REDIS_PORT, REDIS_USERNAME, REDIS_PAS
 
 embeddings_model = OpenAIEmbeddings(model="text-embedding-ada-002")
 
+
+def relevance_score_fn(score: float) -> float:
+    return 1.0 - score / math.sqrt(2)
+
 vectorstore = Redis(
     embedding_function=embeddings_model.embed_query,
     redis_url=f"redis://{REDIS_USERNAME}:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}",
-    index_name='link'
+    index_name='link',
+    relevance_score_fn=relevance_score_fn
 )
 
 try:
