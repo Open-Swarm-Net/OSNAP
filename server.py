@@ -49,13 +49,14 @@ async def root():
         "info": OSnapEnvironment(environment_id="1", environment_name="OSnap", environment_description="An agent-based workflow orchestration system.", environment_url="")
     }
 
+# @OSNAP.agents() # TODO: Make a decorator that checks endpoints conform to Spec
 @app.get("/agents")
 async def root(request):
     return agent_registry.get_agents(request)
     # TODO: Make me run
     # return agent_registry.get_agents(request)
 
-
+# Decorator checks at runtime if the agent conforms to the OSNAP spec
 # Describe the agent's available tools
 @app.get("/tools")
 async def root():
