@@ -19,13 +19,6 @@ services:
       - 8001:8001
     image: redis/redis-stack:latest # redis/redis-stack-server:latest for prod
     command: ["redis-server", "--requirepass", "redis-stack", "--loadmodule", "/var/redisearch.so", "--loadmodule", "/var/rejson.so"]
-
-    environment:
-    - REDIS_ARGS=""
-    deploy:
-      replicas: 1
-      restart_policy:
-        condition: on-failure
     volumes: 
       - cache:/data
       - redis:/var/lib/redis
