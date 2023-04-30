@@ -27,7 +27,7 @@ from langchain.agents import AgentType
 from langchain.utilities.zapier import ZapierNLAWrapper
 
 # Change to your liking
-verbose = False
+verbose = True
 
 REDIS_HOST = os.getenv("REDIS_HOST")
 REDIS_PORT = os.getenv("REDIS_PORT")
@@ -120,14 +120,14 @@ tools.append(
 
 agent_registry.add_agent(1, 'name', 'description', '/end/1/point', [tool.name for tool in tools])
 
-prefix = """You are an AI who performs one task based on the following objective: {objective}. Take into account these previously completed tasks: {context}."""
-suffix = """Question: {task}
+prefix = """You are an AI who performs one task based on the following objective: {objective}."""
+suffix = """Question: {objective}
 {agent_scratchpad}"""
 prompt = ZeroShotAgent.create_prompt(
     tools=tools,
     prefix=prefix,
     suffix=suffix,
-    input_variables=["objective", "task", "context", "agent_scratchpad"],
+    input_variables=["objective", "agent_scratchpad"],
 )
 
 agent_executor = AgentExecutor.from_agent_and_tools(
@@ -148,14 +148,16 @@ agent_executor = AgentExecutor.from_agent_and_tools(
     early_stopping_method="generate"
 )
 
-OBJECTIVE = "Analyze the repository you're in"
+OBJECTIVE = "Plan a meeting for today at 4pm"
 
-baby_agi = BabyAGI.from_llm(
-    llm=llm, 
-    vectorstore=vectorstore, 
-    task_execution_chain=agent_executor,
-    max_iterations=3,
-    verbose=verbose,
-)
+agent_executor({"objective": OBJECTIVE})
 
-baby_agi({"objective": OBJECTIVE})
+#baby_agi = BabyAGI.from_llm(
+#    llm=llm, 
+#    vectorstore=vectorstore, 
+#    task_execution_chain=agent_executor,
+#    max_iterations=3,
+#    verbose=verbose,
+#)
+
+#baby_agi({"objective": OBJECTIVE})
