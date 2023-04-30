@@ -1,15 +1,14 @@
+handler_registry = set()
 class OSNAP:
-  handler_registry = set()
-
   """OSNAP API Decorators"""
-  def agents(self):
+  def agents():
       def decorator(func):
         def wrapper(*args, **kwargs):
           print("Before calling " + func.__name__)
           func(*args, **kwargs)
           print("After calling " + func.__name__)
 
-        self.handler_registry.add(("agents", wrapper))    
+        handler_registry.add(("agents", wrapper))    
         return wrapper
       return decorator
 

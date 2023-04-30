@@ -1,0 +1,1 @@
+from registry.agent_registry import AgentRegistry

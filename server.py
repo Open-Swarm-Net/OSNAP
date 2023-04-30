@@ -1,7 +1,11 @@
+import os
 from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.openapi.utils import get_openapi
 from starlette.responses import RedirectResponse
+
+from lib.osnap import OSNAP, OSNAPApp, OSNAPAgent
+from registry import AgentRegistry
 
 def osnap_schema():
     if app.openapi_schema:
@@ -17,9 +21,22 @@ def osnap_schema():
     # }
     app.openapi_schema = openapi_schema
     return app.openapi_schema
-  
+
+
+REDIS_HOST = os.getenv("REDIS_HOST")
+REDIS_PORT = os.getenv("REDIS_PORT")
+REDIS_USERNAME = os.getenv("REDIS_USERNAME")
+REDIS_PASSWORD = os.getenv("REDIS_PASSWORD")
+WEAVIATE_HOST = os.getenv("WEAVIATE_HOST")
+WEAVIATE_VECTORIZER = os.getenv("WEAVIATE_VECTORIZER")
+
+agent_registry = AgentRegistry(REDIS_HOST, REDIS_PORT, REDIS_USERNAME, REDIS_PASSWORD)
+
 app = FastAPI()
 app.openapi = osnap_schema
+
+osnap_app = OSNAPApp()
+
 
 @app.get("/")
 async def root():
@@ -50,9 +67,10 @@ async def root():
     }
 
 # @OSNAP.agents() # TODO: Make a decorator that checks endpoints conform to Spec
+@OSNAP.agents()
 @app.get("/agents")
-async def root(request):
-    return agent_registry.get_agents(request)
+async def root():
+    return agent_registry.get_agents()
     # TODO: Make me run
     # return agent_registry.get_agents(request)
 

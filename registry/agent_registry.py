@@ -12,15 +12,29 @@ class AgentRegistry:
             decode_responses=True
         )
 
-    def add_agent(self, agent_id, name, description, endpoint, tools):
+    def get_agents(self, scope):
+        return self._get_agents_by_scope(scope)
+    
+    def _get_agents_by_scope(self, scope):
+        agent_ids = self.redis_client.smembers(f"scope:{scope}:agents")
+        agents = []
+        for agent_id in agent_ids:
+            agent_data = self.hgetall(f"agent:{agent_id.decode('utf-8')}")
+            agent = {k.decode('utf-8'): v.decode('utf-8') for k, v in agent_data.items()}
+            agents.append(agent)
+        return agents
+
+    def add_agent(self, agent_id, name, description, endpoint, tools, scope):
         agent_key = f'agent:{agent_id}'
         agent_data = {
             'name': name,
             'description': description,
             'endpoint': endpoint,
-            'tools': json.dumps(tools)
+            'tools': json.dumps(tools),
+            'scope': scope
         }
         self.redis_client.hmset(agent_key, agent_data)
+        self.redis_client.sadd(f"scope:{scope}:agents", agent_id)
         return agent_key
 
     def update_tools(self, agent_id, tools):
