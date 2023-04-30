@@ -35,7 +35,7 @@ services:
       HTTP_PASSWORD: root
     ports:
       - 8081:8081
-
+  
 volumes:
   cache:
     driver: local
