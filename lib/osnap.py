@@ -73,7 +73,7 @@ class SignatureUtil:
             return False
 
 class OSNAPRequest(BaseModel):
-    def __init__(self, caller_agent_id: str, request_type: str, task_name: str = None, priority: int = 0, request_metadata: Dict = None):
+    def __init__(self, caller_agent_id: str, request_type: str, task_name: str = None, priority: int = 0, request_metadata: Dict = None, instructions=None):
         self.caller_agent_id = caller_agent_id
         self.request_type = request_type
         self.task_name = task_name
@@ -89,6 +89,7 @@ class OSNAPRequest(BaseModel):
             "timestamp": self.timestamp
         })
         self.signature = None
+        self.instructions = instructions
 
 class OSNAPAgent:
     def __init__(

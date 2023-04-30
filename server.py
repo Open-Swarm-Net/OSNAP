@@ -7,6 +7,16 @@ from fastapi.openapi.utils import get_openapi
 from starlette.responses import RedirectResponse
 from uuid import uuid4
 
+from langchain.agents import ZeroShotAgent, Tool, AgentExecutor
+from langchain.agents.agent_toolkits import ZapierToolkit
+from langchain import LLMChain, PromptTemplate
+from langchain.llms import OpenAI
+from langchain.agents import initialize_agent
+from langchain.agents.agent_toolkits import ZapierToolkit
+from langchain.agents import AgentType
+from langchain.utilities.zapier import ZapierNLAWrapper
+from langchain.chat_models import ChatOpenAI
+
 from lib import OSNAP
 from lib.osnap import OSNAPApp, OSNAPAgent, OSNAPTool, OSNAPRequest, OSNAPResponse, Scope
 from registry import AgentRegistry
@@ -105,10 +115,29 @@ async def root():
 async def kickOff(task: SnapTask):
 
     res = await httpx.AsyncClient().get('http://cognihack-app:8000/agents',)
-    print(res)
+    external_agents = res
+    
+    prompt = PromptTemplate(template="""
+            You are an AI who performs one task based on the following objective: {objective}.
+            You are going to work together with another agent to complete the job.
+            Given the following agents, which one would you like to work with?
+            {external_agents}
+        """, 
+        input_variables=["objective", "external_agents"]
+    )
 
+    llm = ChatOpenAI(
+        model="gpt-3.5-turbo",
+        temperature=0,
+        #max_tokens=1500,
+        #streaming=True
+        verbose=True,
+    )
+    chain = LLMChain(llm=llm, prompt=prompt)
 
-    return res.json()
+    response = chain.arun(objective=task.task_description, external_agents=external_agents)
+
+    return response
 
 
 class OSnapEnvironment(BaseModel):
@@ -165,14 +194,59 @@ async def root(request: OSnapRunRequest):
 @app.post("/run/{agent_id}/tool/{tool_id}")
 async def invoke_tool(request: OSNAPRequest) -> OSNAPResponse:
 
-    tool_id = request.tool_id
+    # TODO: Wrap this whole thing in an OSNAPAdapter class
+    def update_gcal_event(): 
+        verbose = True
 
-    x = Dict
-        
+        tools += ZapierToolkit.from_zapier_nla_wrapper(ZapierNLAWrapper()).get_tools()
+
+        prefix = """You are an AI who performs one task based on the following objective: {objective}."""
+        suffix = """Question: {objective}
+        {agent_scratchpad}"""
+        prompt = ZeroShotAgent.create_prompt(
+            tools=tools,
+            prefix=prefix,
+            suffix=suffix,
+            input_variables=["objective", "agent_scratchpad"],
+        )
+
+        llm = ChatOpenAI(
+            model="gpt-3.5-turbo",
+            temperature=0,
+            #max_tokens=1500,
+            #streaming=True
+            verbose=True,
+        )
+
+        agent_executor = AgentExecutor.from_agent_and_tools(
+            agent=ZeroShotAgent(
+                llm_chain=LLMChain(
+                    llm=llm,
+                    prompt=prompt,
+                    verbose=verbose,
+                ),
+                allowed_tools=[tool.name for tool in tools],
+                verbose=verbose,
+            ),
+            tools=tools,
+            verbose=verbose,
+            #return_intermediate_steps=True,
+            max_iterations=3,
+            max_execution_time=60,
+            early_stopping_method="generate"
+        )
+
+        # OBJECTIVE = "Plan a meeting for today at 4pm"
+
+        agent_executor({"objective": request.instructions})
 
 
-    # make a POST request to the Internal API
-    tool_response = update_gcal_event(request.task_payload) 
+    tool_actions = {
+        "google_calendar_update_event": update_gcal_event
+    }
+
+    tool_response = tool_actions[request.tool_id](request.task_payload)
+
     res = OSNAPResponse(tool_response)
     return res
 
