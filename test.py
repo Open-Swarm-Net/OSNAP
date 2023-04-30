@@ -1,6 +1,7 @@
 import os
 from collections import deque
 from typing import Dict, List, Optional, Any
+from redis.exceptions import ResponseError
 
 from langchain import LLMChain, OpenAI, PromptTemplate
 from langchain.embeddings import OpenAIEmbeddings
@@ -34,11 +35,20 @@ WEAVIATE_VECTORIZER = os.getenv("WEAVIATE_VECTORIZER")
 
 embeddings_model = OpenAIEmbeddings(model="text-embedding-ada-002")
 
-vectorstore = Redis.from_existing_index(
-    embeddings_model,
+vectorstore = Redis(
+    embedding_function=embeddings_model.embed_query,
     redis_url=f"redis://{REDIS_HOST}:{REDIS_PORT}",
     index_name='link'
 )
+
+try:
+    vectorstore._create_index()
+except ResponseError:
+    print('no')
+
+
+
+
 
 llm = OpenAI(
     model="gpt3.5-turbo",
@@ -77,7 +87,7 @@ tools = []
 tools.append(
     Tool(
         name="Memory",
-        func=memory_chain.run,
+        func=memory_chain,
         description="Always do this first. Useful for when you need to access memory of events or people or things that happened recently or longer ago.",
     )
 )
@@ -94,7 +104,7 @@ todo_chain = LLMChain(
 tools.append(
     Tool(
         name="TODO",
-        func=todo_chain.run,
+        func=todo_chain,
         description="useful for when you need to come up with todo lists. Input: an objective to create a todo list for. Output: a todo list for that objective. Please be very clear what the objective is!",
     ),
 )

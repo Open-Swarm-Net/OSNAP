@@ -12,32 +12,22 @@ services:
     env_file: .env
     volumes:
       - .:/app
-  cognihack-redis:
-    container_name: cognihack-redis
+  cognihack-redis-stack-server:
+    container_name: cognihack-redis-stack-server
     restart: always
     ports:
       - 6379:6379
-    image: redis:alpine
-    command: redis-server
+      - 8001:8001
+    image: redis/redis-stack-server:latest
+    command: ["redis-server","--loadmodule","/var/redisearch.so", "--protected-mode", "no"]
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
     volumes: 
       - cache:/data
       - redis:/var/lib/redis
-  #cognihack-redis-stack-server:
-  #  container_name: cognihack-redis-stack-server
-  #  restart: always
-  #  ports:
-  #    - 6379:6379
-  #    - 8001:8001
-  #  image: redis/redis-stack-server:latest
-  #  command: ["redis-server","--loadmodule","/var/redisearch.so"]
-  #  deploy:
-  #    replicas: 1
-  #    restart_policy:
-  #      condition: on-failure
-  #  volumes: 
-  #    - cache:/data
-  #    - redis:/var/lib/redis
-  #    - ./redis/modules/:/var
+      - ./redis/modules/:/var
 
 volumes:
   cache:
