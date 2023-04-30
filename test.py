@@ -118,7 +118,7 @@ tools.append(
     ),
 )
 
-agent_registry.add_agent(1, 'name', 'description', '/end/1/point', [tool.name for tool in tools])
+agent_registry.add_agent(1, 'name', 'description', '/end/1/point', [tool.name for tool in tools], )
 
 prefix = """You are an AI who performs one task based on the following objective: {objective}."""
 suffix = """Question: {objective}
