@@ -14,6 +14,20 @@ class OSNAP:
         return wrapper
       return decorator
 
+  def run():
+      def decorator(func):
+        def wrapper(*args, **kwargs):
+          print("Before calling " + func.__name__)
+          #
+          # OSNAPRequest = *args["request"]
+          print("REQUEST: ", args.get("request"))
+          func(*args, **kwargs)
+          print("After calling " + func.__name__)
+
+        handler_registry.add(("run", wrapper))    
+        return wrapper
+      return decorator
+
 
   def tool_invoke():
       def decorator(func):

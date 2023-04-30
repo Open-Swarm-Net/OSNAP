@@ -4,7 +4,7 @@ services:
   cognihack-app:
     container_name: cognihack-app
     ports:
-    - 1337:8000
+    - 8000:8000
     build:
       context: .
       dockerfile: Dockerfile
