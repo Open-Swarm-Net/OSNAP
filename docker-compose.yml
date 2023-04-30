@@ -29,7 +29,7 @@ services:
     volumes: 
       - cache:/data
       - redis:/var/lib/redis
-      - ./redis/modules/:/var
+      - ./redis/modules/:/var:rw
 volumes:
   cache:
     driver: local
