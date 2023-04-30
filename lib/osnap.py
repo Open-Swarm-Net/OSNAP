@@ -5,7 +5,7 @@ import enum
 import time
 import uuid
 import requests
-from typing import Callable, Dict, Union
+from typing import Callable, Dict, Union, List
 from cryptography.hazmat.primitives import serialization, hashes
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat, PrivateFormat, NoEncryption
@@ -18,11 +18,15 @@ class OSNAPApp:
         # "run"
     ])
 
-    def __init__(self): 
+    def __init__(self, agents: list): 
       ## iterate over all the methods of the API class
       # TODO: Figure out the best time to check the API      
       # self.check_api()
-      pass
+
+      # each agent registers itself with the app
+      for agent in agents:
+        print(agent.name, agent.description)
+        agent.register(agent)
 
     def check_api(self):
       handler_types = set([ handler_type for ( handler_type, handler ) in self.handler_registry ])
@@ -35,10 +39,7 @@ class Scope(enum.Enum):
     PUBLIC = "public"
     PRIVATE = "private"
 
-class OSNAPRequest:
-    def __init__(self, payload: Dict):
-        self.payload = json.dumps(payload)
-        self.signature = None
+
 
 class OSNAPResponse:
     def __init__(self, payload: Dict):
@@ -53,7 +54,7 @@ class OSNAPError:
 class SignatureUtil:
     @staticmethod
     def generate_key_pair():
-        private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+        ( public_key, private_key) = rsa.new_keys(512, poolsize=8)
         private_pem = private_key.private_bytes(Encoding.PEM, PrivateFormat.PKCS8, NoEncryption())
         public_pem = private_key.public_key().public_bytes(Encoding.PEM, PublicFormat.SubjectPublicKeyInfo)
         return private_pem, public_pem
@@ -73,20 +74,51 @@ class SignatureUtil:
         except Exception as e:
             return False
 
-
+class OSNAPRequest:
+    def __init__(self, requester_id: str, request_type: str, task_name: str = None, priority: int = 0, request_metadata: Dict = None):
+        self.requester_id = requester_id
+        self.request_type = request_type
+        self.task_name = task_name
+        self.priority = priority
+        self.request_metadata = request_metadata or {}
+        self.timestamp = time.time()
+        self.payload = json.dumps({
+            "requester_id": self.requester_id,
+            "request_type": self.request_type,
+            "task_name": self.task_name,
+            "priority": self.priority,
+            "request_metadata": self.request_metadata,
+            "timestamp": self.timestamp
+        })
+        self.signature = None
 
 class OSNAPAgent:
-    def __init__(self, name: str, description: str, scope: Scope, info_endpoint: str, registry_url: str, handlers: Dict[str, Callable]):
+    def __init__(
+        self, 
+        name: str, 
+        description: str, 
+        scope: Scope, 
+        info_endpoint: str,
+        invoke_endpoint: str,
+        registry_url: str, 
+        register: Callable, 
+        using_rsa: bool = False, 
+        tools: List = []
+    ):
         self.id = str(uuid.uuid4())
         self.name = name
         self.description = description
         self.scope = scope
         self.info_endpoint = info_endpoint
+        self.invoke_endpoint = invoke_endpoint
         self.registry_url = registry_url
-        self.handlers = handlers
+        self.register = register
+        self.using_rsa = using_rsa
+        self.tools = tools or []
 
-        # Generate a key pair
-        self.private_key_pem, self.public_key_pem = SignatureUtil.generate_key_pair()
+        if using_rsa:
+            # Generate a key pair
+            self.private_key_pem, self.public_key_pem = SignatureUtil.generate_key_pair()
 
     def register(self) -> None:
         data = {
@@ -170,23 +202,14 @@ class OSNAPAgent:
         error.signature = signature
         return error
 
-class OSNAPRequest:
-    def __init__(self, requester_id: str, request_type: str, task_name: str = None, priority: int = 0, request_metadata: Dict = None):
-        self.requester_id = requester_id
-        self.request_type = request_type
-        self.task_name = task_name
-        self.priority = priority
-        self.request_metadata = request_metadata or {}
-        self.timestamp = time.time()
-        self.payload = json.dumps({
-            "requester_id": self.requester_id,
-            "request_type": self.request_type,
-            "task_name": self.task_name,
-            "priority": self.priority,
-            "request_metadata": self.request_metadata,
-            "timestamp": self.timestamp
-        })
-        self.signature = None
+class OSNAPTool:
+    def __init__(self, name: str, description: str, tool_id: str, invoke_endpoint: str, invoke_required_params={}, invoke_optional_params: List[str]=[]):
+        self.name = name
+        self.description = description
+        self.tool_id = tool_id
+        self.invoke_endpoint = invoke_endpoint
+        self.invoke_required_params = invoke_required_params
+        self.invoke_optional_params = invoke_optional_params
 
 # Usage Example 
 

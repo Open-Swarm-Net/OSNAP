@@ -5,6 +5,8 @@ class OSNAP:
       def decorator(func):
         def wrapper(*args, **kwargs):
           print("Before calling " + func.__name__)
+          #
+          # OSNAPRequest = *args["request"]
           func(*args, **kwargs)
           print("After calling " + func.__name__)
 
