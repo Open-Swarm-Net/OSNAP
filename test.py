@@ -1,4 +1,3 @@
-from audioop import add
 import os
 from redis.exceptions import ResponseError
 from langchain import LLMChain, PromptTemplate
@@ -27,11 +26,13 @@ WEAVIATE_VECTORIZER = os.getenv("WEAVIATE_VECTORIZER")
 
 agent_registry = AgentRegistry(REDIS_HOST, REDIS_PORT, REDIS_USERNAME, REDIS_PASSWORD)
 
+
+
 embeddings_model = OpenAIEmbeddings(model="text-embedding-ada-002")
 
 vectorstore = Redis(
     embedding_function=embeddings_model.embed_query,
-    redis_url=f"redis://default:redis-stack@{REDIS_HOST}:{REDIS_PORT}",
+    redis_url=f"redis://{REDIS_USERNAME}:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}",
     index_name='link'
 )
 
@@ -39,11 +40,6 @@ try:
     vectorstore._create_index()
 except ResponseError:
     print('no')
-
-
-
-
-    
 
 llm = ChatOpenAI(
     model="gpt-3.5-turbo-0301",
@@ -87,22 +83,26 @@ tools.append(
     )
 )
 
+tools_for_registry = [tool.name for tool in tools]
+
+agent_registry.add_agent(1, 'name', 'description', '/end/1/point', tools_for_registry)
 
 
-todo_chain = LLMChain(
-    llm=llm,
-    prompt=PromptTemplate.from_template(
-        "You are a planner who is an expert at coming up with a todo list for a given objective. Come up with a todo list for this objective: {objective}"
-    )
-)
 
-tools.append(
-    Tool(
-        name="TODO",
-        func=todo_chain,
-        description="useful for when you need to come up with todo lists. Input: an objective to create a todo list for. Output: a todo list for that objective. Please be very clear what the objective is!",
-    ),
-)
+#todo_chain = LLMChain(
+#    llm=llm,
+#    prompt=PromptTemplate.from_template(
+#        "You are a planner who is an expert at coming up with a todo list for a given objective. Come up with a todo list for this objective: {objective}"
+#    )
+#)
+
+#tools.append(
+#    Tool(
+#        name="TODO",
+#        func=todo_chain,
+#        description="useful for when you need to come up with todo lists. Input: an objective to create a todo list for. Output: a todo list for that objective. Please be very clear what the objective is!",
+#    ),
+#)
 
 prefix = """You are an AI who performs one task based on the following objective: {objective}. Take into account these previously completed tasks: {context}."""
 suffix = """Question: {task}
@@ -130,7 +130,7 @@ agent_executor = AgentExecutor.from_agent_and_tools(
     early_stopping_method="generate"
 )
 
-OBJECTIVE = "Write a weather report for SF today"
+OBJECTIVE = "Analyze the repository you're in"
 
 
 baby_agi = BabyAGI.from_llm(

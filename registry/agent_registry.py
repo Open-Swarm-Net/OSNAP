@@ -1,10 +1,16 @@
-from langchain.indexes.vectorstore import redis
+import redis
 import json
 
 class AgentRegistry:
 
-    def __init__(self, redis_host, redis_port, redis_username, redis_password):
-        self.redis_client = redis.Redis(host=redis_host, port=redis_port, username=redis_username, password=redis_password, decode_responses=True)
+    def __init__(self, host, port, username, password):
+        self.redis_client = redis.Redis(
+            host=host,
+            port=port,
+            username=username,
+            password=password,
+            decode_responses=True
+        )
 
     def add_agent(self, agent_id, name, description, endpoint, tools):
         agent_key = f'agent:{agent_id}'
