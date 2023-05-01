@@ -1,3 +1,10 @@
+# Important links:
+* https://docs.google.com/presentation/d/13fBflbidB7ykvWYGxvemO1U5Rle58lqEZnkUhBwzB38
+* https://github.com/CogniHack/CogniHack/blob/master/docs/BIG_IDEA.md
+
+# General information 
+OSNAP, an innovative open-source project, aims to revolutionize the way AI systems communicate and collaborate. With a Central Registry facilitating AI discovery and a Standardized Communication Protocol ensuring seamless interactions, OSNAP enables AI systems to work together, enhancing their capabilities and scalability. This technology has the potential to streamline workflows across various sectors, including project management, customer service, healthcare, and urban planning, paving the way for significant economic growth. By enabling secure, standardized communication and collaboration among AI systems, OSNAP promises a future where AI systems don't just work for us, but with us and each other, driving economic growth while ensuring privacy and security.
+
 # How to run
 
 * `cp .env.example .env`
