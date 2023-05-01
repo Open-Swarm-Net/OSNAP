@@ -1,18 +1,29 @@
-version: '3.7'
+version: '3.9'
 
 services:
-  cognihack-app:
-    container_name: cognihack-app
+  osnap-app-sender:
+    container_name: osnap-app-sender
     ports:
     - 8000:8000
+    command: [ "uvicorn", "server:app", "--host", "0.0.0.0", "--port", "8000", "--reload", "--reload-dir", "./" ]
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        DOCKER_BUILDKIT: 1
+        BUILDKIT_INLINE_CACHE: 1
+    environment:
+      DEBUG: 1
+      WATCHFILES_FORCE_POLLING: true
     env_file: .env
     volumes:
       - .:/app
-  cognihack-redis-stack-server:
-    container_name: cognihack-redis-stack-server
+    restart: on-failure
+    networks: 
+      osnap:
+
+  redis-stack-server:
+    container_name: redis-stack-server
     restart: always
     ports:
       - 6379:6379
@@ -22,12 +33,17 @@ services:
     volumes: 
       - cache:/data
       - redis:/var/lib/redis
+    networks:
+      osnap:
+
 volumes:
   cache:
     driver: local
   redis:
-  
+
 networks:
-  default:
-    name: cognihack-network
+  osnap:
     external: true
+# #   default:
+# #     external:
+# #       name: osnap

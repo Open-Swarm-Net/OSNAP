@@ -1,18 +1,22 @@
-version: '3.7'
+version: '3.9'
 
 services:
-  cognihack-second-app:
-    container_name: cognihack-second-app
+  osnap-app-receiver:
+  
+    container_name: osnap-app-receiver
     ports:
-    - 8005:8000
+    - 8005:8005
     build:
       context: .
       dockerfile: Dockerfile
-    env_file: .env
+    command: [ "uvicorn", "server:app", "--host", "0.0.0.0", "--port", "8005", "--reload" ]
+    env_file: .env.receiver
     volumes:
       - .:/app
-  cognihack-second-redis-stack-server:
-    container_name: cognihack-second-redis-stack-server
+    networks:
+      osnap:
+  receiver-redis-stack:
+    container_name: receiver-redis-stack 
     restart: always
     ports:
       - 6375:6379
@@ -22,13 +26,13 @@ services:
     volumes: 
       - cache:/data
       - redis:/var/lib/redis
+    networks:
+      osnap:
 volumes:
   cache:
     driver: local
   redis:
   
 networks:
-  default:
-    name: cognihack-network
+  osnap:
     external: true
-    

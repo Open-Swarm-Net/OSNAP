@@ -8,3 +8,4 @@ redis~=4.5.4
 cryptography~=40.0.2
 rsa~=4.9
 httpx~=0.24.0
+langchain~=0.0.153

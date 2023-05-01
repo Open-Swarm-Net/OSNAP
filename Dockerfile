@@ -1,36 +1,29 @@
-FROM python:alpine3.17 AS builder
+# syntax=docker/dockerfile:1.3
 
-RUN apk update && \
-    apk upgrade
+FROM python:3.10 AS builder
 
-RUN apk add --no-cache --virtual .build-dependencies python3 py3-pip build-base gcc musl-dev python3-dev openblas-dev libffi-dev openssl-dev g++ gfortran freetype-dev pkgconfig dumb-init musl libc6-compat linux-headers build-base bash git ca-certificates freetype libgfortran libgcc libstdc++ openblas tcl tk
-RUN apk add --virtual build-runtime openssh git
-RUN ln -s /usr/include/locale.h /usr/include/xlocale.h
-RUN pip3 install --upgrade pip setuptools
-RUN ln -sf /usr/bin/python3 /usr/bin/python
-RUN ln -sf pip3 /usr/bin/pip
-RUN rm -r /root/.cache
-RUN rm -rf /var/cache/apk/*
+ENV PIP_NO_CACHE_DIR=1
+RUN pip install "poetry==1.4.2"
 
-ENV VIRTUAL_ENV=/opt/venv
-RUN python3 -m venv $VIRTUAL_ENV
+RUN python -m venv /venv
+ENV VIRTUAL_ENV=/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-COPY requirements.txt .
+WORKDIR /app
+COPY ["pyproject.toml", "poetry.lock", "/app/"]
+RUN --mount=type=secret,id=auth,target=/root/.config/pypoetry/auth.toml \
+  poetry install --no-dev --no-interaction --remove-untracked
 
-RUN pip3 install --upgrade pip
-RUN pip3 install --no-cache-dir -r requirements.txt
+FROM python:3.10-slim AS final
 
-FROM builder AS final
+# Do not run as root in production
+RUN useradd -m appuser
+USER appuser
 
-COPY --from=builder /opt/venv /opt/venv
-COPY --from=builder /usr/include/xlocale.h /usr/include/xlocale.h
-ENV PATH=/opt/venv/bin:$PATH
-
+ENV PYTHONUNBUFFERED=1 \
+  VIRTUAL_ENV=/venv
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 WORKDIR /app
 
-COPY . ./app
-
-EXPOSE 8000
-
-CMD [ "uvicorn", "server:app", "--host", "0.0.0.0", "--port", "8000", "--reload" ]
+COPY --from=builder --chown=appuser $VIRTUAL_ENV $VIRTUAL_ENV
+COPY --chown=appuser [".", "/app"]
