@@ -5,10 +5,9 @@ services:
     container_name: osnap-app-sender
     ports:
     - 8000:8000
-    command: [ "uvicorn", "server:app", "--host", "0.0.0.0", "--port", "8000", "--reload", "--reload-dir", "./" ]
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.sender
       args:
         DOCKER_BUILDKIT: 1
         BUILDKIT_INLINE_CACHE: 1

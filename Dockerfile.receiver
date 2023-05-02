@@ -27,3 +27,6 @@ WORKDIR /app
 
 COPY --from=builder --chown=appuser $VIRTUAL_ENV $VIRTUAL_ENV
 COPY --chown=appuser [".", "/app"]
+
+ENTRYPOINT [ "uvicorn" ]
+CMD [ "server:app", "--host", "0.0.0.0", "--port", "8005", "--reload", "--reload-dir", "./"]
