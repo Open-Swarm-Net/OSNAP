@@ -15,7 +15,7 @@ services:
     environment:
       DEBUG: 1
       WATCHFILES_FORCE_POLLING: true
-    env_file: .env
+    env_file: .env.sender
     volumes:
       - .:/app
     restart: on-failure
