@@ -17,8 +17,8 @@ from langchain.agents import AgentType
 from langchain.utilities.zapier import ZapierNLAWrapper
 from langchain.chat_models import ChatOpenAI
 
-from lib import OSNAP
-from lib.osnap import (
+from osnap import (
+    OSNAP,
     OSNAPApp,
     OSNAPAgent,
     OSNAPTool,
@@ -26,7 +26,7 @@ from lib.osnap import (
     OSNAPResponse,
     Scope,
 )
-from registry import AgentRegistry
+from registry import AgentRegistry, ToolRegistry
 
 import httpx
 import logging
@@ -63,7 +63,6 @@ REDIS_PASSWORD = os.getenv("REDIS_PASSWORD")
 WEAVIATE_HOST = os.getenv("WEAVIATE_HOST")
 WEAVIATE_VECTORIZER = os.getenv("WEAVIATE_VECTORIZER")
 
-agent_registry = AgentRegistry(REDIS_HOST, REDIS_PORT, REDIS_USERNAME, REDIS_PASSWORD)
 
 app = FastAPI()
 app.openapi = osnap_schema
@@ -79,7 +78,6 @@ class OSNAPAdapter:
                     name=tool.name,
                     description=tool.description,
                     invoke_endpoint="http://localhost:8000/{agent_id}/tools/google_calendar_update_event",
-                    tool_id="google_calendar_update_event",
                     invoke_required_params={
                         "instructions": "str",
                         "Calendar": "str",
@@ -89,32 +87,41 @@ class OSNAPAdapter:
             )
 
 
-my_tools = []
+agent_registry = AgentRegistry(REDIS_HOST, REDIS_PORT, REDIS_USERNAME, REDIS_PASSWORD)
+tool_registry = ToolRegistry(REDIS_HOST, REDIS_PORT, REDIS_USERNAME, REDIS_PASSWORD)
+
+my_tools = [
+    OSNAPTool(
+        name="google_calendar_update_event",
+        description="updates a google calendar event",
+        scope=Scope.PUBLIC,
+        invoke_endpoint="http://localhost:8000/{agent_id}/tools/google_calendar_update_event",
+        invoke_optional_params=None,
+        invoke_required_params=None,
+    )
+]
 
 my_agents = [
     OSNAPAgent(
         name="agent1",
         description="can do stuff",
         scope=Scope.PUBLIC,
-        info_endpoint="http://localhost:8000/info",
-        registry_url="http://localhost:8000/agents",
-        invoke_endpoint="http://localhost:8000/run",
         tools=my_tools,
-        add_agent_function=agent_registry.get_or_create_agent,
     ),
     OSNAPAgent(
         name="agent2",
         description="can schedule stuff",
         scope=Scope.PUBLIC,
-        info_endpoint="http://localhost:8000/info",
-        registry_url="http://localhost:8000/agents",
-        invoke_endpoint="http://localhost:8000/run",
         tools=my_tools,
-        add_agent_function=agent_registry.get_or_create_agent,
     ),
 ]
 
-osnap_app = OSNAPApp(agents=my_agents)
+osnap_app = OSNAPApp(
+    agents=my_agents,
+    tools=my_tools,
+    agent_registry=agent_registry,
+    tool_registry=tool_registry,
+)
 
 
 class SnapTask(BaseModel):

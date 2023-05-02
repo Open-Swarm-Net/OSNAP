@@ -26,11 +26,9 @@ services:
     ports:
       - 6379:6379
       - 8001:8001
-    image: redis/redis-stack:latest # redis/redis-stack-server:latest for prod
-    command: ["redis-server", "--requirepass", "redis-stack", "--loadmodule", "/opt/redis-stack/lib/redisearch.so", "--loadmodule", "/opt/redis-stack/lib/rejson.so"]
+    image: redis/redis-stack:latest # redis/redis-stack-server:latest for prod 
     volumes: 
       - cache:/data
-      - redis:/var/lib/redis
     networks:
       osnap:
 

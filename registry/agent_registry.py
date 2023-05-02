@@ -1,5 +1,12 @@
 import redis
 import json
+import uuid
+
+from osnap import OSNAPAgent
+
+import logging
+
+LOGGER = logging.getLogger(__name__)
 
 
 class AgentRegistry:
@@ -12,6 +19,9 @@ class AgentRegistry:
             decode_responses=True,
         )
 
+    def register(self, agent: OSNAPAgent):
+        return self.get_or_create_agent(agent)
+
     def get_agents(self, scope):
         return self._get_agents_by_scope(scope)
 
@@ -20,18 +30,16 @@ class AgentRegistry:
         agents = []
         for agent_id in agent_ids:
             agent_data = self.redis_client.hgetall(f"agent:{agent_id}")
-            print("agent_data by scope", agent_data)
             agent = {k: v for k, v in agent_data.items()}
             agents.append(agent)
         return agents
 
-    def get_or_create_agent(
-        self, agent_id, name, description, invoke_endpoint, tools, scope
-    ):
-        if self.redis_client.hexists(f"agent:{name}", name):
-            return self.get_agent(name)
+    def get_or_create_agent(self, agent: OSNAPAgent):
+        if self.redis_client.hexists(f"agent:{agent.name}", agent.name):
+            return self.get_agent(agent.name)
         else:
-            self.add_agent(agent_id, name, description, invoke_endpoint, tools, scope)
+            agent.id = str(uuid.uuid4())
+            self.add_agent(agent)
 
     def get_agent(self, name):
         agent_data = self.redis_client.hget(f"agent:{name}", name)
@@ -41,21 +49,20 @@ class AgentRegistry:
             return agent_data
         return None
 
-    def add_agent(self, agent_id, name, description, invoke_endpoint, tools, scope):
+    def add_agent(self, agent: OSNAPAgent) -> OSNAPAgent:
         agent_data = {
-            "agent_id": agent_id,
-            "agent_name": name,
-            "description": description,
-            "invoke_endpoint": invoke_endpoint,
-            "tools": json.dumps(tools),
-            "scope": scope,
+            "id": agent.id,
+            "name": agent.name,
+            "description": agent.description,
+            "tools": json.dumps(agent.tools),
+            "scope": agent.scope,
         }
-
+        name = agent.name
         if not self.redis_client.hexists(f"agent:{name}", name):
             self.redis_client.hset(f"agent:{name}", mapping=agent_data)
-            print(f"Agent {agent_id} created with name '{name}'.")
-            self.redis_client.sadd(f"scope:{scope}:agents", agent_id)
-            return name
+            self.redis_client.sadd(f"scope:{agent.scope}:agents", name)
+            LOGGER.info("Agent {agent_id} created with name '{name}'.")
+            return agent
 
     def update_tools(self, agent_id, tools):
         agent_key = f"agent:{agent_id}"

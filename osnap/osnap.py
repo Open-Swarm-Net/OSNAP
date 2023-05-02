@@ -2,18 +2,26 @@ import json
 import enum
 import time
 import uuid
-import requests
 from typing import Callable, Dict, Union, List, Any
-from cryptography.hazmat.primitives import serialization, hashes
-from cryptography.hazmat.primitives.asymmetric import padding
-from cryptography.hazmat.primitives.serialization import (
-    Encoding,
-    PublicFormat,
-    PrivateFormat,
-    NoEncryption,
-)
-import rsa
+
 from pydantic import BaseModel
+from abc import ABC, abstractmethod
+
+import networkx as nx
+
+from .crypt import SignatureUtil
+
+
+class OSNAPRegistry(BaseModel):
+    """Base Class for an Agent or Tool Registry"""
+
+    @abstractmethod
+    def register(self):
+        raise NotImplementedError
+
+    @abstractmethod
+    def unregister(self):
+        raise NotImplementedError
 
 
 class OSNAPApp:
@@ -25,15 +33,54 @@ class OSNAPApp:
         ]
     )
 
-    def __init__(self, agents: list):
+    graph: nx.DiGraph
+    agent_registry: OSNAPRegistry
+    tool_registry: OSNAPRegistry
+
+    def __init__(
+        self,
+        agents: list,
+        tools: list,
+        agent_registry: OSNAPRegistry,
+        tool_registry: OSNAPRegistry,
+    ):
         ## iterate over all the methods of the API class
         # TODO: Figure out the best time to check the API
         # self.check_api()
 
-        # each agent registers itself with the app
+        # construct the graph of the app
+        self.graph = self._build_app_graph(agents, tools)
+
+        self.agent_registry = agent_registry
+        self.tool_registry = tool_registry
+
+        # register the graph with the app using topo sort
+        self._register_app_graph(self.graph)
+
+    def _build_app_graph(self, agents: list, tools: list):
+        app_graph = nx.DiGraph()
         for agent in agents:
-            print(agent.name, agent.description)
-            OSNAPAgent.register(agent)
+            app_graph.add_node(agent.name, agent=agent)
+            for tool in agent.tools:
+                app_graph.add_node(tool.name, tool=tool)
+                app_graph.add_edge(agent.name, tool.name, type="agent->tool")
+        return app_graph
+
+    def _register_app_graph(self, app_graph: nx.DiGraph):
+        sorted = list(reversed(list(nx.topological_sort(app_graph))))
+        for node in sorted:
+            if "agent" in app_graph.nodes[node]:
+                tool_deps = list(app_graph.successors(node))
+                agent = app_graph.nodes[node]["agent"]
+                tools = [app_graph.nodes[tool]["tool"] for tool in tool_deps]
+                agent.tools = [{"name": tool.name, "id": tool.id} for tool in tools]
+                self.agent_registry.register(app_graph.nodes[node]["agent"])
+            elif "tool" in app_graph.nodes[node]:
+                assigned = self.tool_registry.register(app_graph.nodes[node]["tool"])
+                # Write the assigned id back to the graph
+                app_graph.nodes[node]["tool"].id = assigned.id
+
+        # TODO: put this in RedisGraph
 
     def check_api(self):
         handler_types = set(
@@ -44,7 +91,7 @@ class OSNAPApp:
             raise Exception("Missing required handlers: " + str(missing_handler_types))
 
 
-class Scope(enum.Enum):
+class Scope(str, enum.Enum):
     PUBLIC = "public"
     PRIVATE = "private"
 
@@ -59,36 +106,6 @@ class OSNAPError:
     def __init__(self, message: str):
         self.payload = json.dumps({"error": message})
         self.signature = None
-
-
-class SignatureUtil:
-    @staticmethod
-    def generate_key_pair():
-        (public_key, private_key) = rsa.new_keys(512, poolsize=8)
-        private_pem = private_key.private_bytes(
-            Encoding.PEM, PrivateFormat.PKCS8, NoEncryption()
-        )
-        public_pem = private_key.public_key().public_bytes(
-            Encoding.PEM, PublicFormat.SubjectPublicKeyInfo
-        )
-        return private_pem, public_pem
-
-    @staticmethod
-    def sign_data(private_key_pem, data):
-        private_key = serialization.load_pem_private_key(private_key_pem, None)
-        signature = private_key.sign(data.encode(), padding.PKCS1v15(), hashes.SHA256())
-        return signature
-
-    @staticmethod
-    def verify_signature(public_key_pem, data, signature):
-        public_key = serialization.load_pem_public_key(public_key_pem)
-        try:
-            public_key.verify(
-                signature, data.encode(), padding.PKCS1v15(), hashes.SHA256()
-            )
-            return True
-        except Exception as e:
-            return False
 
 
 class OSNAPRequest(BaseModel):
@@ -122,17 +139,22 @@ class OSNAPRequest(BaseModel):
 
 
 class OSNAPAgent:
+    """
+    Agents are the core of the OSNAP system. They are the entities that interact with one another,
+    or themselves to perform tasks.
+
+    Agents are registered with the OSNAP system, and can be public or private. Public agents are available
+    to all other agents, while private agents are only available to agents that are in the same environment.
+
+    They will get an ID after being registered, and will be able to use that ID to interact with other agents.
+    """
+
     def __init__(
         self,
         name: str,
         description: str,
         scope: Scope,
-        info_endpoint: str,
-        invoke_endpoint: str,
-        registry_url: str,
-        # registry : Callable,
-        add_agent_function: Callable,
-        id: str = str(uuid.uuid4()),
+        id: str = None,
         using_rsa: bool = False,
         tools: List = [],
     ):
@@ -140,11 +162,6 @@ class OSNAPAgent:
         self.name = name
         self.description = description
         self.scope = scope
-        self.info_endpoint = info_endpoint
-        self.invoke_endpoint = invoke_endpoint
-        self.registry_url = registry_url
-        self.add_agent_function = add_agent_function
-        # self.register = register
         self.using_rsa = using_rsa
         self.tools = tools or []
 
@@ -156,52 +173,6 @@ class OSNAPAgent:
             ) = SignatureUtil.generate_key_pair()
 
         # Call the register method with required arguments
-
-    # self.register(agent_id=self.id, name=self.name, description=self.description, invoke_endpoint=self.invoke_endpoint, tools=self.tools, scope=self.scope)
-
-    def register(self) -> None:
-        data = {
-            "agent_id": self.id,
-            "name": self.name,
-            "description": self.description,
-            "scope": self.scope.value,
-            "info_endpoint": self.info_endpoint
-            # "public_key": self.public_key_pem
-        }
-
-        self.add_agent_function(
-            self.id,
-            self.name,
-            self.description,
-            self.info_endpoint,
-            self.tools,
-            self.scope.value,
-        )
-
-        # response = requests.post(f"{self.registry_url}/register", json=data)
-        # if response.status_code == 200:
-        #     self.add_agent_function(self.id,self.name,self.description,self.info_endpoint,self.tools,self.scope.value)
-        #     print("Agent registered successfully.")
-        # else:
-        #     print("Failed to register agent:", response.text)
-
-    def unregister(self) -> None:
-        data = {
-            "agent_id": self.id,
-        }
-        response = requests.post(f"{self.registry_url}/unregister", json=data)
-        if response.status_code == 200:
-            print("Agent unregistered successfully.")
-        else:
-            print("Failed to unregister agent:", response.text)
-
-    def update_tools_on_registry(self) -> None:
-        data = {"agent_id": self.id, "tools": self.handlers["get_tools"]()}
-        response = requests.post(f"{self.registry_url}/update_tools", json=data)
-        if response.status_code == 200:
-            print("Agent tools updated successfully.")
-        else:
-            print("Failed to update agent tools:", response.text)
 
     def send_request_to_agent(
         self, destination_agent: "OSNAPAgent", request: OSNAPRequest
@@ -273,43 +244,23 @@ class OSNAPAgent:
 
 
 class OSNAPTool:
-    def __new__(
-        cls,
+    def __init__(
+        self,
         name: str,
         description: str,
-        tool_id: str,
         invoke_endpoint: str,
+        scope: Scope,
         invoke_required_params: Dict[str, Any] = {},
         invoke_optional_params: List[str] = [],
+        id: str = None,
     ):
-        instance_dict = {
-            "name": name,
-            "description": description,
-            "tool_id": tool_id,
-            "invoke_endpoint": invoke_endpoint,
-            "invoke_required_params": invoke_required_params,
-            "invoke_optional_params": invoke_optional_params,
-        }
-        return json.dumps(instance_dict)
-
-    #
-    # def __init__(self, name: str, description: str, tool_id: str, invoke_endpoint: str, invoke_required_params={}, invoke_optional_params: List[str]=[]):
-    #     self.name = name
-    #     self.description = description
-    #     self.tool_id = tool_id
-    #     self.invoke_endpoint = invoke_endpoint
-    #     self.invoke_required_params = invoke_required_params
-    #     self.invoke_optional_params = invoke_optional_params
-    #
-    # def __repr__(self):
-    #     return{
-    #         "name": self.name,
-    #         "description": self.description,
-    #         "tool_id": self.tool_id,
-    #         "invoke_endpoint": self.invoke_endpoint,
-    #         "invoke_required_params": self.invoke_required_params,
-    #         "invoke_optional_params": self.invoke_optional_params
-    #     }
+        self.name = name
+        self.description = description
+        self.scope = scope
+        self.invoke_endpoint = invoke_endpoint
+        self.invoke_required_params = invoke_required_params
+        self.invoke_optional_params = invoke_optional_params
+        self.id = id
 
 
 # Usage Example

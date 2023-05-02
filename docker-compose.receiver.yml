@@ -20,10 +20,8 @@ services:
       - 6375:6379
       - 8006:8001
     image: redis/redis-stack:latest # redis/redis-stack-server:latest for prod
-    command: ["redis-server", "--requirepass", "redis-stack", "--loadmodule", "/opt/redis-stack/lib/redisearch.so", "--loadmodule", "/opt/redis-stack/lib/rejson.so"]
     volumes: 
       - cache:/data
-      - redis:/var/lib/redis
     networks:
       osnap:
 volumes:
