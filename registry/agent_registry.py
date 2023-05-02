@@ -20,6 +20,7 @@ class AgentRegistry:
         agents = []
         for agent_id in agent_ids:
             agent_data = self.redis_client.hgetall(f"agent:{agent_id}")
+            print("agent_data by scope", agent_data)
             agent = {k: v for k, v in agent_data.items()}
             agents.append(agent)
         return agents

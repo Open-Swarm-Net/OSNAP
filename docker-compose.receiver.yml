@@ -2,7 +2,6 @@ version: '3.9'
 
 services:
   osnap-app-receiver:
-  
     container_name: osnap-app-receiver
     ports:
     - 8005:8005

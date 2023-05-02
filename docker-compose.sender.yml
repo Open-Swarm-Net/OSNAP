@@ -18,7 +18,6 @@ services:
     env_file: .env.sender
     volumes:
       - .:/app
-    restart: on-failure
     networks: 
       osnap:
 
