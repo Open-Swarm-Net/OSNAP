@@ -16,6 +16,7 @@ from langchain.agents.agent_toolkits import ZapierToolkit
 from langchain.agents import AgentType
 from langchain.utilities.zapier import ZapierNLAWrapper
 from langchain.chat_models import ChatOpenAI
+from fastapi.middleware.cors import CORSMiddleware
 
 from osnap import (
     OSNAP,
@@ -123,7 +124,17 @@ osnap_app = OSNAPApp(
     tool_registry=tool_registry,
 )
 
+origins = [
+    "*"
+]
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 class SnapTask(BaseModel):
     task_description: str
 
