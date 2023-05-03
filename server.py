@@ -118,14 +118,7 @@ my_agents = [
 osnap_app = OSNAPApp(agents=my_agents)
 
 origins = [
-    "http://localhost:3000",
-    "http://localhost:8000",
-    "http://localhost:8005",
-    'http://localhost:*',
-    'http://localhost',
-    'http://localhost:1420',
-   
-
+    "*"
 ]
 
 app.add_middleware(
