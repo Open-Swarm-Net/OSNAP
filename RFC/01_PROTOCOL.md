@@ -22,15 +22,15 @@ OSNAP aims to address these issues by providing a well-defined, standardized pro
 
 The Open Swarm Network Agent Protocol (OSNAP) will be based on the following key components:
 
-1. Agent Representation: A standardized format for representing autonomous AI agents, including their properties, behaviors, and capabilities.
+1. **Agent Representation:** A standardized format for representing autonomous AI agents, including their properties, behaviors, and capabilities.
 
-2. Communication Protocol: A well-defined communication protocol that enables agents to exchange messages, coordinate actions, and collaborate with one another within a swarm or across different swarms.
+2. **Communication Protocol:** A well-defined communication protocol that enables agents to exchange messages, coordinate actions, and collaborate with one another within a swarm or across different swarms.
 
-3. Swarm Management: A set of standardized operations and interfaces for creating, modifying, and managing swarms or organizations of agents.
+3. **Swarm Management:** A set of standardized operations and interfaces for creating, modifying, and managing swarms or organizations of agents.
 
-4. Security and Authentication: Mechanisms for ensuring secure communication, data privacy, and authentication between agents and swarms.
+4. **Security and Authentication:** Mechanisms for ensuring secure communication, data privacy, and authentication between agents and swarms.
 
-5. Interoperability and Extensibility: A modular design that allows for easy integration with existing AI systems, frameworks, and tools, as well as extensibility to support future developments in the field.
+5. **Interoperability and Extensibility:** A modular design that allows for easy integration with existing AI systems, frameworks, and tools, as well as extensibility to support future developments in the field.
 
 The proposed OSNAP specification will include detailed definitions and guidelines for each of these components, along with example implementations and use cases.
 
