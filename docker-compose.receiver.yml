@@ -8,11 +8,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.receiver
+      args:
+        DOCKER_BUILDKIT: 1
+        BUILDKIT_INLINE_CACHE: 1
     env_file: .env.receiver
     volumes:
       - .:/app
-    networks:
-      osnap:
   receiver-redis-stack:
     container_name: receiver-redis-stack 
     restart: always
@@ -22,13 +23,11 @@ services:
     image: redis/redis-stack:latest # redis/redis-stack-server:latest for prod
     volumes: 
       - cache:/data
-    networks:
-      osnap:
 volumes:
   cache:
     driver: local
-  redis:
   
 networks:
-  osnap:
+  default:
+    name: 'osnap-network'
     external: true

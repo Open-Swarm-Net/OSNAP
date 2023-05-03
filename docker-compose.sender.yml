@@ -17,11 +17,9 @@ services:
     env_file: .env.sender
     volumes:
       - .:/app
-    networks: 
-      osnap:
 
-  redis-stack-server:
-    container_name: redis-stack-server
+  sender-redis-stack:
+    container_name: sender-redis-stack
     restart: always
     ports:
       - 6379:6379
@@ -29,17 +27,12 @@ services:
     image: redis/redis-stack:latest # redis/redis-stack-server:latest for prod 
     volumes: 
       - cache:/data
-    networks:
-      osnap:
 
 volumes:
   cache:
     driver: local
-  redis:
 
 networks:
-  osnap:
+  default:
+    name: 'osnap-network'
     external: true
-# #   default:
-# #     external:
-# #       name: osnap
