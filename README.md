@@ -7,10 +7,22 @@ OSNAP, an innovative open-source project, aims to revolutionize the way AI syste
 
 # How to run
 
-* `cp .env.example .env`
-* Change env vars
-* `docker network create cognihack-network`
+* `cp .env.example .env.receiver; cp env.example .env.sender`
+* `sed -i ' 's/host-redis/receiver-redis/g' '.env.receiver'`
+* `sed -i ' 's/host-redis/sender-redis/g' '.env.sender'`
+* `docker network create osnap-network`
 * `docker-compose up --build`
+
+
+# Flow to test
+
+Open the following URLs:
+
+* http://localhost:8000/ (SENDER)
+* http://localhost:8005/ (RECEIVER)
+
+...
+
 
 
 # Open Swarm Network Agent Protocol (OSNAP)
