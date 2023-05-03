@@ -19,10 +19,12 @@ function App() {
 
   const fetchAgents = async (signal: AbortSignal) => {
     setLoding(true)
-    Promise.all(urls.map(url => fetch(url)))
+    Promise.all(
+      urls.map(url => fetch(url, { signal })))
       .then(responses => Promise.all(responses.map(res => res.json())))
       .then(data => {
-        setAgents(data as Agent[])
+        setAgents(data.flat() as Agent[])
+        console.log(data.flat())
 
         setTimeout(() => {//simulate longer loading time
           setLoding(false)
