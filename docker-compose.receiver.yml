@@ -12,6 +12,9 @@ services:
         DOCKER_BUILDKIT: 1
         BUILDKIT_INLINE_CACHE: 1
     env_file: .env.receiver
+    environment:
+      DEBUG: 1
+      WATCHFILES_FORCE_POLLING: true
     volumes:
       - .:/app
   receiver-redis-stack:
