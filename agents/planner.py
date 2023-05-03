@@ -26,7 +26,7 @@ class OSNAPPlannerAgent:
         "You are a planner who is an expert at coming up with a todo list for a given objective. Come up with a todo list for this objective: {objective}"
     )
 
-    def __init__(self) -> None:
+    def __init__(self, agent_registry, tool_registry) -> None:
         self.embeddings_model = OpenAIEmbeddings()
         self.vectorstore = Redis.from_documents(
             self.embeddings_model,
