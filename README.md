@@ -14,6 +14,17 @@ OSNAP, an innovative open-source project, aims to revolutionize the way AI syste
 * `docker-compose up --build`
 
 
+# Flow to test
+
+Open the following URLs:
+
+* http://localhost:8000/ (SENDER)
+* http://localhost:8005/ (RECEIVER)
+
+...
+
+
+
 # Open Swarm Network Agent Protocol (OSNAP)
 
 ## Architecture
