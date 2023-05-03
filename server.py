@@ -134,23 +134,20 @@ async def root():
     return response
 
 
-async def generate_concurrently():
-    llm = OpenAI(temperature=0.9)
-    prompt = PromptTemplate(
-        input_variables=["product"],
-        template="What is a good name for a company that makes {product}?",
-    )
-    chain = LLMChain(llm=llm, prompt=prompt)
-    tasks = [async_generate(chain) for _ in range(5)]
-    await asyncio.gather(*tasks)
-
-
 @app.post("/kickoff")
 async def kickOff(task: SnapTask):
     async_client = httpx.AsyncClient()
     res = await async_client.get("http://osnap-app-receiver:8005/agents")
 
-    external_agents = res.text
+    # Instantiate agents from the response and register them as external agents
+    agents_res = res.json()
+    external_agents = [OSNAPAgent(**agent) for agent in agents_res]
+
+    external_agents_strings = [str(a) for a in external_agents]
+
+    # TODO: Make a decorator for this and add expose a method to register external agents
+    osnap_app.register_agents(external_agents, external=True)
+
     prompt = PromptTemplate(
         template="""
             You are an AI who performs one task based on the following objective: {objective}.
@@ -172,7 +169,7 @@ async def kickOff(task: SnapTask):
 
     def async_generate(chain):
         return chain.arun(
-            objective=task.task_description, external_agents=external_agents
+            objective=task.task_description, external_agents=external_agents_strings
         )
 
     tasks = [async_generate(chain)]

@@ -47,40 +47,46 @@ class OSNAPApp:
         ## iterate over all the methods of the API class
         # TODO: Figure out the best time to check the API
         # self.check_api()
-
-        # construct the graph of the app
-        self.graph = self._build_app_graph(agents, tools)
-
         self.agent_registry = agent_registry
         self.tool_registry = tool_registry
 
-        # register the graph with the app using topo sort
-        self._register_app_graph(self.graph)
+        self.register_agents(agents)
 
-    def _build_app_graph(self, agents: list, tools: list):
+    def _build_agent_tool_graph(self, agents: list, external=False):
         app_graph = nx.DiGraph()
         for agent in agents:
+            if external:
+                agent.scope = Scope.EXTERNAL
             app_graph.add_node(agent.name, agent=agent)
             for tool in agent.tools:
+                if external:
+                    tool.scope = Scope.EXTERNAL
                 app_graph.add_node(tool.name, tool=tool)
                 app_graph.add_edge(agent.name, tool.name, type="agent->tool")
         return app_graph
 
     def _register_app_graph(self, app_graph: nx.DiGraph):
+        # TODO: put this in RedisGraph
+
         sorted = list(reversed(list(nx.topological_sort(app_graph))))
         for node in sorted:
             if "agent" in app_graph.nodes[node]:
                 tool_deps = list(app_graph.successors(node))
                 agent = app_graph.nodes[node]["agent"]
-                tools = [app_graph.nodes[tool]["tool"] for tool in tool_deps]
-                agent.tools = [{"name": tool.name, "id": tool.id} for tool in tools]
+                agent.tools = [
+                    app_graph.nodes[tool]["tool"].toJson() for tool in tool_deps
+                ]
                 self.agent_registry.register(app_graph.nodes[node]["agent"])
             elif "tool" in app_graph.nodes[node]:
                 assigned = self.tool_registry.register(app_graph.nodes[node]["tool"])
                 # Write the assigned id back to the graph
                 app_graph.nodes[node]["tool"].id = assigned.id
 
-        # TODO: put this in RedisGraph
+    def register_agents(self, agents: list, external=False):
+        self.graph = self._build_agent_tool_graph(agents, external=external)
+
+        # register the graph with the app using topo sort
+        self._register_app_graph(self.graph)
 
     def check_api(self):
         handler_types = set(
@@ -94,6 +100,7 @@ class OSNAPApp:
 class Scope(str, enum.Enum):
     PUBLIC = "public"
     PRIVATE = "private"
+    EXTERNAL = "external"
 
 
 class OSNAPResponse(BaseModel):
@@ -153,7 +160,7 @@ class OSNAPAgent:
         self,
         name: str,
         description: str,
-        scope: Scope,
+        scope: Scope = Scope.PRIVATE,
         id: str = None,
         using_rsa: bool = False,
         tools: List = [],
@@ -165,6 +172,10 @@ class OSNAPAgent:
         self.using_rsa = using_rsa
         self.tools = tools or []
 
+        if isinstance(tools, str):
+            tool_list_json = json.loads(tools)
+            self.tools = [OSNAPTool(**json.loads(tool)) for tool in tool_list_json]
+
         if using_rsa:
             # Generate a key pair
             (
@@ -173,6 +184,9 @@ class OSNAPAgent:
             ) = SignatureUtil.generate_key_pair()
 
         # Call the register method with required arguments
+
+    def __str__(self):
+        return f"Agent: {self.name} id: ({self.id}) description: {self.description} tools: {self.tools}"
 
     def send_request_to_agent(
         self, destination_agent: "OSNAPAgent", request: OSNAPRequest
@@ -261,6 +275,15 @@ class OSNAPTool:
         self.invoke_required_params = invoke_required_params
         self.invoke_optional_params = invoke_optional_params
         self.id = id
+
+    def __str__(self) -> str:
+        return f"Tool: {self.name} id: ({self.id}) description: {self.description} scope: {self.scope} invoke_endpoint: {self.invoke_endpoint} invoke_required_params: {self.invoke_required_params} invoke_optional_params: {self.invoke_optional_params}"
+
+    def __repr__(self) -> str:
+        return self.__str__()
+
+    def toJson(self):
+        return json.dumps(self, default=lambda o: o.__dict__)
 
 
 # Usage Example
