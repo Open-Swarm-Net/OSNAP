@@ -3,6 +3,7 @@ import enum
 import time
 import uuid
 from typing import Callable, Dict, Union, List, Any
+from functools import wraps
 
 from pydantic import BaseModel
 from abc import ABC, abstractmethod
@@ -10,6 +11,8 @@ from abc import ABC, abstractmethod
 import networkx as nx
 
 from .crypt import SignatureUtil
+
+from pubsub import PubSub
 
 
 class OSNAPRegistry(BaseModel):
@@ -47,10 +50,32 @@ class OSNAPApp:
         ## iterate over all the methods of the API class
         # TODO: Figure out the best time to check the API
         # self.check_api()
+        self.handler_registry = set()
         self.agent_registry = agent_registry
         self.tool_registry = tool_registry
-
+        self.pubsub = None
         self.register_agents(agents)
+
+    async def create_pubsub(self):
+        self.pubsub = PubSub()
+        await self.pubsub.connect()
+        await self.pubsub.subscribe()
+
+    async def call_pubsub(self, message):
+        if self.pubsub is None:
+            return None
+        else:
+            await self.pubsub.publish(message)
+
+    def agents(self, func):
+        @wraps(func)
+        async def wrapper(*args, **kwargs):
+            # OSNAPRequest = *args["request"]
+            await self.call_pubsub("agents")
+            return await func(*args, **kwargs)
+
+        self.handler_registry.add(("agents", wrapper))
+        return wrapper
 
     def _build_agent_tool_graph(self, agents: list, external=False):
         app_graph = nx.DiGraph()

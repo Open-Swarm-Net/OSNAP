@@ -145,8 +145,7 @@ app.add_middleware(
 
 @app.on_event("startup")
 async def startup_event():
-    await pubsub.connect()
-    await pubsub.subscribe()
+    await osnap_app.create_pubsub()
 
 
 @app.get("/")
@@ -232,8 +231,8 @@ async def root():
     }
 
 
-@OSNAP.agents()
 @app.get("/agents")
+@osnap_app.agents
 async def root():
     return agent_registry.get_agents("public")
     # TODO: Make me run
