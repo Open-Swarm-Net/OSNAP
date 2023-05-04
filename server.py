@@ -1,11 +1,14 @@
 import os
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi.responses import HTMLResponse
+
 from langchain.agents import AgentExecutor
 from langchain.vectorstores.redis import Dict, List
 from pydantic import BaseModel
 from fastapi.openapi.utils import get_openapi
 from starlette.responses import RedirectResponse
 from uuid import uuid4
+
 
 from langchain.agents import ZeroShotAgent, Tool, AgentExecutor
 from langchain.agents.agent_toolkits import ZapierToolkit
@@ -28,9 +31,12 @@ from osnap import (
     Scope,
 )
 from registry import AgentRegistry, ToolRegistry
+from pubsub import PubSub
 
 import httpx
 import logging
+import redis
+import redis.asyncio as raio
 
 logging.basicConfig(
     level=logging.INFO, format="%(levelname)-9s %(asctime)s - %(name)s - %(message)s"
@@ -67,6 +73,8 @@ WEAVIATE_VECTORIZER = os.getenv("WEAVIATE_VECTORIZER")
 
 app = FastAPI()
 app.openapi = osnap_schema
+
+pubsub = PubSub()
 
 
 class OSNAPAdapter:
@@ -124,10 +132,7 @@ osnap_app = OSNAPApp(
     tool_registry=tool_registry,
 )
 
-origins = [
-    "*"
-]
-
+origins = ["*"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -135,8 +140,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-class SnapTask(BaseModel):
-    task_description: str
+
+
+@app.on_event("startup")
+async def startup_event():
+    await pubsub.connect()
+    await pubsub.subscribe()
 
 
 @app.get("/")
@@ -145,10 +154,15 @@ async def root():
     return response
 
 
-@app.post("/kickoff")
-async def kickOff(task: SnapTask):
+class OSNAPTask(BaseModel):
+    task_description: str
+    environment_url: str
+
+
+@app.post("/start")
+async def start(task: OSNAPTask):
     async_client = httpx.AsyncClient()
-    res = await async_client.get("http://osnap-app-receiver:8005/agents")
+    res = await async_client.get(f"{task.environment_url}/agents")
 
     # Instantiate agents from the response and register them as external agents
     agents_res = res.json()
@@ -315,7 +329,64 @@ async def invoke_tool(request: OSNAPRequest) -> OSNAPResponse:
 
 @app.get("/listen")
 async def root():
+    await pubsub.publish("Hello World")
     return {"message": "Hello World"}
+
+
+html = """
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Chat</title>
+    </head>
+    <body>
+        <h1>WebSocket Chat</h1>
+        <h2>Your ID: <span id="ws-id"></span></h2>
+        <form action="" onsubmit="sendMessage(event)">
+            <input type="text" id="messageText" autocomplete="off"/>
+            <button>Send</button>
+        </form>
+        <ul id='messages'>
+        </ul>
+        <script>
+            var client_id = Date.now()
+            document.querySelector("#ws-id").textContent = client_id;
+            var ws = new WebSocket(`ws://localhost:8000/ws/${client_id}`);
+            ws.onmessage = function(event) {
+                var messages = document.getElementById('messages')
+                var message = document.createElement('li')
+                var content = document.createTextNode(event.data)
+                message.appendChild(content)
+                messages.appendChild(message)
+            };
+            function sendMessage(event) {
+                var input = document.getElementById("messageText")
+                ws.send(input.value)
+                input.value = ''
+                event.preventDefault()
+            }
+        </script>
+    </body>
+</html>
+"""
+
+
+@app.get("/chat")
+async def get():
+    return HTMLResponse(html)
+
+
+@app.websocket("/ws/{client_id}")
+async def websocket_endpoint(websocket: WebSocket, client_id: int):
+    manager = await pubsub.add_conn_manager(websocket)
+    try:
+        while True:
+            data = await websocket.receive_text()
+            await manager.send_personal_message(f"You wrote: {data}", websocket)
+            await manager.broadcast(f"Client #{client_id} says: {data}")
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)
+        await manager.broadcast(f"Client #{client_id} left the chat")
 
 
 # Agents try and agree they are done
