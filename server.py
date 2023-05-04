@@ -1,4 +1,5 @@
 import os
+import json
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
 
@@ -31,7 +32,7 @@ from osnap import (
     Scope,
 )
 from registry import AgentRegistry, ToolRegistry
-from pubsub import PubSub
+from pubsub import PubSub, ConnectionManager
 
 import httpx
 import logging
@@ -378,15 +379,27 @@ async def get():
 
 @app.websocket("/ws/{client_id}")
 async def websocket_endpoint(websocket: WebSocket, client_id: int):
-    manager = await pubsub.add_conn_manager(websocket)
-    try:
+    pubsub = PubSub()
+    await pubsub.connect()
+    await pubsub.manager.connect(websocket)
+
+    async def ws_receive():
         while True:
             data = await websocket.receive_text()
-            await manager.send_personal_message(f"You wrote: {data}", websocket)
-            await manager.broadcast(f"Client #{client_id} says: {data}")
+            await pubsub.manager.send_personal_message(f"You wrote: {data}", websocket)
+            await pubsub.manager.broadcast(f"fClient #{client_id} says: {data}")
+            await pubsub.publish(data)
+
+    ws_receive_task = asyncio.create_task(ws_receive())
+    ws_pubsub_reader_task = asyncio.create_task(pubsub.subscribe())
+
+    try:
+        await asyncio.gather(ws_receive_task, ws_pubsub_reader_task)
     except WebSocketDisconnect:
-        manager.disconnect(websocket)
-        await manager.broadcast(f"Client #{client_id} left the chat")
+        pubsub.manager.disconnect(websocket)
+        await pubsub.manager.broadcast(f"Client #{client_id} left the chat")
+        ws_receive_task.cancel()
+        ws_pubsub_reader_task.cancel()
 
 
 # Agents try and agree they are done

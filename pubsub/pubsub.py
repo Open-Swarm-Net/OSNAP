@@ -18,6 +18,7 @@ class ConnectionManager:
     async def connect(self, websocket: WebSocket):
         await websocket.accept()
         self.active_connections.append(websocket)
+        print("Added connection: ", websocket)
 
     def disconnect(self, websocket: WebSocket):
         self.active_connections.remove(websocket)
@@ -26,6 +27,7 @@ class ConnectionManager:
         await websocket.send_text(message)
 
     async def broadcast(self, message: str):
+        print(f"Broadcasting: {message}")
         for connection in self.active_connections:
             await connection.send_text(message)
 
@@ -62,7 +64,10 @@ class PubSub:
         while True:
             message = await channel.get_message(ignore_subscribe_messages=True)
             if message is not None:
+                decoded_message = message["data"].decode()
                 print(f"(Reader) Message Received: {message}")
+                # BUG: not seeing this broadcasted to the client
+                await self.manager.broadcast(decoded_message)
                 if message["data"].decode() == STOPWORD:
                     print("(Reader) STOP")
                     break

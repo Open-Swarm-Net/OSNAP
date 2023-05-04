@@ -1,1 +1,1 @@
-from .pubsub import PubSub
+from .pubsub import PubSub, ConnectionManager
