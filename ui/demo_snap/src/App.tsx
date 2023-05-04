@@ -1,16 +1,16 @@
 import React from 'react';
 import { LoadingSpinner } from './components/loadingSpinner'
 type Agent = {
-  agent_name: string,
-  agent_id: string,
+  name: string,
+  id: string,
   tools: string[],
   description: string,
-  invoke_endpoint: string,
+  scope: string,
 }
 
 function App() {
 
-  const [loding, setLoding] = React.useState(false)
+  const [loading, setLoading] = React.useState(false)
   const [agents, setAgents] = React.useState<Agent[]>([])
   const controller = new AbortController()
   const signal = controller.signal
@@ -18,7 +18,7 @@ function App() {
   const urls = ['http://localhost:8000/agents', 'http://localhost:8005/agents']
 
   const fetchAgents = async (signal: AbortSignal) => {
-    setLoding(true)
+    setLoading(true)
     Promise.all(
       urls.map(url => fetch(url, { signal })))
       .then(responses => Promise.all(responses.map(res => res.json())))
@@ -27,10 +27,14 @@ function App() {
         console.log(data.flat())
 
         setTimeout(() => {//simulate longer loading time
-          setLoding(false)
+          setLoading(false)
         }, 500)
       }
       )
+      .catch(err => {
+        setLoading(false)
+        console.log(err)
+      })
   }
 
   React.useEffect(() => {
@@ -46,11 +50,11 @@ function App() {
     <div className="flex flex-col items-center bg-base min-h-screen text-primary">
       <div className="flex flex-col items-center justify-center w-full h-16 bg-neutral">
         <h1 className="text-2xl font-bold">OSNAP</h1>
-        <div className={`absolute top-1/3 w-1/3 h-1/3 bg-accent rounded-md ${loding ? 'flex flex-col justify-center' : null}`} >
-          {loding ? <LoadingSpinner /> : agents.map((agent: any) => {
+        <div className={`absolute top-1/3 w-1/3 h-1/3 bg-accent rounded-md ${loading ? 'flex flex-col justify-center' : null}`} >
+          {loading ? <LoadingSpinner /> : agents.map((agent: any) => {
             return (
               <div className='flex flex-col items-center justify-center'>
-                <pre>{agent.agent_name}</pre>
+                <pre>{agent.name}</pre>
               </div>
             )
           })}
