@@ -63,5 +63,5 @@ else
     fi
 
 #build images
-docker compose -f docker-compose.sender.yml -f docker-compose.receiver.yml up --build
+docker compose -f docker-compose.sender.yml -f docker-compose.receiver.yml up
 

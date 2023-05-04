@@ -253,6 +253,7 @@ async def root():
 
 @app.post("/run")
 async def root():
+    await pubsub.publish("Run endpoint hit")
     return {"message": "Hello World"}
 
 
@@ -264,12 +265,15 @@ class OSnapRunRequest(BaseModel):
 
 @app.post("/run/{agent_id}")
 async def root(request: OSnapRunRequest):
+    await pubsub.publish(f"Run endpoint hit by: {request.agent_id} Requesting Task: {request.task_payload}, Task ID: {request.task_id}")
+    return {"message": "Hello World"} 
     # TODO: Implement me
     pass
 
 
 @app.post("/run/{agent_id}/tool/{tool_id}")
 async def invoke_tool(request: OSNAPRequest) -> OSNAPResponse:
+    await pubsub.publish(f"Run endpoint hit by: {request.agent_id} Requesting Tool: {request.tool_id}, Tool Payload: {request.tool_payload}")
     # TODO: Wrap this whole thing in an OSNAPAdapter class
     def update_gcal_event():
         verbose = True
@@ -386,7 +390,7 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
         while True:
             data = await websocket.receive_text()
             await pubsub.manager.send_personal_message(f"You wrote: {data}", websocket)
-            await pubsub.manager.broadcast(f"fClient #{client_id} says: {data}")
+            await pubsub.manager.broadcast(f"Client #{client_id} says: {data}")
             await pubsub.publish(data)
 
     ws_receive_task = asyncio.create_task(ws_receive())
