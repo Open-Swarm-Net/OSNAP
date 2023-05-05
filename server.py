@@ -1,11 +1,15 @@
 import os
-from fastapi import FastAPI
+import json
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi.responses import HTMLResponse
+
 from langchain.agents import AgentExecutor
 from langchain.vectorstores.redis import Dict, List
 from pydantic import BaseModel
 from fastapi.openapi.utils import get_openapi
 from starlette.responses import RedirectResponse
 from uuid import uuid4
+
 
 from langchain.agents import ZeroShotAgent, Tool, AgentExecutor
 from langchain.agents.agent_toolkits import ZapierToolkit
@@ -16,6 +20,7 @@ from langchain.agents.agent_toolkits import ZapierToolkit
 from langchain.agents import AgentType
 from langchain.utilities.zapier import ZapierNLAWrapper
 from langchain.chat_models import ChatOpenAI
+from fastapi.middleware.cors import CORSMiddleware
 
 from osnap import (
     OSNAP,
@@ -27,9 +32,12 @@ from osnap import (
     Scope,
 )
 from registry import AgentRegistry, ToolRegistry
+from pubsub import PubSub, ConnectionManager
 
 import httpx
 import logging
+import redis
+import redis.asyncio as raio
 
 logging.basicConfig(
     level=logging.INFO, format="%(levelname)-9s %(asctime)s - %(name)s - %(message)s"
@@ -66,6 +74,8 @@ WEAVIATE_VECTORIZER = os.getenv("WEAVIATE_VECTORIZER")
 
 app = FastAPI()
 app.openapi = osnap_schema
+
+pubsub = PubSub()
 
 
 class OSNAPAdapter:
@@ -123,9 +133,19 @@ osnap_app = OSNAPApp(
     tool_registry=tool_registry,
 )
 
+origins = ["*"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-class SnapTask(BaseModel):
-    task_description: str
+
+@app.on_event("startup")
+async def startup_event():
+    await osnap_app.create_pubsub()
 
 
 @app.get("/")
@@ -134,10 +154,15 @@ async def root():
     return response
 
 
-@app.post("/kickoff")
-async def kickOff(task: SnapTask):
+class OSNAPTask(BaseModel):
+    task_description: str
+    environment_url: str
+
+
+@app.post("/start")
+async def start(task: OSNAPTask):
     async_client = httpx.AsyncClient()
-    res = await async_client.get("http://osnap-app-receiver:8005/agents")
+    res = await async_client.get(f"{task.environment_url}/agents")
 
     # Instantiate agents from the response and register them as external agents
     agents_res = res.json()
@@ -206,8 +231,8 @@ async def root():
     }
 
 
-@OSNAP.agents()
 @app.get("/agents")
+@osnap_app.agents
 async def root():
     return agent_registry.get_agents("public")
     # TODO: Make me run
@@ -228,6 +253,7 @@ async def root():
 
 @app.post("/run")
 async def root():
+    await pubsub.publish("Run endpoint hit")
     return {"message": "Hello World"}
 
 
@@ -239,12 +265,15 @@ class OSnapRunRequest(BaseModel):
 
 @app.post("/run/{agent_id}")
 async def root(request: OSnapRunRequest):
+    await pubsub.publish(f"Run endpoint hit by: {request.agent_id} Requesting Task: {request.task_payload}, Task ID: {request.task_id}")
+    return {"message": "Hello World"} 
     # TODO: Implement me
     pass
 
 
 @app.post("/run/{agent_id}/tool/{tool_id}")
 async def invoke_tool(request: OSNAPRequest) -> OSNAPResponse:
+    await pubsub.publish(f"Run endpoint hit by: {request.agent_id} Requesting Tool: {request.tool_id}, Tool Payload: {request.tool_payload}")
     # TODO: Wrap this whole thing in an OSNAPAdapter class
     def update_gcal_event():
         verbose = True
@@ -304,7 +333,76 @@ async def invoke_tool(request: OSNAPRequest) -> OSNAPResponse:
 
 @app.get("/listen")
 async def root():
+    await pubsub.publish("Hello World")
     return {"message": "Hello World"}
+
+
+html = """
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Chat</title>
+    </head>
+    <body>
+        <h1>WebSocket Chat</h1>
+        <h2>Your ID: <span id="ws-id"></span></h2>
+        <form action="" onsubmit="sendMessage(event)">
+            <input type="text" id="messageText" autocomplete="off"/>
+            <button>Send</button>
+        </form>
+        <ul id='messages'>
+        </ul>
+        <script>
+            var client_id = Date.now()
+            document.querySelector("#ws-id").textContent = client_id;
+            var ws = new WebSocket(`ws://localhost:8000/ws/${client_id}`);
+            ws.onmessage = function(event) {
+                var messages = document.getElementById('messages')
+                var message = document.createElement('li')
+                var content = document.createTextNode(event.data)
+                message.appendChild(content)
+                messages.appendChild(message)
+            };
+            function sendMessage(event) {
+                var input = document.getElementById("messageText")
+                ws.send(input.value)
+                input.value = ''
+                event.preventDefault()
+            }
+        </script>
+    </body>
+</html>
+"""
+
+
+@app.get("/chat")
+async def get():
+    return HTMLResponse(html)
+
+
+@app.websocket("/ws/{client_id}")
+async def websocket_endpoint(websocket: WebSocket, client_id: int):
+    pubsub = PubSub()
+    await pubsub.connect()
+    await pubsub.manager.connect(websocket)
+
+    async def ws_receive():
+        while True:
+            data = await websocket.receive_text()
+            await pubsub.manager.send_personal_message(f"You wrote: {data}", websocket)
+            await pubsub.manager.broadcast(f"Client #{client_id} says: {data}")
+            await pubsub.publish(data)
+
+    ws_receive_task = asyncio.create_task(ws_receive())
+    ws_pubsub_reader_task = asyncio.create_task(pubsub.subscribe())
+
+    try:
+        await asyncio.gather(ws_receive_task, ws_pubsub_reader_task)
+    except WebSocketDisconnect:
+        pubsub.manager.disconnect(websocket)
+        await pubsub.manager.broadcast(f"Client #{client_id} left the chat")
+        ws_receive_task.cancel()
+        ws_pubsub_reader_task.cancel()
 
 
 # Agents try and agree they are done
