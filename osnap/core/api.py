@@ -1,6 +1,12 @@
 handler_registry = set()
 class OSNAP:
-  """OSNAP API Decorators"""
+  """OSNAP API Decorators
+
+  Example usage:
+  @OSNAP.agents()
+  def my_apps_get_agents(request):
+    return my_apps_agent_registry.get_agents(request)
+  """
   def agents():
       def decorator(func):
         def wrapper(*args, **kwargs):
@@ -43,10 +49,3 @@ class OSNAP:
       return decorator
 
   # # TODO: Add the rest of the required endpoints
-
-
-# Usage Example 
-# @OSNAP.agents()
-# def my_apps_get_agents(request):
-#   return my_apps_agent_registry.get_agents(request)
-

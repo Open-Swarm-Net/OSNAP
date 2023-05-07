@@ -1,56 +1,48 @@
-# Important links:
-* https://docs.google.com/presentation/d/13fBflbidB7ykvWYGxvemO1U5Rle58lqEZnkUhBwzB38
-* https://github.com/CogniHack/CogniHack/blob/master/docs/BIG_IDEA.md
+# OSNAP
 
-# General information 
-OSNAP, an innovative open-source project, aims to revolutionize the way AI systems communicate and collaborate. With a Central Registry facilitating AI discovery and a Standardized Communication Protocol ensuring seamless interactions, OSNAP enables AI systems to work together, enhancing their capabilities and scalability. This technology has the potential to streamline workflows across various sectors, including project management, customer service, healthcare, and urban planning, paving the way for significant economic growth. By enabling secure, standardized communication and collaboration among AI systems, OSNAP promises a future where AI systems don't just work for us, but with us and each other, driving economic growth while ensuring privacy and security.
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Python Version](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
+[![Discord Follow](https://dcbadge.vercel.app/api/server/seKVhCtcAJ?style=flat)](https://discord.gg/seKVhCtcAJ)
 
-# How to run
+The Open Swarm Network Agent Protocol (OSNAP) is a standardized protocol for building autonomous AI agents and swarms or organizations of agents. The primary goal of OSNAP is to facilitate interoperability, collaboration, and ease of development across various autonomous AI systems, similar to how HTTP serves as a standard protocol for the World Wide Web.
+<p align="center">
+  <img src="content/logo_midjourney.png" alt="Project logo" width="1080">
+</p>
 
-* `cp .env.example .env.receiver; cp env.example .env.sender`
-* `sed -i ' 's/host-redis/receiver-redis/g' '.env.receiver'`
-* `sed -i ' 's/host-redis/sender-redis/g' '.env.sender'`
-* `docker network create osnap-network`
-* `docker-compose up --build`
+## Table of Contents
+- [Why](#why)
+- [How to use in your project](#how-to-use-in-your-project)
+- [Examples](#examples)
+- [Architecture Overview](#architecture-overview)
+- [Next-Ups](#next-ups)
+- [How to Contribute](#how-to-contribute)
+
+# Why
+Currently, the development and implementation of autonomous AI agents and swarms are highly fragmented, with different projects utilizing various custom-built protocols and communication methods. This lack of standardization can lead to difficulties in:
+
+Interoperability between different AI systems and swarm implementations.
+Reusability of code, components, and algorithms.
+Collaboration between researchers and practitioners in the field of autonomous AI and swarm intelligence.
+OSNAP aims to address these issues by providing a well-defined, standardized protocol for building and interacting with autonomous AI agents and swarms.
 
 
-# Flow to test
+# How to use in your project
+1. aaaa
 
-Open the following URLs:
-
-* http://localhost:8000/ (SENDER)
-* http://localhost:8005/ (RECEIVER)
-
-...
+# Examples
 
 
+# Architecture overview
+<p align="center">
+  <img src="content/diagram.png" alt="Project diagram" width="720">
+</p>
 
-# Open Swarm Network Agent Protocol (OSNAP)
 
-## Architecture
+# Next-ups
+- make adding new models as easy as possible, including custom deployed ones like llama
+- multi-key support for higher scalability
 
-- FastAPI (Implements the Agent API)
-  - /info (describes the role of the agent)
-  - /tools (describe the tools made available)
-  - /run (invoke other agents to perform tasks)
-  - /listen (listen for task results distributed to other agents)
-  - /finish (agents try and agree they are done)
-- Agent (Python/Langchain)
-  - Agent State
-  - Task Store (Queue, Whatever)
-- Tool Store (Redis)
-  - Self-Describing Format, with Permissions, Preferences, Restrictions
-  - Could be JSON
-  - Could be Vectors
-  
 
-## Call Sequence
-
-1. My user (agent1) gives the objective
-2. Agent1 calls Agent2 /tools endpoint
-3. Agent2 sends back tools response from Tool Store
-4. Agent1 makes plan (ala babyagi) and asks Agent2 to execute the first step *Can potentially explore more traits and roles here*. This is done via a request to agent2's /run endpoint. Agent2 acknowledges that it recieved the task by responding with some status.
-5. Agent1 registers a listener for the task ID.
-6. Agent2 does the thing in the background, and when it's done, send a POST request to Agent1s listen endpoint with the result.
-7. Continue as long as Agent1 wants to in order to solve the problem. 
-8. Agent1 sends a request to the /finish endpoint.
+# How to Contribute
+- follow the SOLID principles and don't break the abstractions
+- create bite-sized PRs
