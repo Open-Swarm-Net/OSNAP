@@ -9,3 +9,9 @@ httpx~=0.24.0
 langchain~=0.0.153
 networkx
 httpx
+discord
+pytest
+python-dotenv
+jsonschema
+ipykernel
+tiktoken

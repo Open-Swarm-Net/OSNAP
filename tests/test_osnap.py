@@ -1,5 +1,7 @@
-import sys, os
-sys.path.append(os.path.abspath(os.path.join("..")))
+import sys
+from pathlib import Path
+file_path = Path(__file__).absolute()
+sys.path.append(str(file_path.parent.parent))
 
 from osnap import OSNAPApp, OSNAPAgent, OSNAPTool, OSNAPRegistry, Scope
 
