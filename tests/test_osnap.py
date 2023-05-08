@@ -1,3 +1,8 @@
+import sys
+from pathlib import Path
+file_path = Path(__file__).absolute()
+sys.path.append(str(file_path.parent.parent))
+
 from osnap import OSNAPApp, OSNAPAgent, OSNAPTool, OSNAPRegistry, Scope
 
 import uuid
@@ -64,3 +69,8 @@ def test_osnap_app_init():
     assert len(agent_registry.agents) == 2
     assert len(tool_registry.tools) == 2
     assert len(agent_registry.agents[0].tools) == 2
+
+
+if __name__ == "__main__":
+    test_osnap_app_init()
+    print("Everything passed")
