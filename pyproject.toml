@@ -27,8 +27,10 @@ sphinxcontrib-napoleon = "^0.7"
 [tool.poetry.group.test.dependencies]
 pytest = "^7.3.1"
 
-[tool.poetry.group.docs.dependencies]
+[tool.poetry.group.docs]
 optional = true
+
+[tool.poetry.group.docs.dependencies]
 autodoc_pydantic = "^1.8.0"
 myst_parser = "^0.18.1"
 nbsphinx = "^0.8.9"
