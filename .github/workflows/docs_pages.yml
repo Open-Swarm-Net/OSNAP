@@ -6,7 +6,8 @@ on:
     branches:
       - main 
       - rc-0.1.1
-
+permissions:
+  contents: write
 jobs:
   build-docs:
     strategy: 
