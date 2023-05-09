@@ -4,7 +4,7 @@ on:
     tags: '*'
   pull_request:
     branches:
-      - master
+      - main 
       - rc-0.1.1
 
 jobs:
