@@ -32,7 +32,22 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 
 # -- Options for HTML output -------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'alabaster'
-html_static_path = ['_static']
+# The theme to use for HTML and HTML Help pages.  See the documentation for
+# a list of builtin themes.
+#
+html_theme = "sphinx_book_theme"
+
+html_theme_options = {
+    "path_to_docs": "docs",
+    "repository_url": "https://github.com/open-swarm-net/OSNAP",
+    "use_repository_button": True,
+}
+
+html_context = {
+    "display_github": True,  # Integrate GitHub
+    "github_user": "open-swarm-net",  # Username
+    "github_repo": "OSNAP",  # Repo name
+    "github_version": "main",  # Version
+    "conf_py_path": "/docs/",  # Path in the checkout to the docs root
+}
