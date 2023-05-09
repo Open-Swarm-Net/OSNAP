@@ -23,8 +23,8 @@ jobs:
         uses: abatilo/actions-poetry@v2
         with:
           poetry-version: ${{ matrix.poetry-version }}
-      - name: View poetry --help
-        run: poetry --help
+      - name: poetry install docs dependencies
+        run: poetry install --only docs
       - name: Build documentation
         run: |
           mkdir gh-pages
