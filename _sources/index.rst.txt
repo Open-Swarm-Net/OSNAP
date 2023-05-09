@@ -14,7 +14,7 @@ OSNAP: The Open Swarm Net Agent Protocol
    :caption: Contents:
    
    getting_started
-
+   big_picture
 
 Indices and tables
 ==================
