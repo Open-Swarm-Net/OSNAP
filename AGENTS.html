@@ -4,8 +4,9 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Index &#8212; OSNAP 0.1.1 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Agents &#8212; OSNAP 0.1.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
     <link rel="stylesheet" type="text/css" href="_static/autodoc_pydantic.css" />
@@ -20,7 +21,7 @@
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <link rel="index" title="Index" href="#" />
+    <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -38,12 +39,38 @@
 
           <div class="body" role="main">
             
-
-<h1 id="index">Index</h1>
-
-<div class="genindex-jumpbox">
- 
+  <section id="agents">
+<h1>Agents<a class="headerlink" href="#agents" title="Permalink to this headline">¶</a></h1>
+<section id="what-is-an-agent-exactly">
+<h2>What is an Agent exactly?<a class="headerlink" href="#what-is-an-agent-exactly" title="Permalink to this headline">¶</a></h2>
+<p>First some dime-store philosophy. Using an LLM is inherently a stateless endeavor. Agents are essentially a <a class="reference external" href="https://en.wikipedia.org/wiki/Gestalt_psychology">gestalt</a> composed of some “role”, “memory”, and “tools”, which are all synthesized into a text prompt. We then program agents to continue prompting, responding, using tools, however we want them to behave.</p>
+</section>
+<section id="exposing-agents">
+<h2>Exposing Agents<a class="headerlink" href="#exposing-agents" title="Permalink to this headline">¶</a></h2>
+<p>O-SNAP specifies that we expose agents via an API. It could be a RESTful API or a GraphQL API. There are two parts to this:</p>
+<p>Expose an endpoint <code class="docutils literal notranslate"><span class="pre">/agents</span></code> that will return a list of all the available agents
+Can also expose a list in a searchable way e.g. <code class="docutils literal notranslate"><span class="pre">/agents?task=&quot;&lt;task</span> <span class="pre">description&quot;</span></code>
+Each agent returned will have a Invocable URL, like <code class="docutils literal notranslate"><span class="pre">/run/&lt;agentId&gt;</span></code></p>
+<section id="rest">
+<h3>REST<a class="headerlink" href="#rest" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="graphql">
+<h3>GraphQL<a class="headerlink" href="#graphql" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="agent-registry">
+<h2>Agent Registry<a class="headerlink" href="#agent-registry" title="Permalink to this headline">¶</a></h2>
+<p>For your Environment and Agents to support O-SNAP, you need to be able to return a properly formatted response for the <code class="docutils literal notranslate"><span class="pre">/agents</span></code> endpoint.</p>
+<p>Response Format:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{}</span>
+</pre></div>
 </div>
+<section id="registry-reference-architecture">
+<h3>Registry Reference Architecture<a class="headerlink" href="#registry-reference-architecture" title="Permalink to this headline">¶</a></h3>
+<p>Use REDIS!</p>
+</section>
+</section>
+</section>
 
 
           </div>
@@ -103,6 +130,9 @@
       Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
+      |
+      <a href="_sources/AGENTS.md.txt"
+          rel="nofollow">Page source</a>
     </div>
 
     

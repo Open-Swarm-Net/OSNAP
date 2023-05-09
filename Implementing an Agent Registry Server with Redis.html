@@ -1,0 +1,271 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>How-To Guide: Implementing an Agent Registry Server with Redis &#8212; OSNAP 0.1.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="how-to-guide-implementing-an-agent-registry-server-with-redis">
+<h1>How-To Guide: Implementing an Agent Registry Server with Redis<a class="headerlink" href="#how-to-guide-implementing-an-agent-registry-server-with-redis" title="Permalink to this headline">¶</a></h1>
+<p>In this guide, we will walk through the steps to implement an agent registry server that uses Redis as its data store. This registry will allow agents to register themselves, update their tools, remove themselves, and search for other agents based on ID or tool description.</p>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Python 3.6 or newer</p></li>
+<li><p>Redis server installed and running</p></li>
+<li><p>Python packages: <code class="docutils literal notranslate"><span class="pre">redis</span></code>, <code class="docutils literal notranslate"><span class="pre">flask</span></code>, and <code class="docutils literal notranslate"><span class="pre">flask_restful</span></code></p></li>
+</ol>
+</section>
+<section id="step-1-set-up-redis">
+<h2>Step 1: Set up Redis<a class="headerlink" href="#step-1-set-up-redis" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Install Redis following the <a class="reference external" href="https://redis.io/topics/quickstart">official guide</a> for your operating system.</p></li>
+<li><p>Start the Redis server by running <code class="docutils literal notranslate"><span class="pre">redis-server</span></code> in your terminal.</p></li>
+<li><p>Install the Python <code class="docutils literal notranslate"><span class="pre">redis</span></code> package by running:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">redis</span>
+</pre></div>
+</div>
+</section>
+<section id="step-2-create-the-redishelper">
+<h2>Step 2: Create the RedisHelper<a class="headerlink" href="#step-2-create-the-redishelper" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Create a file named <code class="docutils literal notranslate"><span class="pre">redis_helper.py</span></code> and add the following code to connect to Redis:</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">redis</span>
+
+<span class="k">class</span> <span class="nc">RedisHelper</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redis_client</span> <span class="o">=</span> <span class="n">redis</span><span class="o">.</span><span class="n">Redis</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">6379</span><span class="p">,</span> <span class="n">decode_responses</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Add other methods for the registry here.</span>
+</pre></div>
+</div>
+</section>
+<section id="step-3-implement-the-agent-registry-functions">
+<h2>Step 3: Implement the Agent Registry Functions<a class="headerlink" href="#step-3-implement-the-agent-registry-functions" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>In the <code class="docutils literal notranslate"><span class="pre">redis_helper.py</span></code> file, add the following methods to the <code class="docutils literal notranslate"><span class="pre">RedisHelper</span></code> class:</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="nf">add_agent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent_id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">,</span> <span class="n">tools</span><span class="p">):</span>
+        <span class="n">agent_key</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;agent:</span><span class="si">{</span><span class="n">agent_id</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="n">agent_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+            <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="n">description</span><span class="p">,</span>
+            <span class="s1">&#39;endpoint&#39;</span><span class="p">:</span> <span class="n">endpoint</span><span class="p">,</span>
+            <span class="s1">&#39;tools&#39;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">tools</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redis_client</span><span class="o">.</span><span class="n">hmset</span><span class="p">(</span><span class="n">agent_key</span><span class="p">,</span> <span class="n">agent_data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">agent_key</span>
+
+    <span class="k">def</span> <span class="nf">update_tools</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent_id</span><span class="p">,</span> <span class="n">tools</span><span class="p">):</span>
+        <span class="n">agent_key</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;agent:</span><span class="si">{</span><span class="n">agent_id</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redis_client</span><span class="o">.</span><span class="n">hset</span><span class="p">(</span><span class="n">agent_key</span><span class="p">,</span> <span class="s1">&#39;tools&#39;</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">tools</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">remove_agent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent_id</span><span class="p">):</span>
+        <span class="n">agent_key</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;agent:</span><span class="si">{</span><span class="n">agent_id</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redis_client</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">agent_key</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_agent_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent_id</span><span class="p">):</span>
+        <span class="n">agent_key</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;agent:</span><span class="si">{</span><span class="n">agent_id</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="n">agent_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">redis_client</span><span class="o">.</span><span class="n">hgetall</span><span class="p">(</span><span class="n">agent_key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">agent_data</span><span class="p">:</span>
+            <span class="n">agent_data</span><span class="p">[</span><span class="s1">&#39;tools&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">agent_data</span><span class="p">[</span><span class="s1">&#39;tools&#39;</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">agent_data</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">search_agents_by_tool_description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">search_query</span><span class="p">):</span>
+        <span class="n">matching_agents</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">redis_client</span><span class="o">.</span><span class="n">scan_iter</span><span class="p">(</span><span class="n">match</span><span class="o">=</span><span class="s1">&#39;agent:*&#39;</span><span class="p">):</span>
+            <span class="n">agent_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">redis_client</span><span class="o">.</span><span class="n">hgetall</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="n">tools</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">agent_data</span><span class="p">[</span><span class="s1">&#39;tools&#39;</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">tool</span> <span class="ow">in</span> <span class="n">tools</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">search_query</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">tool</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                    <span class="n">agent_data</span><span class="p">[</span><span class="s1">&#39;tools&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tools</span>
+                    <span class="n">matching_agents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">agent_data</span><span class="p">)</span>
+                    <span class="k">break</span>
+        <span class="k">return</span> <span class="n">matching_agents</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Make sure to import the required modules at the beginning of the <code class="docutils literal notranslate"><span class="pre">redis_helper.py</span></code> file:</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
+</pre></div>
+</div>
+</section>
+<section id="step-4-create-the-flask-api">
+<h2>Step 4: Create the Flask API<a class="headerlink" href="#step-4-create-the-flask-api" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Install the <code class="docutils literal notranslate"><span class="pre">flask</span></code> and <code class="docutils literal notranslate"><span class="pre">flask_restful</span></code> packages:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">flask</span> <span class="n">flask_restful</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Create a file named <code class="docutils literal notranslate"><span class="pre">app.py</span></code> and add the following code to set up the Flask API:</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>from flask import Flask, request
+from flask_restful import Api, Resource
+from redis_helper import RedisHelper
+
+app = Flask(__name__)
+api = Api(app)
+redis_helper = RedisHelper()
+
+class AddAgent(Resource):
+    def post(self):
+        # Add the agent
+        agent_id = request.json[&#39;agent_id&#39;]
+        name = request.json[&#39;name&#39;]
+        ```python
+        description = request.json[&#39;description&#39;]
+        endpoint = request.json[&#39;endpoint&#39;]
+        tools = request.json[&#39;tools&#39;]
+        redis_helper.add_agent(agent_id, name, description, endpoint, tools)
+
+        return {&quot;status&quot;: &quot;SUCCESS&quot;, &quot;agent_id&quot;: agent_id}
+
+class UpdateTools(Resource):
+    def put(self):
+        agent_id = request.json[&#39;agent_id&#39;]
+        tools = request.json[&#39;tools&#39;]
+        redis_helper.update_tools(agent_id, tools)
+        return {&quot;status&quot;: &quot;SUCCESS&quot;, &quot;agent_id&quot;: agent_id}
+
+class RemoveAgent(Resource):
+    def delete(self, agent_id):
+        redis_helper.remove_agent(agent_id)
+        return {&quot;status&quot;: &quot;SUCCESS&quot;, &quot;agent_id&quot;: agent_id}
+
+class SearchAgents(Resource):
+    def get(self, agent_id=None, search_query=None):
+        if agent_id:
+            agent_data = redis_helper.get_agent_by_id(agent_id)
+            return agent_data if agent_data else {&quot;status&quot;: &quot;ERROR&quot;, &quot;message&quot;: &quot;Agent not found&quot;}
+        else:
+            matching_agents = redis_helper.search_agents_by_tool_description(search_query)
+            return matching_agents
+
+api.add_resource(AddAgent, &#39;/add_agent&#39;)
+api.add_resource(UpdateTools, &#39;/update_tools&#39;)
+api.add_resource(RemoveAgent, &#39;/remove_agent/&lt;string:agent_id&gt;&#39;)
+api.add_resource(SearchAgents, &#39;/search_agents/&lt;string:agent_id&gt;&#39;, &#39;/search_agents&#39;, &#39;/search_agents/&lt;string:search_query&gt;&#39;)
+
+if __name__ == &#39;__main__&#39;:
+    app.run(debug=True)
+</pre></div>
+</div>
+<p>With this code, you have created a Flask API with four endpoints: <code class="docutils literal notranslate"><span class="pre">/add_agent</span></code>, <code class="docutils literal notranslate"><span class="pre">/update_tools</span></code>, <code class="docutils literal notranslate"><span class="pre">/remove_agent/&lt;string:agent_id&gt;</span></code>, and <code class="docutils literal notranslate"><span class="pre">/search_agents/&lt;string:agent_id&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">/search_agents/&lt;string:search_query&gt;</span></code>.</p>
+<p>Now you can run the <code class="docutils literal notranslate"><span class="pre">app.py</span></code> file to start the server:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">app</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>The API will be accessible at <code class="docutils literal notranslate"><span class="pre">http://localhost:5000/</span></code>. You can use a tool like <a class="reference external" href="https://www.postman.com/">Postman</a> or <a class="reference external" href="https://curl.se/">curl</a> to interact with the API.</p>
+<p>In summary, this guide showed you how to create an agent registry server using Flask and Redis. The agents can register themselves, update their tools, remove themselves, and search for other agents based on their ID or tool description.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">OSNAP</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, Forrest Murray.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/Implementing an Agent Registry Server with Redis.md.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
