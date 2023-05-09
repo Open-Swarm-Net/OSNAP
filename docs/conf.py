@@ -14,8 +14,18 @@ release = '0.1.1'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = []
-
+extensions = [
+    "sphinx.ext.autodoc",
+    "sphinx.ext.autodoc.typehints",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.napoleon",
+    "sphinx.ext.viewcode",
+    "sphinxcontrib.autodoc_pydantic",
+    "myst_nb",
+    "sphinx_copybutton",
+    "sphinx_panels",
+    "IPython.sphinxext.ipython_console_highlighting",
+]
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
