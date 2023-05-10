@@ -1,0 +1,771 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>What is an agent? &#8212; OSNAP 0.1.1 documentation</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Agents" href="agents.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">OSNAP 0.1.1 documentation</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started:
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../getting_started.html">
+   Getting Started
+  </a>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../key_concepts/key_concepts.html">
+   Key Concepts
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 current active has-children">
+    <a class="reference internal" href="agents.html">
+     Agents
+    </a>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+    <label for="toctree-checkbox-2">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul class="current">
+     <li class="toctree-l3 current active">
+      <a class="current reference internal" href="#">
+       What is an agent?
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+<a href="https://github.com/open-swarm-net/OSNAP"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="bottom"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/agents/what_is_an_agent.ipynb.txt"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#understanding-agents-the-chessboard-allegory">
+   Understanding Agents: The Chessboard Allegory
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#receiving-instructions-the-chess-player-s-hand">
+   Receiving Instructions: The Chess Player’s Hand
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#next-step-enter-llms">
+   Next Step: Enter LLMs
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#aside-on-building-agent-applications">
+     Aside, on building agent applications…
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#understanting-the-new-state">
+   Understanting the new state
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>What is an agent?</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#understanding-agents-the-chessboard-allegory">
+   Understanding Agents: The Chessboard Allegory
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#receiving-instructions-the-chess-player-s-hand">
+   Receiving Instructions: The Chess Player’s Hand
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#next-step-enter-llms">
+   Next Step: Enter LLMs
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#aside-on-building-agent-applications">
+     Aside, on building agent applications…
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#understanting-the-new-state">
+   Understanting the new state
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section id="what-is-an-agent">
+<h1>What is an agent?<a class="headerlink" href="#what-is-an-agent" title="Permalink to this headline">#</a></h1>
+<p>We’re constantly bombarded with buzzwords like Langchain, AutoGPT, Generative Agents, CAMEL, and BabyAGI, just to name a few. But when we try to define what an agent really is, we often find ourselves grasping at straws. Sure, we could say they’re “anything that works to achieve a goal,” but let’s be honest, that doesn’t quite hit the mark, does it?</p>
+<p>Imagine agents starting their journey as a “tabula rasa” or blank slate, with unlimited potential to grow and adapt. As they encounter new experiences, they accumulate knowledge, gradually shaping their state and context. It’s a bit like a newborn baby, who starts off knowing nothing but eventually learns from its surroundings and develops into a unique individual with its own set of skills, preferences, and perspectives.</p>
+<p>In this blog post, we’ll take a deep dive into the world of autonomous agents. We’ll explore their philosophical roots and reason from first principles to better understand their nature. We’ll also introduce an innovative data structure and algorithm that allows these agents to learn, evolve, and adapt over time. So, buckle up and get ready for an exciting journey into the realm of adaptive AI systems!</p>
+<section id="understanding-agents-the-chessboard-allegory">
+<h2>Understanding Agents: The Chessboard Allegory<a class="headerlink" href="#understanding-agents-the-chessboard-allegory" title="Permalink to this headline">#</a></h2>
+<p>To better comprehend the nature of autonomous agents, let’s dive into a captivating analogy that captures their essence: the Chessboard Allegory. Picture a vast chessboard, where each piece symbolizes an agent, and every square represents a potential state or context. As the game progresses, the pieces move and interact, evolving independently but with shared origins, similar to how agents develop through their experiences.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="ch">#! pip install chess openai networkx matplotlib numpy</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">chess</span>
+<span class="kn">import</span> <span class="nn">chess.svg</span>
+<span class="kn">import</span> <span class="nn">chess.pgn</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">game</span> <span class="o">=</span> <span class="n">chess</span><span class="o">.</span><span class="n">pgn</span><span class="o">.</span><span class="n">Game</span><span class="p">()</span>
+<span class="n">board</span> <span class="o">=</span> <span class="n">game</span><span class="o">.</span><span class="n">board</span><span class="p">()</span>
+<span class="n">board</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/5cea6cedfe82528965d6e50a46fe1a1a0b8e9374ef266fbbd4f58de87a541d1a.svg" src="../_images/5cea6cedfe82528965d6e50a46fe1a1a0b8e9374ef266fbbd4f58de87a541d1a.svg" /></div>
+</div>
+<p>The state of a piece is determined by its position on the board, while the context is defined by the pieces surrounding it. Just as each chess piece can move and change its position on the board, agents can adapt and evolve to better interact with their environment.</p>
+</section>
+<section id="receiving-instructions-the-chess-player-s-hand">
+<h2>Receiving Instructions: The Chess Player’s Hand<a class="headerlink" href="#receiving-instructions-the-chess-player-s-hand" title="Permalink to this headline">#</a></h2>
+<p>Just as a chess player studies the board and decides which piece to move and where, agents receive instructions from users or other agents that guide their actions. These instructions come in various forms, such as goals to achieve, problems to solve, or specific tasks to perform. As the hand of the chess player hovers over the board, selecting a piece and making a move, the agent interprets the instruction and decides how to act accordingly.</p>
+<p>To better understand this process, let’s imagine a scenario in which the Chess agent receives some human instruction:</p>
+<p>“Let’s use the Ruy Lopez opener”</p>
+<p>This instruction is not always something that can be done in a single action. An opener in chess is not a single move but rather a series of moves, usually involving the development of pawns and minor pieces in the first few moves of the game. It is more of a strategic plan or tactic than a single move. It’s important that we keep track of this move somehow so that for our next move we can remember the tactic that we are trying to implement.</p>
+</section>
+<section id="next-step-enter-llms">
+<h2>Next Step: Enter LLMs<a class="headerlink" href="#next-step-enter-llms" title="Permalink to this headline">#</a></h2>
+<p>Now that we’ve explored state, context, and user instruction in our Chess analogy, it’s time to illustrate how this information is processed to form a prompt for a language model, such as GPT-4. In this example, we’ll use a simple Python code snippet to demonstrate how an agent might request and receive a response from the language model, leveraging the Chess context and instruction.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># from getpass import getpass</span>
+<span class="c1"># import openai</span>
+<span class="c1"># secret = getpass(&quot;Enter your OpenAI api key: &quot;)</span>
+<span class="c1"># openai.api_key = secret</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>First, we get a serializable representation of our board state. Serializable is just a fancy way of saying that it can be made into a format that can be stored, transmitted or reconstructed later</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">state</span> <span class="o">=</span> <span class="n">board</span> 
+<span class="nb">print</span><span class="p">(</span><span class="n">board</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>r n b q k b n r
+p p p p p p p p
+. . . . . . . .
+. . . . . . . .
+. . . . . . . .
+. . . . . . . .
+P P P P P P P P
+R N B Q K B N R
+</pre></div>
+</div>
+</div>
+</div>
+<p>Okay, so we have a representation that is just a bunch of characters. Great.</p>
+<p>Now let’s think about context. If we have state already, why do we need something else? Imagine you are playing chess. You would need to know a bunch of information in order to achieve your goal (winning, probably, let’s be honest). You would need to know what moves you have made in the past, what moves your opponent has made. Maybe you are playing with a buddy and they have had a few beers, so that might influence your strategy.</p>
+<p>We can even get at “theory of mind” by saying something like “I don’t think my opponent knows the Ruy Lopez opener”. As humans there are tons of external data points that influence our decision making. But I’m getting carried away! Let’s just keep it simple and say that right now, we don’t have any context because nothing has happened.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">context</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="c1"># context is empty at first because we haven&#39;t done anything yet</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">game</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Event &quot;?&quot;]
+[Site &quot;?&quot;]
+[Date &quot;????.??.??&quot;]
+[Round &quot;?&quot;]
+[White &quot;?&quot;]
+[Black &quot;?&quot;]
+[Result &quot;*&quot;]
+
+*
+</pre></div>
+</div>
+</div>
+</div>
+<p>Okay, now here’s where it gets interesting. In order for any of this to work, we need the Promethean spark of a human input. My assertion is that AI agents are inert until prompted by something. At least we can say that is true about LLMs. They need, at some point a real-live person to push the button. We can actually tell them to figure out the next action in a chain of actions, (ala AutoGPT) or the next action to request from other Agents (ala Generative Agents, GPT Swarm) but the lead domino is still a human being. Let’s give our Chess agent a goal:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">instruction</span> <span class="o">=</span> <span class="s2">&quot;Let&#39;s use the Ruy Lopez opener.&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we need some way of taking all of these three pieces and putting them together:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_move_prompt</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">instruction</span><span class="p">):</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Current board state: </span><span class="si">{</span><span class="n">state</span><span class="si">}</span><span class="se">\n</span><span class="s2">Surrounding context: </span><span class="si">{</span><span class="n">context</span><span class="si">}</span><span class="se">\n</span><span class="s2">User instruction: </span><span class="si">{</span><span class="n">instruction</span><span class="si">}</span><span class="se">\n</span><span class="s2">What is the next best move? Respond in UCI format fromSquaretoSquare. Respond only with the UCI move.&quot;</span>
+
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">generate_move_prompt</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">instruction</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">prompt</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Current board state: r n b q k b n r
+p p p p p p p p
+. . . . . . . .
+. . . . . . . .
+. . . . . . . .
+. . . . . . . .
+P P P P P P P P
+R N B Q K B N R
+Surrounding context: 
+User instruction: Let&#39;s use the Ruy Lopez opener.
+What is the next best move? Respond in UCI format fromSquaretoSquare. Respond only with the UCI move.
+</pre></div>
+</div>
+</div>
+</div>
+<p>We almost have an agent! There is just one more thing that we need to do - this agent will be using an LLM, specifically OpenAI.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_chess_move</span><span class="p">(</span><span class="n">prompt</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">Completion</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;text-davinci-002&quot;</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span>
+        <span class="n">max_tokens</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+        <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">stop</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">temperature</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">get_chess_move</span><span class="p">(</span><span class="n">prompt</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">8</span><span class="p">],</span> <span class="n">line</span> <span class="mi">13</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span>     <span class="n">response</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">Completion</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span>         <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;text-davinci-002&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span>         <span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span>         <span class="n">temperature</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span>     <span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">11</span>     <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<span class="ne">---&gt; </span><span class="mi">13</span> <span class="n">response</span> <span class="o">=</span> <span class="n">get_chess_move</span><span class="p">(</span><span class="n">prompt</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">14</span> <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+
+<span class="nn">Cell In[8], line 2,</span> in <span class="ni">get_chess_move</span><span class="nt">(prompt)</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="k">def</span> <span class="nf">get_chess_move</span><span class="p">(</span><span class="n">prompt</span><span class="p">):</span>
+<span class="ne">----&gt; </span><span class="mi">2</span>     <span class="n">response</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">Completion</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span>         <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;text-davinci-002&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span>         <span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span>         <span class="n">max_tokens</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span>         <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span>         <span class="n">stop</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span>         <span class="n">temperature</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span>     <span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">11</span>     <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+<span class="ne">NameError</span>: name &#39;openai&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>There are some things we shouldn’t pass over here. Specificially let’s look at the parameters we are giving to the api:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>  <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;text-davinci-002&quot;</span><span class="p">,</span>
+  <span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span>
+  <span class="n">max_tokens</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+  <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+  <span class="n">stop</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+  <span class="n">temperature</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>We can change the model, or engine, the number of tokens, or the length of the response, and the temperature. Temperature we can think of like the “randomness” of the response. Think of it kind of like creativity – you can have a rigid temperature that will give you more predictable answers, or you can have a creative temperature that might play fast and loose with everything.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">node</span> <span class="o">=</span> <span class="n">game</span><span class="o">.</span><span class="n">add_variation</span><span class="p">(</span><span class="n">chess</span><span class="o">.</span><span class="n">Move</span><span class="o">.</span><span class="n">from_uci</span><span class="p">(</span><span class="n">response</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="n">node</span><span class="o">.</span><span class="n">comment</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span> <span class="s2">&quot;prompt&quot;</span><span class="p">:</span> <span class="n">prompt</span><span class="p">,</span> <span class="s2">&quot;llm&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;engine&quot;</span><span class="p">:</span> <span class="s2">&quot;text-davinci-002&quot;</span><span class="p">,</span> <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mf">0.8</span> <span class="p">}})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="aside-on-building-agent-applications">
+<h3>Aside, on building agent applications…<a class="headerlink" href="#aside-on-building-agent-applications" title="Permalink to this headline">#</a></h3>
+<p>Here’s a cool tidbit – we are using the python chess library which can tell us if a move is legal! Because we don’t always know what we are going to get from an LLM, we can implement our code in a way that validates the response.</p>
+<p>Try plugging in an invalid chess move in the previous cell and see what happens.</p>
+</section>
+</section>
+<section id="understanting-the-new-state">
+<h2>Understanting the new state<a class="headerlink" href="#understanting-the-new-state" title="Permalink to this headline">#</a></h2>
+<p>Something special just happened, and it was subtle enough that it might be easily missed. We started with one state, talked to an LLM and got a new state. We can think about the two different states as a [graph](https://en.wikipedia.org/wiki/Graph_(abstract_data_type) which is a special idea in computer science that describes connections between entities. We start with state 1, and then through some process get to state 2. Try running the following cell:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">chess.pgn</span>
+
+<span class="k">def</span> <span class="nf">create_state_tree</span><span class="p">(</span><span class="n">game</span><span class="p">):</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">build_tree</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">comment</span><span class="p">:</span>
+          <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">comment</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span> 
+          <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">state_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">board</span><span class="p">())</span>
+        <span class="n">llm</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;llm&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">temperatures</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;llm&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;temperatures&quot;</span><span class="p">:</span> <span class="p">[]})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;temperatures&quot;</span><span class="p">)</span>
+        <span class="n">prompt</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;prompt&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">state_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">G</span><span class="p">:</span>
+            <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">state_id</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">node</span><span class="o">.</span><span class="n">board</span><span class="p">(),</span> <span class="o">**</span><span class="n">data</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">state_id</span><span class="p">,</span> <span class="n">temperatures</span><span class="o">=</span><span class="n">temperatures</span><span class="p">)</span>
+        
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">variations</span><span class="p">:</span>
+            <span class="n">build_tree</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">state_id</span><span class="p">)</span>
+    
+    <span class="n">build_tree</span><span class="p">(</span><span class="n">game</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">G</span>
+
+<span class="k">def</span> <span class="nf">plot_state_tree</span><span class="p">(</span><span class="n">state_tree</span><span class="p">):</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">kamada_kawai_layout</span><span class="p">(</span><span class="n">state_tree</span><span class="p">)</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">state_tree</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">with_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">node_size</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">font_weight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">)</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edge_labels</span><span class="p">(</span><span class="n">state_tree</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="n">state_tree</span> <span class="o">=</span> <span class="n">create_state_tree</span><span class="p">(</span><span class="n">game</span><span class="p">)</span>
+<span class="n">plot_state_tree</span><span class="p">(</span><span class="n">state_tree</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/a09b64ff120cc384acd16d89e8972b81342bec55e548221786065574d48ebdb0.png" src="../_images/a09b64ff120cc384acd16d89e8972b81342bec55e548221786065574d48ebdb0.png" />
+</div>
+</div>
+<p>The circles in the diagram (called Nodes in a graph) are our representations of state/context, which we have reduced here to just the chess board, for ease of visualization. Actually, it is all of the context/state at that point in the graph.</p>
+<p>The arrows in the diagram (called Edges) describe how we got from Node 1 to Node 2. How did we get from the new Chess game to the first move? We called the LLM with parameters and a prompt to ask it for a next move.</p>
+<p><em>Actually a few more things happened like python chess validating the response and some other stuff, but we’re simplifying all that for the sake of the example</em></p>
+<p>Let’s modify our <code class="docutils literal notranslate"><span class="pre">get_chess_move</span></code> function to take the temperature as a parameter:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_chess_move</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">instruction</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">attempt</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_attempts</span><span class="p">):</span>
+        <span class="n">prompt</span> <span class="o">=</span> <span class="n">generate_move_prompt</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">instruction</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">Completion</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;text-davinci-002&quot;</span><span class="p">,</span>
+            <span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span>
+            <span class="n">max_tokens</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+            <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">stop</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">temperature</span><span class="o">=</span><span class="n">temperature</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">move</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="c1"># Check if the move is valid UCI-formatted and legal in the current position</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">chess</span><span class="o">.</span><span class="n">Move</span><span class="o">.</span><span class="n">from_uci</span><span class="p">(</span><span class="n">move</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">move</span> <span class="ow">in</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">uci</span><span class="p">()</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">chess</span><span class="o">.</span><span class="n">Board</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="o">.</span><span class="n">legal_moves</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="n">move</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">pass</span>
+    
+    <span class="c1"># If a valid move isn&#39;t found after max_attempts, return None or raise an exception</span>
+    <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, create a function that generates and adds moves with different hyperparameters to the game:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_moves_with_hyperparameters</span><span class="p">(</span><span class="n">game</span><span class="p">,</span> <span class="n">move_count</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">move_count</span><span class="p">):</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">game</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">board</span><span class="p">()</span><span class="o">.</span><span class="n">fen</span><span class="p">()</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">&quot;history&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">uci</span><span class="p">()</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">board</span><span class="p">()</span><span class="o">.</span><span class="n">move_stack</span><span class="p">]})</span>
+        <span class="n">instruction</span> <span class="o">=</span> <span class="s2">&quot;Continue the Ruy Lopez opening&quot;</span>
+
+        <span class="k">for</span> <span class="n">temperature</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">get_chess_move</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">instruction</span><span class="p">,</span> <span class="n">temperature</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">response</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">move</span> <span class="o">=</span> <span class="n">chess</span><span class="o">.</span><span class="n">Move</span><span class="o">.</span><span class="n">from_uci</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+
+                <span class="c1"># Check if a child node with the same move already exists</span>
+                <span class="n">existing_child</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">variations</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">child</span><span class="o">.</span><span class="n">move</span> <span class="o">==</span> <span class="n">move</span><span class="p">:</span>
+                        <span class="n">existing_child</span> <span class="o">=</span> <span class="n">child</span>
+                        <span class="k">break</span>
+
+                <span class="k">if</span> <span class="n">existing_child</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="c1"># If the child node already exists, append the new temperature to the edge attribute</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">existing_child</span><span class="o">.</span><span class="n">comment</span><span class="p">)</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s2">&quot;llm&quot;</span><span class="p">][</span><span class="s2">&quot;temperatures&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temperature</span><span class="p">)</span>
+                    <span class="n">existing_child</span><span class="o">.</span><span class="n">comment</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># If the child node does not exist, create a new node with the move and temperature</span>
+                    <span class="n">child_node</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">add_variation</span><span class="p">(</span><span class="n">move</span><span class="p">)</span>
+                    <span class="n">child_node</span><span class="o">.</span><span class="n">comment</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span>
+                        <span class="s2">&quot;llm&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;temperatures&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">temperature</span><span class="p">]}</span>
+                    <span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s update <code class="docutils literal notranslate"><span class="pre">plot_state_tree</span></code> to show the temperatures we used:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">layout</span> <span class="kn">import</span> <span class="n">hierarchical_layout</span>
+
+<span class="k">def</span> <span class="nf">plot_state_tree</span><span class="p">(</span><span class="n">state_tree</span><span class="p">):</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">hierarchical_layout</span><span class="p">(</span><span class="n">state_tree</span><span class="p">)</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">state_tree</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">with_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">node_size</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">font_weight</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">)</span>
+    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edge_labels</span><span class="p">(</span><span class="n">state_tree</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Then, generate the game with branches that represent different hyperparameters and visualize the resulting state tree:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">game</span> <span class="o">=</span> <span class="n">chess</span><span class="o">.</span><span class="n">pgn</span><span class="o">.</span><span class="n">Game</span><span class="p">()</span>
+
+<span class="n">add_moves_with_hyperparameters</span><span class="p">(</span><span class="n">game</span><span class="p">,</span> <span class="n">move_count</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">state_tree</span> <span class="o">=</span> <span class="n">create_state_tree</span><span class="p">(</span><span class="n">game</span><span class="p">)</span>
+<span class="n">plot_state_tree</span><span class="p">(</span><span class="n">state_tree</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/6ffff720094fe7916756dd8c4e96d1303ca253865cef5579c72d42f95f35ab07.png" src="../_images/6ffff720094fe7916756dd8c4e96d1303ca253865cef5579c72d42f95f35ab07.png" />
+</div>
+</div>
+<p>You can experiment with the above by changing out the hyperparameters, trying new moves, etc. See if you can get the graph to diverge!</p>
+</section>
+</section>
+
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="agents.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Agents</p>
+        </div>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Forrest Murray<br/>
+  
+      &copy; Copyright 2023, Forrest Murray.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

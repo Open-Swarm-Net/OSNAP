@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>1. OSNAP Protocol &#8212; OSNAP 0.1.1 documentation</title>
+    <title>OSNAP Protocol &#8212; OSNAP 0.1.1 documentation</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -89,7 +89,7 @@
     <div class="bd-toc-item active">
         <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Contents:
+  Getting Started:
  </span>
 </p>
 <ul class="nav bd-sidenav">
@@ -97,6 +97,35 @@
   <a class="reference internal" href="getting_started.html">
    Getting Started
   </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="key_concepts/key_concepts.html">
+   Key Concepts
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="agents/agents.html">
+     Agents
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+    <label for="toctree-checkbox-2">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="agents/what_are_agents.html">
+       What is an agent?
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -243,68 +272,63 @@ title="Print to PDF"
     </div>
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   1. OSNAP Protocol
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#background">
    2. Background
   </a>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#protocol-design">
    3. Protocol Design
   </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#message-structure">
      3.1 Message Structure
     </a>
     <ul class="nav section-nav flex-column">
-     <li class="toc-h3 nav-item toc-entry">
+     <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#components-of-the-message-structure">
        3.1.1 Components of the Message Structure
       </a>
      </li>
-     <li class="toc-h3 nav-item toc-entry">
+     <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#example-of-message-structure">
        3.1.2 Example of Message Structure
       </a>
      </li>
-     <li class="toc-h3 nav-item toc-entry">
+     <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#benefits-of-the-proposed-message-structure">
        3.1.3 Benefits of the Proposed Message Structure
       </a>
      </li>
     </ul>
    </li>
-   <li class="toc-h2 nav-item toc-entry">
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#message-types">
      3.2 Message Types
     </a>
     <ul class="nav section-nav flex-column">
-     <li class="toc-h3 nav-item toc-entry">
+     <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#examples-of-message-types">
        3.2.1 Examples of Message Types
       </a>
      </li>
     </ul>
    </li>
-   <li class="toc-h2 nav-item toc-entry">
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#agents-query-and-response">
      3.3 Agents Query and Response
     </a>
    </li>
-   <li class="toc-h2 nav-item toc-entry">
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#tools-query-and-response">
      3.4 Tools Query and Response
     </a>
    </li>
   </ul>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#conclusion">
    4. Conclusion
   </a>
@@ -318,7 +342,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>1. OSNAP Protocol</h1>
+                <h1>OSNAP Protocol</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -328,68 +352,63 @@ title="Print to PDF"
                         </div>
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   1. OSNAP Protocol
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#background">
    2. Background
   </a>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#protocol-design">
    3. Protocol Design
   </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#message-structure">
      3.1 Message Structure
     </a>
     <ul class="nav section-nav flex-column">
-     <li class="toc-h3 nav-item toc-entry">
+     <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#components-of-the-message-structure">
        3.1.1 Components of the Message Structure
       </a>
      </li>
-     <li class="toc-h3 nav-item toc-entry">
+     <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#example-of-message-structure">
        3.1.2 Example of Message Structure
       </a>
      </li>
-     <li class="toc-h3 nav-item toc-entry">
+     <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#benefits-of-the-proposed-message-structure">
        3.1.3 Benefits of the Proposed Message Structure
       </a>
      </li>
     </ul>
    </li>
-   <li class="toc-h2 nav-item toc-entry">
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#message-types">
      3.2 Message Types
     </a>
     <ul class="nav section-nav flex-column">
-     <li class="toc-h3 nav-item toc-entry">
+     <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#examples-of-message-types">
        3.2.1 Examples of Message Types
       </a>
      </li>
     </ul>
    </li>
-   <li class="toc-h2 nav-item toc-entry">
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#agents-query-and-response">
      3.3 Agents Query and Response
     </a>
    </li>
-   <li class="toc-h2 nav-item toc-entry">
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#tools-query-and-response">
      3.4 Tools Query and Response
     </a>
    </li>
   </ul>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#conclusion">
    4. Conclusion
   </a>
@@ -405,20 +424,19 @@ title="Print to PDF"
               <div>
                 
   <section id="osnap-protocol">
-<h1>1. OSNAP Protocol<a class="headerlink" href="#osnap-protocol" title="Permalink to this headline">#</a></h1>
+<h1>OSNAP Protocol<a class="headerlink" href="#osnap-protocol" title="Permalink to this headline">#</a></h1>
 <p>This paper proposes a communication protocol designed specifically for OutboundAgents in an AI-driven multi-agent system. The protocol defines a standardized message structure, various message types, and the processes for handling communication between agents. The purpose of this protocol is to facilitate efficient and effective communication between AI agents, enabling them to collaborate, delegate tasks, and share information.</p>
-</section>
 <section id="background">
-<h1>2. Background<a class="headerlink" href="#background" title="Permalink to this headline">#</a></h1>
+<h2>2. Background<a class="headerlink" href="#background" title="Permalink to this headline">#</a></h2>
 <p>OutboundAgents are AI systems that have tools they can execute on behalf of a user. These tools might include gathering information, performing tasks, or interacting with other agents to complete complex actions. In order to collaborate effectively and efficiently, agents need a well-defined communication protocol that allows them to exchange messages, delegate tasks, and share status updates.</p>
 </section>
 <section id="protocol-design">
-<h1>3. Protocol Design<a class="headerlink" href="#protocol-design" title="Permalink to this headline">#</a></h1>
+<h2>3. Protocol Design<a class="headerlink" href="#protocol-design" title="Permalink to this headline">#</a></h2>
 <section id="message-structure">
-<h2>3.1 Message Structure<a class="headerlink" href="#message-structure" title="Permalink to this headline">#</a></h2>
+<h3>3.1 Message Structure<a class="headerlink" href="#message-structure" title="Permalink to this headline">#</a></h3>
 <p>To facilitate efficient communication between agents, we propose a standardized message structure that includes the following components: sender and receiver agent identifiers, message type, payload, and metadata. This structure ensures that each message exchanged between agents is organized, easily parsed, and extensible to accommodate future changes in agent communication requirements.</p>
 <section id="components-of-the-message-structure">
-<h3>3.1.1 Components of the Message Structure<a class="headerlink" href="#components-of-the-message-structure" title="Permalink to this headline">#</a></h3>
+<h4>3.1.1 Components of the Message Structure<a class="headerlink" href="#components-of-the-message-structure" title="Permalink to this headline">#</a></h4>
 <ol class="arabic simple">
 <li><p>Sender Agent Identifier</p></li>
 <li><p>Receiver Agent Identifier</p></li>
@@ -428,7 +446,7 @@ title="Print to PDF"
 </ol>
 </section>
 <section id="example-of-message-structure">
-<h3>3.1.2 Example of Message Structure<a class="headerlink" href="#example-of-message-structure" title="Permalink to this headline">#</a></h3>
+<h4>3.1.2 Example of Message Structure<a class="headerlink" href="#example-of-message-structure" title="Permalink to this headline">#</a></h4>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;sender_agent_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;agent-123&quot;</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">&quot;receiver_agent_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;agent-456&quot;</span><span class="p">,</span>
@@ -451,7 +469,7 @@ title="Print to PDF"
 </div>
 </section>
 <section id="benefits-of-the-proposed-message-structure">
-<h3>3.1.3 Benefits of the Proposed Message Structure<a class="headerlink" href="#benefits-of-the-proposed-message-structure" title="Permalink to this headline">#</a></h3>
+<h4>3.1.3 Benefits of the Proposed Message Structure<a class="headerlink" href="#benefits-of-the-proposed-message-structure" title="Permalink to this headline">#</a></h4>
 <ol class="arabic simple">
 <li><p>Standardization</p></li>
 <li><p>Extensibility</p></li>
@@ -461,7 +479,7 @@ title="Print to PDF"
 </section>
 </section>
 <section id="message-types">
-<h2>3.2 Message Types<a class="headerlink" href="#message-types" title="Permalink to this headline">#</a></h2>
+<h3>3.2 Message Types<a class="headerlink" href="#message-types" title="Permalink to this headline">#</a></h3>
 <p>The protocol supports a variety of message types to cater to different aspects of agent communication. These message types include request, response, task execution, status updates, and error handling. Each message type serves a specific purpose and is crucial for efficient agent interaction.</p>
 <ol class="arabic simple">
 <li><p>Request</p></li>
@@ -471,7 +489,7 @@ title="Print to PDF"
 <li><p>Error Handling</p></li>
 </ol>
 <section id="examples-of-message-types">
-<h3>3.2.1 Examples of Message Types<a class="headerlink" href="#examples-of-message-types" title="Permalink to this headline">#</a></h3>
+<h4>3.2.1 Examples of Message Types<a class="headerlink" href="#examples-of-message-types" title="Permalink to this headline">#</a></h4>
 <ul class="simple">
 <li><p>Request Message Example</p></li>
 </ul>
@@ -581,7 +599,7 @@ title="Print to PDF"
 </section>
 </section>
 <section id="agents-query-and-response">
-<h2>3.3 Agents Query and Response<a class="headerlink" href="#agents-query-and-response" title="Permalink to this headline">#</a></h2>
+<h3>3.3 Agents Query and Response<a class="headerlink" href="#agents-query-and-response" title="Permalink to this headline">#</a></h3>
 <p>Providing an endpoint to get a list of available agents is required to implement the protocol. This endpoint can be used by agents to discover other agents and their tools. To enable this functionality, we can introduce a new message type called “agents_query” and its corresponding response message, “agents_response”.</p>
 <ol class="arabic simple">
 <li><p>Agents Query
@@ -622,7 +640,7 @@ GET /agents</p></li>
 </div>
 </section>
 <section id="tools-query-and-response">
-<h2>3.4 Tools Query and Response<a class="headerlink" href="#tools-query-and-response" title="Permalink to this headline">#</a></h2>
+<h3>3.4 Tools Query and Response<a class="headerlink" href="#tools-query-and-response" title="Permalink to this headline">#</a></h3>
 <p>To enable agents to query the tools of other agents, we can introduce a new message type called “tools_query” and its corresponding response message, “tools_response”. These messages allow agents to request and provide information about their supported tools, tasks, and SLAs.</p>
 <ol class="arabic simple">
 <li><p>Get All Agent Tools Query</p></li>
@@ -679,8 +697,9 @@ GET /agents</p></li>
 </section>
 </section>
 <section id="conclusion">
-<h1>4. Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">#</a></h1>
+<h2>4. Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">#</a></h2>
 <p>The proposed agent communication protocol provides a standardized and efficient means for AI agents to collaborate, delegate tasks, and share information within a multi-agent system. By implementing this protocol, AI systems can dynamically discover the tools of other agents and work together to complete complex tasks and actions</p>
+</section>
 </section>
 
 
