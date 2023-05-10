@@ -90,7 +90,7 @@
     <div class="bd-toc-item active">
         <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Contents:
+  Getting Started:
  </span>
 </p>
 <ul class="nav bd-sidenav">
@@ -99,10 +99,34 @@
    Getting Started
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="big_picture.html">
-   Big Picture
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="key_concepts/key_concepts.html">
+   Key Concepts
   </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="agents/agents.html">
+     Agents
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+    <label for="toctree-checkbox-2">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="agents/what_are_agents.html">
+       What is an agent?
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -253,6 +277,13 @@ title="Print to PDF"
   <a class="reference internal nav-link" href="#">
    OSNAP: The Open Swarm Net Agent Protocol
   </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#where-to-start">
+     Where to Start?
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#indices-and-tables">
@@ -282,6 +313,13 @@ title="Print to PDF"
   <a class="reference internal nav-link" href="#">
    OSNAP: The Open Swarm Net Agent Protocol
   </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#where-to-start">
+     Where to Start?
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#indices-and-tables">
@@ -300,20 +338,56 @@ title="Print to PDF"
                 
   <section id="osnap-the-open-swarm-net-agent-protocol">
 <h1>OSNAP: The Open Swarm Net Agent Protocol<a class="headerlink" href="#osnap-the-open-swarm-net-agent-protocol" title="Permalink to this headline">#</a></h1>
+<p>OSNAP is a protocol for communication between agents. It includes:</p>
+<ul class="simple">
+<li><p>Connection Management</p></li>
+<li><p>Agent Registration</p></li>
+<li><p>Swarm Management</p></li>
+<li><p>Security and Authentication</p></li>
+<li><p>Error Handling and Logging</p></li>
+<li><p>Extensibility</p></li>
+</ul>
+<section id="where-to-start">
+<h2>Where to Start?<a class="headerlink" href="#where-to-start" title="Permalink to this headline">#</a></h2>
+<p>If you’re interested in exploring some of the big ideas behind OSNAP,
+check out:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="key_concepts/key_concepts.html">Key Concepts</a></p></li>
+</ul>
+<p>If you just want to roll up your sleeves and try it out:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="getting_started/getting_started.html">Getting Started</a></p></li>
+</ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This project is still in an Alpha state, targeting a first public Beta</p>
 </div>
 <div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="getting_started.html#installation">Installation</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="big_picture.html">Big Picture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="key_concepts/key_concepts.html">Key Concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="agents/agents.html">Agents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="agents/what_are_agents.html">What is an agent?</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="agents/what_are_agents.html#understanding-agents-the-chessboard-allegory">Understanding Agents: The Chessboard Allegory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="agents/what_are_agents.html#receiving-instructions-the-chess-player-s-hand">Receiving Instructions: The Chess Player’s Hand</a></li>
+<li class="toctree-l4"><a class="reference internal" href="agents/what_are_agents.html#next-step-enter-llms">Next Step: Enter LLMs</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="agents/what_are_agents.html#aside-on-building-agent-applications">Aside, on building agent applications…</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="agents/what_are_agents.html#understanting-the-new-state">Understanting the new state</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
+</section>
 </section>
 <section id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">#</a></h1>
