@@ -1,4 +1,3 @@
-# SwarmAgentBase.py
 from abc import ABC, abstractmethod
 
 class SwarmAgentBase(ABC):

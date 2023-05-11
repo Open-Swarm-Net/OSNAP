@@ -1,13 +1,2 @@
-how i want it to work:
-
-
-import osnap
-
-swarm_adapter = osnap.DiscordSwarmAdapter(
-    server = "aaa"
-)
-
-class MyAgent(SwarmAgentBase):
-    # implement necessary methods
-
-    def 
+1. Discovering people
+    - need to create properties on the adapter, so that agent_logic can access information on the adapter

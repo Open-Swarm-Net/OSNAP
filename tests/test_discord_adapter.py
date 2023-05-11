@@ -14,7 +14,7 @@ if __name__ == "__main__":
     On a mac, go to Macintosh HD > Applications > Python3.x folder (x being your python3 version) > double click on "Install Certificates.command" file
     """
     load_dotenv()
-    intents_list = ["message_content"]
+    intents_list = ["message_content", "members", "guilds"]
     mybot_logic = ExampleSwarmAgent(command_prefix='$')
     adapter = DiscordAdapter(
         agent_logic = mybot_logic,

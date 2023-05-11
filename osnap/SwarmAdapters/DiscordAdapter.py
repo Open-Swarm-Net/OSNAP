@@ -33,6 +33,17 @@ class DiscordAdapter(discord.Client):
                 raise ValueError(f"Invalid intent: {intent}")
         return intents_obj
 
+    @property
+    async def users(self):
+        """Returns the information about the users on the server
+        # About me is not available in the API: https://stackoverflow.com/questions/68654914/discord-py-get-user-about-me-section
+        """
+        users = []
+        users_iterator = self.guilds[0].fetch_members()
+        async for user in users_iterator:
+            users.append(user.name)
+        return users
+
     async def on_ready(self):
         reponse = await self.agent_logic.on_ready()
 
@@ -70,7 +81,7 @@ class DiscordAdapter(discord.Client):
     async def on_message(self, message):
         if message.author == self.user:
             return
-        response = await self.agent_logic.on_receive(message.content)
+        response = await self.agent_logic.on_receive(self, message.content)
 
         if response:
             await message.reply(response)
