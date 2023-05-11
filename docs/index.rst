@@ -35,7 +35,7 @@ If you just want to roll up your sleeves and try it out:
    :caption: Getting Started:
    
    getting_started
-   key_concepts/key_concepts.rst 
+   key_concepts 
 
 .. toctree::
    :caption: Use cases:
