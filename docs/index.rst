@@ -32,13 +32,25 @@ If you just want to roll up your sleeves and try it out:
    This project is still in an Alpha state, targeting a first public Beta
    
 .. toctree::
-   :caption: Getting Started:
-   
-   getting_started
-   key_concepts 
+   :maxdepth: 1
+   :caption: Getting Started
+   :hidden: 
+
+   getting_started/getting_started.md
 
 .. toctree::
-   :caption: Use cases:
+   :maxdepth: 1
+   :caption: Key Concepts 
+   :name: key_concepts
+   :hidden:
+
+   agents/agents.rst
+   swarms/swarms.rst
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Use cases
+   :hidden:
 
    use_cases/use_cases.md
 

@@ -26,6 +26,9 @@ extensions = [
     "sphinx_panels",
     "IPython.sphinxext.ipython_console_highlighting",
 ]
+
+source_suffix = [".ipynb", ".html", ".md", ".rst"]
+
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 

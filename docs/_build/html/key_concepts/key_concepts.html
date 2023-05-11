@@ -42,7 +42,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Agents" href="../agents/agents.html" />
-    <link rel="prev" title="Getting Started" href="../getting_started.html" />
+    <link rel="prev" title="Getting Started" href="../getting_started/getting_started.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -91,43 +91,55 @@
     <div class="bd-toc-item active">
         <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Getting Started:
+  Getting Started
  </span>
 </p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../getting_started.html">
+  <a class="reference internal" href="../getting_started/getting_started.html">
    Getting Started
   </a>
  </li>
- <li class="toctree-l1 current active has-children">
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Key Concepts
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
    Key Concepts
   </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../agents/agents.html">
+   Agents
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
   <label for="toctree-checkbox-1">
    <i class="fas fa-chevron-down">
    </i>
   </label>
   <ul>
-   <li class="toctree-l2 has-children">
-    <a class="reference internal" href="../agents/agents.html">
-     Agents
+   <li class="toctree-l2">
+    <a class="reference internal" href="../agents/what_are_agents.html">
+     What is an agent?
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-    <label for="toctree-checkbox-2">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../agents/what_are_agents.html">
-       What is an agent?
-      </a>
-     </li>
-    </ul>
    </li>
   </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Use cases
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../use_cases/use_cases.html">
+   Use Cases
+  </a>
  </li>
 </ul>
 
@@ -215,7 +227,7 @@ title="Source repository"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="../_sources/key_concepts/key_concepts.rst.txt"
+        <a href="../_sources/key_concepts/key_concepts.md.txt"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -226,7 +238,7 @@ title="Download source file"
 <span class="headerbtn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="headerbtn__text-container">.rst</span>
+<span class="headerbtn__text-container">.md</span>
 </a>
 
       </li>
@@ -252,12 +264,41 @@ title="Print to PDF"
     </ul>
   </div>
 </div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
 
     </div>
 </div>
 
 <!-- Table of contents -->
 <div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#agents">
+   Agents
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#swarms">
+   Swarms
+  </a>
+ </li>
+</ul>
+
+    </nav>
 </div>
     </div>
     <div class="article row">
@@ -269,6 +310,24 @@ title="Print to PDF"
                 <div id="print-main-content">
                     <div id="jb-print-toc">
                         
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#agents">
+   Agents
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#swarms">
+   Swarms
+  </a>
+ </li>
+</ul>
+
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -278,25 +337,14 @@ title="Print to PDF"
                 
   <section id="key-concepts">
 <h1>Key Concepts<a class="headerlink" href="#key-concepts" title="Permalink to this headline">#</a></h1>
-<p>Here are the key concepts behind OSNAP</p>
-<div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Key Concepts</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../agents/agents.html">Agents</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../agents/what_are_agents.html">What is an agent?</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../agents/what_are_agents.html#understanding-agents-the-chessboard-allegory">Understanding Agents: The Chessboard Allegory</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../agents/what_are_agents.html#receiving-instructions-the-chess-player-s-hand">Receiving Instructions: The Chess Player’s Hand</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../agents/what_are_agents.html#next-step-enter-llms">Next Step: Enter LLMs</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../agents/what_are_agents.html#aside-on-building-agent-applications">Aside, on building agent applications…</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="../agents/what_are_agents.html#understanting-the-new-state">Understanting the new state</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div>
+<section id="agents">
+<h2>Agents<a class="headerlink" href="#agents" title="Permalink to this headline">#</a></h2>
+<p>What is an agent?</p>
+</section>
+<section id="swarms">
+<h2>Swarms<a class="headerlink" href="#swarms" title="Permalink to this headline">#</a></h2>
+<p>What are swarms?</p>
+</section>
 </section>
 
 
@@ -307,7 +355,7 @@ title="Print to PDF"
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="../getting_started.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="../getting_started/getting_started.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
