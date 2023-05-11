@@ -7,7 +7,7 @@ import json
 import time
 from jsonschema import validate
 
-from osnap.SwarmAdapters.BaseSwarmAdapter import BaseSwarmAdapter
+from osnap.SwarmAdapters.zzzzBaseSwarmAdapter_old import BaseSwarmAdapter
 
 class DiscordSwarmAdapter(BaseSwarmAdapter):
     """And implementation of the Swarm Adapter for Discord.

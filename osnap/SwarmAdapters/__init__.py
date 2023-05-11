@@ -1,3 +1,4 @@
 # swarm adapters
-from .DiscordSwarmAdapter import DiscordSwarmAdapter
-from .BaseSwarmAdapter import BaseSwarmAdapter
+from .DiscordAdapter import DiscordAdapter
+from .ExampleSwarmAgent import ExampleSwarmAgent
+from .SwarmAgentBase import SwarmAgentBase

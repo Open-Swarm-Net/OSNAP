@@ -1,0 +1,13 @@
+how i want it to work:
+
+
+import osnap
+
+swarm_adapter = osnap.DiscordSwarmAdapter(
+    server = "aaa"
+)
+
+class MyAgent(SwarmAgentBase):
+    # implement necessary methods
+
+    def 
