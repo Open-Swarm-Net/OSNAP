@@ -2,9 +2,8 @@
 import discord
 import inspect
 from osnap.SwarmAdapters.SwarmAgentBase import SwarmAgentBase
-from discord.ext import commands
 
-class DiscordAdapter(commands.Bot):
+class DiscordAdapter(discord.Client):
     """This is an adapter that allows the agent to communicate with Discord and receive/send messages.
 
     Args:
@@ -18,20 +17,11 @@ class DiscordAdapter(commands.Bot):
         if not isinstance(agent_logic, SwarmAgentBase):
             raise TypeError(f'Expected type {SwarmAgentBase}, got {type(agent_logic)}')
         intents = self._unpack_intents(intents_list)
-        self.command_prefix = agent_logic.command_prefix
 
-        super().__init__(command_prefix=self.command_prefix, intents=intents)
+        super().__init__(intents=intents)
         self.agent_logic = agent_logic
         self.token = token
         self.start_server = start_server
-        self.register_user_commands()
-
-    def register_user_commands(self):
-        aa = inspect.getmembers(self.agent_logic, predicate=inspect.iscoroutinefunction)
-        for name, method in inspect.getmembers(self.agent_logic, predicate=inspect.iscoroutinefunction):
-            if getattr(method, 'is_command', False):
-                command = commands.Command(method, name=name)
-                self.add_command(command)
 
     def _unpack_intents(self, intents_list: list) -> discord.Intents:
         intents_obj = discord.Intents.default()
@@ -80,11 +70,10 @@ class DiscordAdapter(commands.Bot):
     async def on_message(self, message):
         if message.author == self.user:
             return
-
         response = await self.agent_logic.on_receive(message.content)
 
         if response:
-            await message.channel.send(response)
+            await message.reply(response)
 
     def format_response(self, response: str) -> str:
         # Enforce the desired output format, e.g., add a prefix to the message

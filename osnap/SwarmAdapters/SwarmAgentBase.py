@@ -12,10 +12,6 @@ class SwarmAgentBase(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def on_receive(self, message: str) -> str:
-        raise NotImplementedError
-
-    @abstractmethod
     async def on_ready(self):
         raise NotImplementedError
 

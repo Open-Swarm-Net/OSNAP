@@ -20,10 +20,11 @@ class ExampleSwarmAgent(SwarmAgentBase):
                 await member.send(message)
                 break
 
-    async def on_receive(self, message: str) -> str:
-        if message.startswith('$hello'):
+    async def on_receive(self, message) -> str:
+        if message.startswith(f'{self.command_prefix}hello'):
             return f'Hello!, my name is {self.name}'
 
-    @SwarmAgentBase.command
-    async def list(self, ctx, arg):
-        await ctx.send(f"List command received with argument: {arg}")
+    # TODO: examine if commands.Bot is better
+    # @SwarmAgentBase.command
+    # async def list(self, ctx, message):
+    #     await ctx.send(f"List command received with argument: {message}")
