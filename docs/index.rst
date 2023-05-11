@@ -37,6 +37,11 @@ If you just want to roll up your sleeves and try it out:
    getting_started
    key_concepts/key_concepts.rst 
 
+.. toctree::
+   :caption: Use cases:
+
+   use_cases/use_cases.md
+
 Indices and tables
 ==================
 
