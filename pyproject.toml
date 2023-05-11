@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "osnap"
+name = "osnap-client"
 version = "0.1.0"
 description = ""
 authors = ["Forrest Murray <FMurray@gmail.com>"]
