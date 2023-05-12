@@ -1,6 +1,0 @@
-[submodule "examples/loop_gpt/loopgpt"]
-	path = examples/loop_gpt/loopgpt
-	url = https://github.com/FMurray/loopgpt.git
-[submodule "examples/loop_gpt/loopgpt-next"]
-	path = examples/loop_gpt/loopgpt-next
-	url = https://github.com/FMurray/loopgpt-next.git
