@@ -189,6 +189,7 @@ class OSNAPAgent:
         id: str = None,
         using_rsa: bool = False,
         tools: List = [],
+        goals: List = [],
     ):
         self.id = id
         self.name = name
@@ -196,6 +197,7 @@ class OSNAPAgent:
         self.scope = scope
         self.using_rsa = using_rsa
         self.tools = tools or []
+        self.goals = goals or []
 
         if isinstance(tools, str):
             tool_list_json = json.loads(tools)
