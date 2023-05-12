@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "smart-gpt"
+version = "0.1.0"
+description = ""
+authors = ["Forrest Murray <FMurray@gmail.com>"]
+readme = "README.md"
+packages = [{include = "smart_gpt"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+osnap-client = {path = "../../dist/osnap_client-0.1.1a0.tar.gz"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

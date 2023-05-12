@@ -12,7 +12,7 @@ import networkx as nx
 
 from .crypt import SignatureUtil
 
-from pubsub import PubSub
+from osnap_client.pubsub import PubSub
 
 
 class OSNAPRegistry(BaseModel):
