@@ -32,7 +32,7 @@ from osnap import (
     Scope,
 )
 from registry import AgentRegistry, ToolRegistry
-from pubsub import PubSub, ConnectionManager
+from osnap_client.pubsub import PubSub, ConnectionManager
 
 import httpx
 import logging
@@ -265,15 +265,20 @@ class OSnapRunRequest(BaseModel):
 
 @app.post("/run/{agent_id}")
 async def root(request: OSnapRunRequest):
-    await pubsub.publish(f"Run endpoint hit by: {request.agent_id} Requesting Task: {request.task_payload}, Task ID: {request.task_id}")
-    return {"message": "Hello World"} 
+    await pubsub.publish(
+        f"Run endpoint hit by: {request.agent_id} Requesting Task: {request.task_payload}, Task ID: {request.task_id}"
+    )
+    return {"message": "Hello World"}
     # TODO: Implement me
     pass
 
 
 @app.post("/run/{agent_id}/tool/{tool_id}")
 async def invoke_tool(request: OSNAPRequest) -> OSNAPResponse:
-    await pubsub.publish(f"Run endpoint hit by: {request.agent_id} Requesting Tool: {request.tool_id}, Tool Payload: {request.tool_payload}")
+    await pubsub.publish(
+        f"Run endpoint hit by: {request.agent_id} Requesting Tool: {request.tool_id}, Tool Payload: {request.tool_payload}"
+    )
+
     # TODO: Wrap this whole thing in an OSNAPAdapter class
     def update_gcal_event():
         verbose = True
