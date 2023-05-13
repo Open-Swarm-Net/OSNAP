@@ -16,8 +16,8 @@ class DiscordAdapter(AdapterBase):
         super().__init__()
         intents = self._unpack_intents(intents_list)
 
-        discord_loop = asyncio.new_event_loop()
-        self.client = discord.Client(loop=discord_loop, intents=intents)
+        self.adapter_loop = asyncio.new_event_loop()
+        self.client = discord.Client(loop=self.adapter_loop, intents=intents)
         self.token = token
         self.start_server_name = start_server
         self.guild = None
@@ -61,6 +61,8 @@ class DiscordAdapter(AdapterBase):
         for channel in self.guild.channels:
             if channel.name == target_channel and isinstance(channel, discord.TextChannel):
                 await channel.send(message)
+                print(f"Sent message {message} to channel {target_channel}")
+                return
 
         raise ValueError(f"Could not find the channel {target_channel} in the list of channels: {self.guild.channels}.")
     
@@ -79,10 +81,8 @@ class DiscordAdapter(AdapterBase):
         # adding the methods to the adapter
         self.client.event(self.on_ready)
         self.client.event(self.on_message)
-        self.client.run(self.token)
-        #self.client.loop.create_task(self.client.start(self.token))
-        # loop = asyncio.get_event_loop()
-        # await loop.run_in_executor(None, self.client.run, self.token)
+        # need to launch the adapter loop
+        self.adapter_loop.run_until_complete(self.client.start(self.token))
 
     def _unpack_intents(self, intents_list: list) -> discord.Intents:
         intents_obj = discord.Intents.default()

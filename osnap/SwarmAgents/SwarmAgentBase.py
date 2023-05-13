@@ -43,30 +43,47 @@ class SwarmAgentBase(ABC):
             data = task.data
 
             if command in self.command_map:
+                # check if the adapter loop is running
+                if not self.swarm_adapter.adapter_loop.is_running():
+                    print("Adapter loop is not running, starting it now")
+                    try:
+                        self.start_adapter()
+                    except Exception as e:
+                        print(f"Error starting adapter: {e}")
+                    if not self.swarm_adapter.adapter_loop.is_running():
+                        raise Exception("Adapter loop is still not running after starting it")
+                
                 try:
-                    await self.command_map[command](data)
+                    asyncio.run_coroutine_threadsafe(self.command_map[command](data), self.swarm_adapter.adapter_loop)
                 except Exception as e:
                     print(f"Error in {command} command: {e}")
             else:
                 print(f"Unknown command: {command}")
+
+    def start_adapter(self):
+        adapter_thread = threading.Thread(target=self.swarm_adapter.start)
+        adapter_thread.start()
 
     async def on_ready(self, data: str):
         """This method is called when the apter is loaded."""
         self_description = f"Hi everyone!\nName: {self.name}\nDescription: {self.description}"
         await self.swarm_adapter.send_message(self_description, "intros")
 
-    async def run(self):
-        """This method is called to start the bot"""
-        # # order matters! 
-        # # TODO: figure out why order matters
-        # await asyncio.gather(
-        #     self.swarm_adapter.start(),
-        #     self.on_callback_event_listener()
-        # )
+    def run(self):
+        """This method is called to start the bot
         
+        Clarification on the event loops. Bear with me here =)
+        Ideally we'd like the adapter and the agent to run in the same event loop,
+        but both the discord process and the adent process are blocking the event loop.
+
+        So we need to split the process into two event loops, one for the agent and one for the adapter.
+
+        However, now we cannot await the adapter methods from the agent, because they are running in different event loops.
+        Therefore in the agent we need to use the run_coroutine_threadsafe method to run the adapter methods in the adapter event loop.
+        """       
         # run the adapter in a separate thread
-        adapter_thread = threading.Thread(target=self.swarm_adapter.start)
-        adapter_thread.start()
+        self.start_adapter()
 
         # run the event listener in the main thread
-        await self.on_callback_event_listener()
+        agent_loop = asyncio.get_event_loop()
+        agent_loop.run_until_complete(self.on_callback_event_listener())
