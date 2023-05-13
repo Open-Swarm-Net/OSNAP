@@ -1,4 +1,5 @@
 import sys, os
+
 sys.path.append(os.path.abspath(os.path.join("../..")))
 
 import discord
@@ -7,7 +8,8 @@ import json
 import time
 from jsonschema import validate
 
-from osnap.SwarmAdapters.BaseSwarmAdapter import BaseSwarmAdapter
+from osnap_client.SwarmAdapters.BaseSwarmAdapter import BaseSwarmAdapter
+
 
 class DiscordSwarmAdapter(BaseSwarmAdapter):
     """And implementation of the Swarm Adapter for Discord.
@@ -15,11 +17,12 @@ class DiscordSwarmAdapter(BaseSwarmAdapter):
     Args:
         - config (dict): The configuration of the adapter.
     """
-    def __init__(self, config:dict):
+
+    def __init__(self, config: dict):
         super().__init__(config)
         self.configure(config)
 
-    def configure(self, config:dict):
+    def configure(self, config: dict):
         """Configure the adapter.
 
         Args:
@@ -37,9 +40,9 @@ class DiscordSwarmAdapter(BaseSwarmAdapter):
                 "bot_token": {"type": "string"},
                 "server": {"type": "string"},
                 "entry_channel": {"type": "string"},
-                "intents": {"type": "array"}
+                "intents": {"type": "array"},
             },
-            "required": ["bot_token", "server", "entry_channel"]
+            "required": ["bot_token", "server", "entry_channel"],
         }
         validate(instance=config, schema=config_schema)
 
@@ -54,9 +57,9 @@ class DiscordSwarmAdapter(BaseSwarmAdapter):
                 setattr(self.intents, intent, True)
             else:
                 raise ValueError(f"Invalid intent: {intent}")
-            
+
         self.client = discord.Client(intents=self.intents)
-        
+
         # events and commands: https://dev.to/mikeywastaken/events-in-discord-py-mk0
         self.client.event(self.on_ready)
         self.client.event(self.on_message)
@@ -66,22 +69,20 @@ class DiscordSwarmAdapter(BaseSwarmAdapter):
         self.client.run(self.bot_token)
 
     async def on_ready(self):
-        print(f'{self.client.user} is connected to Discord!')
+        print(f"{self.client.user} is connected to Discord!")
 
     async def on_message(self, message):
         if message.author == self.client.user:
             return
 
-        if message.content.startswith('!discover'):
+        if message.content.startswith("!discover"):
             response = f"Hi, I'm test_bot1"
             await message.channel.send(response)
 
-        if message.content.startswith('!produce_icecream'):
+        if message.content.startswith("!produce_icecream"):
             icecreams = self.handle_who_can(message)
             await message.channel.send(response)
 
     def handle_who_can(self, message):
         time.sleep(1)
-        return [{'body': 'icecream'} for _ in range(1)]
-
-
+        return [{"body": "icecream"} for _ in range(1)]

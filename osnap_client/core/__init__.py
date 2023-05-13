@@ -1,6 +1,5 @@
 from .api import OSNAP
 from .osnap import (
-    OSNAPAgent,
     OSNAPApp,
     OSNAPTool,
     Scope,
@@ -9,3 +8,4 @@ from .osnap import (
     OSNAPResponse,
     OSNAPError,
 )
+from .agent import OSNAPAgent, AgentInfo

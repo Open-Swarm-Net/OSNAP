@@ -1,10 +1,10 @@
-import FastAPI
+# import FastAPI
 
-app = FastAPI()
+# app = FastAPI()
 
-# uvicorn server:app --reload --host 0.0.0.0 --port 8081
+# # uvicorn server:app --reload --host 0.0.0.0 --port 8081
 
 
-@app.get("/hello")
-def hello():
-    return "Hello, world!"
+# @app.get("/hello")
+# def hello():
+#     return "Hello, world!"
