@@ -40,6 +40,20 @@ def test_agent_creation():
         assert e.__class__.__name__ == "TypeError"
 
 
+def test_agent_required_methods():
+    class TestAgentWithoutMethods(OSNAPAgent):
+        name = "test_agent"
+        description = "test agent"
+        tools = ["test_tool"]
+        id = "1234"
+        url = "foobar"
+
+    try:
+        agent = TestAgentWithoutMethods()
+    except Exception as e:
+        assert e.__class__.__name__ == "TypeError"
+
+
 # Agents should have a /info endpoint that returns the agent's name, description, and scope.
 def test_agent_info():
     agent = TestAgent()
