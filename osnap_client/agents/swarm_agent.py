@@ -3,8 +3,7 @@ import asyncio
 import time
 import threading
 
-from osnap_client.adapters.DiscordAdapter import DiscordAdapter
-from osnap_client.agents import SwarmAgentBase
+from osnap_client.adapters import AdapterBase, QueueTaskStruct
 
 
 class SwarmAgentBase(ABC):

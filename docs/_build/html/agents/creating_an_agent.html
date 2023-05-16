@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>RFC: [Title of the proposal] &#8212; OSNAP 0.1.1 documentation</title>
+    <title>Creating an Agent &#8212; OSNAP 0.1.1 documentation</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -41,6 +41,8 @@
     <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="What is an agent?" href="what_are_agents.html" />
+    <link rel="prev" title="Agents" href="agents.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -104,24 +106,24 @@
   Key Concepts
  </span>
 </p>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../agents/agents.html">
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="agents.html">
    Agents
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
   <label for="toctree-checkbox-1">
    <i class="fas fa-chevron-down">
    </i>
   </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../agents/creating_an_agent.html">
+  <ul class="current">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
      Creating an Agent
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../agents/what_are_agents.html">
+    <a class="reference internal" href="what_are_agents.html">
      What is an agent?
     </a>
    </li>
@@ -230,7 +232,7 @@ title="Source repository"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="../_sources/RFC/TEMPLATE.md.txt"
+        <a href="../_sources/agents/creating_an_agent.md.txt"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -290,43 +292,8 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#introduction">
-   Introduction
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#problem-statement">
-   Problem Statement
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#proposed-solution">
-   Proposed Solution
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#alternatives-considered">
-   Alternatives Considered
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#backward-compatibility">
-   Backward Compatibility
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#implementation-plan">
-   Implementation Plan
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#open-questions">
-   Open Questions
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#references">
-   References
+  <a class="reference internal nav-link" href="#use-the-osnapbaseagent-class">
+   Use the OSNAPBaseAgent class
   </a>
  </li>
 </ul>
@@ -338,7 +305,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>RFC: [Title of the proposal]</h1>
+                <h1>Creating an Agent</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -349,43 +316,8 @@ title="Print to PDF"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#introduction">
-   Introduction
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#problem-statement">
-   Problem Statement
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#proposed-solution">
-   Proposed Solution
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#alternatives-considered">
-   Alternatives Considered
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#backward-compatibility">
-   Backward Compatibility
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#implementation-plan">
-   Implementation Plan
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#open-questions">
-   Open Questions
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#references">
-   References
+  <a class="reference internal nav-link" href="#use-the-osnapbaseagent-class">
+   Use the OSNAPBaseAgent class
   </a>
  </li>
 </ul>
@@ -398,67 +330,46 @@ title="Print to PDF"
                 
               <div>
                 
-  <p>// LLM header begin
-// This file was generated by an LLM
-// OpenAI ChatGPT, GPT-3.5 model
-// LLM header end</p>
-<section id="rfc-title-of-the-proposal">
-<h1>RFC: [Title of the proposal]<a class="headerlink" href="#rfc-title-of-the-proposal" title="Permalink to this headline">#</a></h1>
-<section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h2>
-<ul class="simple">
-<li><p>A brief introduction to the problem or feature request this RFC addresses.</p></li>
-</ul>
-</section>
-<section id="problem-statement">
-<h2>Problem Statement<a class="headerlink" href="#problem-statement" title="Permalink to this headline">#</a></h2>
-<ul class="simple">
-<li><p>A detailed description of the problem, its background, and why it needs to be addressed.</p></li>
-<li><p>Clearly define the scope and limitations of the problem.</p></li>
-<li><p>Describe the impact of the problem on users, developers, or other stakeholders.</p></li>
-</ul>
-</section>
-<section id="proposed-solution">
-<h2>Proposed Solution<a class="headerlink" href="#proposed-solution" title="Permalink to this headline">#</a></h2>
-<ul class="simple">
-<li><p>A detailed description of the proposed solution, including any changes to existing components or the introduction of new components.</p></li>
-<li><p>Describe how the proposed solution addresses the problem statement and its benefits.</p></li>
-<li><p>Include any relevant diagrams, pseudocode, or examples to clarify your proposal.</p></li>
-<li><p>Discuss the expected impact on performance, security, maintainability, or other important aspects.</p></li>
-</ul>
-</section>
-<section id="alternatives-considered">
-<h2>Alternatives Considered<a class="headerlink" href="#alternatives-considered" title="Permalink to this headline">#</a></h2>
-<ul class="simple">
-<li><p>List any alternative solutions that were considered, along with the reasons why they were not chosen.</p></li>
-<li><p>Describe the pros and cons of each alternative solution.</p></li>
-</ul>
-</section>
-<section id="backward-compatibility">
-<h2>Backward Compatibility<a class="headerlink" href="#backward-compatibility" title="Permalink to this headline">#</a></h2>
-<ul class="simple">
-<li><p>Discuss any backward compatibility concerns or implications of the proposed solution.</p></li>
-<li><p>Describe any steps that need to be taken to ensure backward compatibility, if applicable.</p></li>
-</ul>
-</section>
-<section id="implementation-plan">
-<h2>Implementation Plan<a class="headerlink" href="#implementation-plan" title="Permalink to this headline">#</a></h2>
-<ul class="simple">
-<li><p>Outline a high-level implementation plan, including any tasks that need to be completed and an estimated timeline for completion.</p></li>
-<li><p>If applicable, identify the specific maintainers or contributors responsible for implementing the proposal.</p></li>
-</ul>
-</section>
-<section id="open-questions">
-<h2>Open Questions<a class="headerlink" href="#open-questions" title="Permalink to this headline">#</a></h2>
-<ul class="simple">
-<li><p>List any open questions or unresolved issues that need to be addressed before the proposal can be considered complete.</p></li>
-</ul>
-</section>
-<section id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h2>
-<ul class="simple">
-<li><p>Include any relevant references, such as related research papers, existing implementations, or external resources.</p></li>
-</ul>
+  <section id="creating-an-agent">
+<h1>Creating an Agent<a class="headerlink" href="#creating-an-agent" title="Permalink to this headline">#</a></h1>
+<section id="use-the-osnapbaseagent-class">
+<h2>Use the OSNAPBaseAgent class<a class="headerlink" href="#use-the-osnapbaseagent-class" title="Permalink to this headline">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">osnap_client</span> <span class="kn">import</span> <span class="p">(</span>
+  <span class="n">OSNAPBaseAgent</span><span class="p">,</span>
+  <span class="n">AgentInfo</span><span class="p">,</span>
+  <span class="n">OSNAPTask</span><span class="p">,</span>
+  <span class="n">OSNAPAgentRunResponse</span>
+<span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">MyAgent</span><span class="p">(</span><span class="n">OSNAPBaseAgent</span><span class="p">):</span> 
+  <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;My Agent&quot;</span>
+  <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;My agent does cool things&quot;</span>
+  <span class="n">tools</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;tool1&quot;</span><span class="p">,</span> <span class="s2">&quot;tool2&quot;</span><span class="p">]</span>
+  <span class="nb">id</span> <span class="o">=</span> <span class="s2">&quot;1234&quot;</span>
+  <span class="n">endpoint</span> <span class="o">=</span> <span class="s2">&quot;https://myagent.com/1234&quot;</span>
+
+  <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AgentInfo</span><span class="p">:</span> 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Info is the only method with a concrete implementation in OSNAPBaseAgent. The default</span>
+<span class="sd">    behavior returns an AgentInfo object constructed</span>
+<span class="sd">    from the __dict__ of the class. </span>
+
+<span class="sd">    You can override this behavior if you want to do something more complex.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+  <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">:</span> <span class="n">OSNAPTask</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OSNAPAgentRunResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is the method that will be called when your agent is invoked with some incoming task.</span>
+
+<span class="sd">    You can implement it&#39;s behavior however you want, but it must return an OSNAPAgentRunResponse. </span>
+
+<span class="sd">    Because the predominant use case of Agents is to do somthing that takes a long time, run returns an </span>
+<span class="sd">    OSNAPAgentRunResponse object that contains a way for another agent to keep track of it&#39;s progress without blocking. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+</pre></div>
+</div>
 </section>
 </section>
 
@@ -470,6 +381,20 @@ title="Print to PDF"
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="agents.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Agents</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="what_are_agents.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">What is an agent?</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
 </div>
             </footer>
         </div>

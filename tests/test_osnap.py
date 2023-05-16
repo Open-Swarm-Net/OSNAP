@@ -3,7 +3,7 @@
 # # file_path = Path(__file__).absolute()
 # # sys.path.append(str(file_path.parent.parent))
 
-# from osnap_client import OSNAPApp, OSNAPAgent, OSNAPTool, OSNAPRegistry, Scope
+# from osnap_client import OSNAPApp, OSNAPBaseAgent, OSNAPTool, OSNAPRegistry, Scope
 
 # import uuid
 
@@ -11,7 +11,7 @@
 # class MockAgentRegistry(OSNAPRegistry):
 #     agents = []
 
-#     def register(self, agent: OSNAPAgent):
+#     def register(self, agent: OSNAPBaseAgent):
 #         agent.id = str(uuid.uuid4())
 #         self.agents.append(agent)
 #         return agent
@@ -48,10 +48,10 @@
 #         ),
 #     ]
 #     agents = [
-#         OSNAPAgent(
+#         OSNAPBaseAgent(
 #             name="test_agent", description="test agent", scope="public", tools=tools
 #         ),
-#         OSNAPAgent(
+#         OSNAPBaseAgent(
 #             name="test_agent2", description="test agent2", scope="public", tools=tools
 #         ),
 #     ]

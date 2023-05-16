@@ -25,7 +25,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from osnap import (
     OSNAP,
     OSNAPApp,
-    OSNAPAgent,
+    OSNAPBaseAgent,
     OSNAPTool,
     OSNAPRequest,
     OSNAPResponse,
@@ -79,7 +79,7 @@ pubsub = PubSub()
 
 
 class OSNAPAdapter:
-    def x(agent_executor: AgentExecutor) -> OSNAPAgent:
+    def x(agent_executor: AgentExecutor) -> OSNAPBaseAgent:
         OSNAP_tools = []
 
         for tool in agent_executor.tools:
@@ -112,13 +112,13 @@ my_tools = [
 ]
 
 my_agents = [
-    OSNAPAgent(
+    OSNAPBaseAgent(
         name="agent1",
         description="can do stuff",
         scope=Scope.PUBLIC,
         tools=my_tools,
     ),
-    OSNAPAgent(
+    OSNAPBaseAgent(
         name="agent2",
         description="can schedule stuff",
         scope=Scope.PUBLIC,
@@ -166,7 +166,7 @@ async def start(task: OSNAPTask):
 
     # Instantiate agents from the response and register them as external agents
     agents_res = res.json()
-    external_agents = [OSNAPAgent(**agent) for agent in agents_res]
+    external_agents = [OSNAPBaseAgent(**agent) for agent in agents_res]
 
     external_agents_strings = [str(a) for a in external_agents]
 

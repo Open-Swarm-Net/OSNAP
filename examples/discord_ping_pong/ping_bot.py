@@ -1,7 +1,7 @@
 import sys, os, time
 from dotenv import load_dotenv
 
-from osnap_client.adapters.DiscordAdapter import DiscordAdapter
+from osnap_client.adapters import DiscordAdapter
 from osnap_client.agents import SwarmAgentBase
 
 

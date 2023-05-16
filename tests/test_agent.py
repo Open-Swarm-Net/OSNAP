@@ -1,10 +1,10 @@
-from osnap_client import OSNAPAgent, AgentInfo
+from osnap_client import OSNAPBaseAgent, AgentInfo
 from uuid import uuid4
 
 from osnap_client.core.agent import OSNAPAgentTaskResult
 
 
-class TestAgent(OSNAPAgent):
+class TestAgent(OSNAPBaseAgent):
     name = "test_agent"
     description = "test agent"
     tools = ["test_tool"]
@@ -30,7 +30,7 @@ def test_agent_creation():
     # validate arguments
     try:
 
-        class BadAgent(OSNAPAgent):
+        class BadAgent(OSNAPBaseAgent):
             name = 1
             description = 2
             tools = 3
@@ -41,7 +41,7 @@ def test_agent_creation():
 
 
 def test_agent_required_methods():
-    class TestAgentWithoutMethods(OSNAPAgent):
+    class TestAgentWithoutMethods(OSNAPBaseAgent):
         name = "test_agent"
         description = "test agent"
         tools = ["test_tool"]

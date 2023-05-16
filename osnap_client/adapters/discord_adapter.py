@@ -1,8 +1,8 @@
 # discord_adapter.py
 import discord
-from osnap.SwarmAdapters.AdapterBase import AdapterBase
-from osnap.SwarmAdapters.QueueTaskStruct import QueueTaskStruct
+from .base import AdapterBase, QueueTaskStruct
 import asyncio
+
 
 class DiscordAdapter(AdapterBase):
     """This is an adapter that allows the agent to communicate with Discord and receive/send messages.
@@ -11,7 +11,7 @@ class DiscordAdapter(AdapterBase):
     - intents_list (list[str]): A list of intents that the bot will listen to.
     - token (str): The token of the bot that is used to connect to Discord.
     """
-    
+
     def __init__(self, start_server: str, intents_list: list, token: str):
         super().__init__()
         intents = self._unpack_intents(intents_list)
@@ -23,22 +23,20 @@ class DiscordAdapter(AdapterBase):
         self.guild = None
 
     async def on_ready(self):
-        """This method is called automatically by the discord library when the bot is ready to start working.
-        """
-        response = QueueTaskStruct(command_type='on_ready', data='')
+        """This method is called automatically by the discord library when the bot is ready to start working."""
+        response = QueueTaskStruct(command_type="on_ready", data="")
         await self.add_to_queue(response)
 
     async def on_message(self, message):
-        """This method is called automatically by the discord library when a message is received.
-        """
+        """This method is called automatically by the discord library when a message is received."""
         if message.author == self.client.user:
             return
-        
+
         message_content = message.content
-        
-        if message.content.startswith('$'):
-            command_name = message_content.split(' ')[0][1:]
-            command_data = ' '.join(message_content.split(' ')[1:])
+
+        if message.content.startswith("$"):
+            command_name = message_content.split(" ")[0][1:]
+            command_data = " ".join(message_content.split(" ")[1:])
             response = QueueTaskStruct(command_type=command_name, data=command_data)
             await self.add_to_queue(response)
 
@@ -59,13 +57,17 @@ class DiscordAdapter(AdapterBase):
 
         # Find the channel by its name
         for channel in self.guild.channels:
-            if channel.name == target_channel and isinstance(channel, discord.TextChannel):
+            if channel.name == target_channel and isinstance(
+                channel, discord.TextChannel
+            ):
                 await channel.send(message)
                 print(f"Sent message {message} to channel {target_channel}")
                 return
 
-        raise ValueError(f"Could not find the channel {target_channel} in the list of channels: {self.guild.channels}.")
-    
+        raise ValueError(
+            f"Could not find the channel {target_channel} in the list of channels: {self.guild.channels}."
+        )
+
     async def send_dm(self, message: str, target_user: str):
         """Sends a direct message to the specified user"""
         if self.guild is None:
@@ -74,8 +76,10 @@ class DiscordAdapter(AdapterBase):
         for user in self.client.guild.members:
             if user.name == target_user:
                 await user.send(message)
-        
-        raise ValueError(f"Could not find the user {target_user} in the list of users: {self.guild.members}.")
+
+        raise ValueError(
+            f"Could not find the user {target_user} in the list of users: {self.guild.members}."
+        )
 
     def start(self):
         # adding the methods to the adapter
@@ -95,14 +99,14 @@ class DiscordAdapter(AdapterBase):
         return intents_obj
 
     def _get_start_guild(self):
-        """In discord api the servers are called guilds.
-        """
+        """In discord api the servers are called guilds."""
         # Find the guild by its name
         target_guild = None
         for guild in self.client.guilds:
             if guild.name == self.start_server_name:
                 target_guild = guild
                 return target_guild
-        
-        raise ValueError(f"Could not find the guild {self.start_server_name} in the list of guilds: {self.client.guilds}. Make sure the bot is added to the server: https://discordpy.readthedocs.io/en/stable/discord.html")
-        
+
+        raise ValueError(
+            f"Could not find the guild {self.start_server_name} in the list of guilds: {self.client.guilds}. Make sure the bot is added to the server: https://discordpy.readthedocs.io/en/stable/discord.html"
+        )
