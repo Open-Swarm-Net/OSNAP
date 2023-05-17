@@ -4,14 +4,23 @@ from dotenv import load_dotenv
 import asyncio
 
 from pathlib import Path
+<<<<<<< HEAD
+=======
+
+>>>>>>> 687d44eefefe8d1224508ed9f3f15a51e4d85b88
 file_path = Path(__file__).absolute()
 sys.path.append(str(file_path.parent.parent.parent))
 
 from osnap.SwarmAdapters.DiscordAdapter import DiscordAdapter
 from osnap.SwarmAgents import SwarmAgentBase
 
+<<<<<<< HEAD
 class ExampleSwarmAgent(SwarmAgentBase):
 
+=======
+
+class ExampleSwarmAgent(SwarmAgentBase):
+>>>>>>> 687d44eefefe8d1224508ed9f3f15a51e4d85b88
     def __init__(self, name, description, swarm_adapter):
         super().__init__(name, description, swarm_adapter)
         self.num_pings = 0
@@ -20,7 +29,11 @@ class ExampleSwarmAgent(SwarmAgentBase):
         @self.command(name="hello")
         async def hello(message):
             await self.swarm_adapter.send_message("Hello!", "general")
+<<<<<<< HEAD
             #await self.send_message("Hello!", "general")
+=======
+            # await self.send_message("Hello!", "general")
+>>>>>>> 687d44eefefe8d1224508ed9f3f15a51e4d85b88
 
         self.command_map["pong"] = self.pong
         self.command_map["reset"] = self.reset
@@ -38,6 +51,10 @@ class ExampleSwarmAgent(SwarmAgentBase):
         self.num_pings = 0
         await self.swarm_adapter.send_message("I'm reset!", "general")
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 687d44eefefe8d1224508ed9f3f15a51e4d85b88
 def main():
     """
     On a mac, go to Macintosh HD > Applications > Python3.x folder (x being your python3 version) > double click on "Install Certificates.command" file
@@ -46,6 +63,7 @@ def main():
 
     intents_list = ["message_content", "members", "guilds"]
     adapter = DiscordAdapter(
+<<<<<<< HEAD
         start_server="swarm1_test",
         intents_list=intents_list,
         token = os.getenv("BOT2_TOKEN")
@@ -61,3 +79,18 @@ def main():
     
 if __name__ == "__main__":
     main()
+=======
+        start_server=os.getenv("START_SERVER_NAME"),
+        intents_list=intents_list,
+        token=os.getenv("BOT2_TOKEN"),
+    )
+
+    agent = ExampleSwarmAgent(
+        name="Agent Smith", description="I am a bot that pongs", swarm_adapter=adapter
+    )
+    agent.run()
+
+
+if __name__ == "__main__":
+    main()
+>>>>>>> 687d44eefefe8d1224508ed9f3f15a51e4d85b88

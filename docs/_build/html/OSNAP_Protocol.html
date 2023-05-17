@@ -1,0 +1,750 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>OSNAP Protocol &#8212; OSNAP 0.1.1 documentation</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">OSNAP 0.1.1 documentation</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="getting_started/getting_started.html">
+   Getting Started
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Key Concepts
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="agents/agents.html">
+   Agents
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="agents/what_are_agents.html">
+     What is an agent?
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="swarms/swarms.html">
+   Swarms
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Use cases
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="use_cases/use_cases.html">
+   Use Cases
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+<a href="https://github.com/open-swarm-net/OSNAP"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="bottom"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/OSNAP_Protocol.md.txt"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.md</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#background">
+   2. Background
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#protocol-design">
+   3. Protocol Design
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#message-structure">
+     3.1 Message Structure
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#components-of-the-message-structure">
+       3.1.1 Components of the Message Structure
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#example-of-message-structure">
+       3.1.2 Example of Message Structure
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#benefits-of-the-proposed-message-structure">
+       3.1.3 Benefits of the Proposed Message Structure
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#message-types">
+     3.2 Message Types
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#examples-of-message-types">
+       3.2.1 Examples of Message Types
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#agents-query-and-response">
+     3.3 Agents Query and Response
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tools-query-and-response">
+     3.4 Tools Query and Response
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conclusion">
+   4. Conclusion
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>OSNAP Protocol</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#background">
+   2. Background
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#protocol-design">
+   3. Protocol Design
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#message-structure">
+     3.1 Message Structure
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#components-of-the-message-structure">
+       3.1.1 Components of the Message Structure
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#example-of-message-structure">
+       3.1.2 Example of Message Structure
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#benefits-of-the-proposed-message-structure">
+       3.1.3 Benefits of the Proposed Message Structure
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#message-types">
+     3.2 Message Types
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#examples-of-message-types">
+       3.2.1 Examples of Message Types
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#agents-query-and-response">
+     3.3 Agents Query and Response
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tools-query-and-response">
+     3.4 Tools Query and Response
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conclusion">
+   4. Conclusion
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section id="osnap-protocol">
+<h1>OSNAP Protocol<a class="headerlink" href="#osnap-protocol" title="Permalink to this headline">#</a></h1>
+<p>This paper proposes a communication protocol designed specifically for OutboundAgents in an AI-driven multi-agent system. The protocol defines a standardized message structure, various message types, and the processes for handling communication between agents. The purpose of this protocol is to facilitate efficient and effective communication between AI agents, enabling them to collaborate, delegate tasks, and share information.</p>
+<section id="background">
+<h2>2. Background<a class="headerlink" href="#background" title="Permalink to this headline">#</a></h2>
+<p>OutboundAgents are AI systems that have tools they can execute on behalf of a user. These tools might include gathering information, performing tasks, or interacting with other agents to complete complex actions. In order to collaborate effectively and efficiently, agents need a well-defined communication protocol that allows them to exchange messages, delegate tasks, and share status updates.</p>
+</section>
+<section id="protocol-design">
+<h2>3. Protocol Design<a class="headerlink" href="#protocol-design" title="Permalink to this headline">#</a></h2>
+<section id="message-structure">
+<h3>3.1 Message Structure<a class="headerlink" href="#message-structure" title="Permalink to this headline">#</a></h3>
+<p>To facilitate efficient communication between agents, we propose a standardized message structure that includes the following components: sender and receiver agent identifiers, message type, payload, and metadata. This structure ensures that each message exchanged between agents is organized, easily parsed, and extensible to accommodate future changes in agent communication requirements.</p>
+<section id="components-of-the-message-structure">
+<h4>3.1.1 Components of the Message Structure<a class="headerlink" href="#components-of-the-message-structure" title="Permalink to this headline">#</a></h4>
+<ol class="arabic simple">
+<li><p>Sender Agent Identifier</p></li>
+<li><p>Receiver Agent Identifier</p></li>
+<li><p>Message Type</p></li>
+<li><p>Payload</p></li>
+<li><p>Metadata</p></li>
+</ol>
+</section>
+<section id="example-of-message-structure">
+<h4>3.1.2 Example of Message Structure<a class="headerlink" href="#example-of-message-structure" title="Permalink to this headline">#</a></h4>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;sender_agent_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;agent-123&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;receiver_agent_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;agent-456&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;message_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;task_request&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;payload&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;task_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;task-789&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;task_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;schedule_meeting&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;task_data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;participants&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;personA@example.com&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;personB@example.com&quot;</span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;date&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-05-01&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;14:00&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-04-29T10:30:00Z&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;priority&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;medium&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="benefits-of-the-proposed-message-structure">
+<h4>3.1.3 Benefits of the Proposed Message Structure<a class="headerlink" href="#benefits-of-the-proposed-message-structure" title="Permalink to this headline">#</a></h4>
+<ol class="arabic simple">
+<li><p>Standardization</p></li>
+<li><p>Extensibility</p></li>
+<li><p>Readability</p></li>
+<li><p>Platform Independence</p></li>
+</ol>
+</section>
+</section>
+<section id="message-types">
+<h3>3.2 Message Types<a class="headerlink" href="#message-types" title="Permalink to this headline">#</a></h3>
+<p>The protocol supports a variety of message types to cater to different aspects of agent communication. These message types include request, response, task execution, status updates, and error handling. Each message type serves a specific purpose and is crucial for efficient agent interaction.</p>
+<ol class="arabic simple">
+<li><p>Request</p></li>
+<li><p>Response</p></li>
+<li><p>Task Execution</p></li>
+<li><p>Status Update</p></li>
+<li><p>Error Handling</p></li>
+</ol>
+<section id="examples-of-message-types">
+<h4>3.2.1 Examples of Message Types<a class="headerlink" href="#examples-of-message-types" title="Permalink to this headline">#</a></h4>
+<ul class="simple">
+<li><p>Request Message Example</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;sender_agent_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;agent-123&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;receiver_agent_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;agent-456&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;message_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;request&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;payload&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;request_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;request-789&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;request_action&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;get_weather&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;request_data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;location&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;New York&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;date&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-05-01&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-04-29T10:30:00Z&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;priority&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;medium&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Response Message Example</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;sender_agent_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;agent-456&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;receiver_agent_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;agent-123&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;message_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;response&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;payload&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;request_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;request-789&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;success&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;response_data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;temperature&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;72°F&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;weather_condition&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sunny&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-04-29T10:32:00Z&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Task Execution Message Example</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;sender_agent_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;agent-123&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;receiver_agent_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;agent-456&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;message_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;task_execution&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;payload&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;task_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;task-789&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;task_invoke_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/agent-456/task/789&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;task_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;schedule_meeting&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;task_data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;participants&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;personA@example.com&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;personB@example.com&quot;</span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;date&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-05-01&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;14:00&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-04-29T10:30:00Z&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;priority&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;high&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Status Update Message Example</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;sender_agent_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;agent-456&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;receiver_agent_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;agent-123&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;message_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;status_update&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;payload&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;task_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;task-789&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;task_status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;completed&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;task_result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;meeting_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/meeting/12345&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-04-29T10:35:00Z&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Error Handling Message Example</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;sender_agent_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;agent-456&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;receiver_agent_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;agent-123&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;message_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;error_handling&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;payload&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;request_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;request-789&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;error_code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1001&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;error_description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Failed to fetch weather data&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;additional_info&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;API key is invalid&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-04-29T10:33:00Z&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="agents-query-and-response">
+<h3>3.3 Agents Query and Response<a class="headerlink" href="#agents-query-and-response" title="Permalink to this headline">#</a></h3>
+<p>Providing an endpoint to get a list of available agents is required to implement the protocol. This endpoint can be used by agents to discover other agents and their tools. To enable this functionality, we can introduce a new message type called “agents_query” and its corresponding response message, “agents_response”.</p>
+<ol class="arabic simple">
+<li><p>Agents Query
+GET /agents</p></li>
+</ol>
+<p>?capability=example_capability
+?scope=public|private</p>
+<ol class="arabic simple" start="2">
+<li><p>Agents Response</p></li>
+</ol>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;agent_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;f287b6e8-8a67-4c10-9a45-12a05a8f1b87&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;agent_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Example Agent&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;agent_description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Does lots of nice agent things&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;agent_endpoint&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/run/f287b6e8-8a67-4c10-9a45-12a05a8f1b87&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;tools&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;example_capability&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;An example capability.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;plugin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ExamplePlugin&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;scope&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;public&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;agent_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;184755d2-2f40-4563-96a9-9d30fd6b69ca&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;tools&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;example_capability&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Another example capability.&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;plugin&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AnotherExamplePlugin&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;scope&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;private&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;authorized_agents&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;c6a2f2e9-0689-4e7d-8a04-6b3abefc1e3d&quot;</span><span class="p">]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="tools-query-and-response">
+<h3>3.4 Tools Query and Response<a class="headerlink" href="#tools-query-and-response" title="Permalink to this headline">#</a></h3>
+<p>To enable agents to query the tools of other agents, we can introduce a new message type called “tools_query” and its corresponding response message, “tools_response”. These messages allow agents to request and provide information about their supported tools, tasks, and SLAs.</p>
+<ol class="arabic simple">
+<li><p>Get All Agent Tools Query</p></li>
+</ol>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;sender_agent_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;agent-123&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;receiver_agent_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;agent-456&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;message_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tools_query&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-04-29T10:30:00Z&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;priority&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;low&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;order&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p>Get All Agent Tools Response</p></li>
+</ol>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;sender_agent_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;agent-456&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;receiver_agent_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;agent-123&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;message_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tools_response&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;payload&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;information_tools&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;get_weather&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Provides weather information for a given location and date&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;request_format&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;location&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;date&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string (YYYY-MM-DD)&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;task_tools&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;schedule_meeting&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Schedules a meeting with the specified participants, date, and time&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;request_format&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;participants&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;list of email addresses&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;date&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string (YYYY-MM-DD)&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string (HH:mm)&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;SLA&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;60 minutes&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-04-29T10:32:00Z&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="conclusion">
+<h2>4. Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">#</a></h2>
+<p>The proposed agent communication protocol provides a standardized and efficient means for AI agents to collaborate, delegate tasks, and share information within a multi-agent system. By implementing this protocol, AI systems can dynamically discover the tools of other agents and work together to complete complex tasks and actions</p>
+</section>
+</section>
+
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Forrest Murray<br/>
+  
+      &copy; Copyright 2023, Forrest Murray.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
