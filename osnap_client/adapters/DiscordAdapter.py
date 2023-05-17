@@ -1,7 +1,7 @@
 # discord_adapter.py
 import discord
-from osnap.SwarmAdapters.AdapterBase import AdapterBase
-from osnap.SwarmAdapters.QueueTaskStruct import QueueTaskStruct
+from osnap_client.adapters.AdapterBase import AdapterBase
+from osnap_client.adapters.QueueTaskStruct import QueueTaskStruct
 import asyncio
 
 class DiscordAdapter(AdapterBase):
