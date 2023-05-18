@@ -41,8 +41,8 @@
     <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="What is an agent?" href="what_are_agents.html" />
-    <link rel="prev" title="OSNAP: The Open Swarm Net Agent Protocol" href="../index.html" />
+    <link rel="next" title="Creating an Agent" href="creating_an_agent.html" />
+    <link rel="prev" title="Getting Started" href="../getting_started/getting_started.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -91,6 +91,18 @@
     <div class="bd-toc-item active">
         <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
+  Getting Started
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../getting_started/getting_started.html">
+   Getting Started
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
   Key Concepts
  </span>
 </p>
@@ -105,6 +117,11 @@
    </i>
   </label>
   <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="creating_an_agent.html">
+     Creating an Agent
+    </a>
+   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="what_are_agents.html">
      What is an agent?
@@ -279,8 +296,18 @@ title="Print to PDF"
   <section id="agents">
 <h1>Agents<a class="headerlink" href="#agents" title="Permalink to this headline">#</a></h1>
 <p>Agents are the core idea of OSNAP. This section of documentation contains discussions about <a class="reference external" href="./what_are_agents.html">what agents are</a>, how to create OSNAP agents, and more.</p>
+<p>Simply put, an agent only has to implement the following contract:</p>
+<ul class="simple">
+<li><p>Expose it’s metadata via an <strong>info</strong> method</p></li>
+<li><p>Accept incoming requests via a <strong>run</strong> method</p></li>
+<li><p>Listen for incoming messages via a <strong>listen</strong> method</p></li>
+<li><p>Complete objectives or tasks with a <strong>complete</strong> method</p></li>
+<li><p>Terminate objectives or tasks with a <strong>terminate</strong> method</p></li>
+</ul>
+<p>For a more abstract deep dive into agents:</p>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="creating_an_agent.html">Creating an Agent</a></li>
 <li class="toctree-l1"><a class="reference internal" href="what_are_agents.html">What is an agent?</a></li>
 </ul>
 </div>
@@ -294,17 +321,17 @@ title="Print to PDF"
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="../index.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="../getting_started/getting_started.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">OSNAP: The Open Swarm Net Agent Protocol</p>
+            <p class="prev-next-title">Getting Started</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="what_are_agents.html" title="next page">
+    <a class='right-next' id="next-link" href="creating_an_agent.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">What is an agent?</p>
+        <p class="prev-next-title">Creating an Agent</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
