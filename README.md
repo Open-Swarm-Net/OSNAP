@@ -1,56 +1,52 @@
-# Important links:
-* https://docs.google.com/presentation/d/13fBflbidB7ykvWYGxvemO1U5Rle58lqEZnkUhBwzB38
-* https://github.com/CogniHack/CogniHack/blob/master/docs/BIG_IDEA.md
+# OSNAP
 
-# General information 
-OSNAP, an innovative open-source project, aims to revolutionize the way AI systems communicate and collaborate. With a Central Registry facilitating AI discovery and a Standardized Communication Protocol ensuring seamless interactions, OSNAP enables AI systems to work together, enhancing their capabilities and scalability. This technology has the potential to streamline workflows across various sectors, including project management, customer service, healthcare, and urban planning, paving the way for significant economic growth. By enabling secure, standardized communication and collaboration among AI systems, OSNAP promises a future where AI systems don't just work for us, but with us and each other, driving economic growth while ensuring privacy and security.
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Python Version](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
+[![Discord Follow](https://dcbadge.vercel.app/api/server/seKVhCtcAJ?style=flat)](https://discord.gg/seKVhCtcAJ)
 
-# How to run
+The Open Swarm Network Agent Protocol (OSNAP) is a standardized toolkit for building AI agents that interact with each other. Currently, the development and implementation of interacting autonomous AI agents and swarms are highly fragmented, with different projects utilizing various custom-built protocols and communication methods. This lack of standardization can lead to difficulties. OSNAP aims to address these issues by providing a well-defined, standardized toolkit for building and interacting with autonomous AI agents and swarms.
 
-* `cp .env.example .env.receiver; cp env.example .env.sender`
-* `sed -i ' 's/host-redis/receiver-redis/g' '.env.receiver'`
-* `sed -i ' 's/host-redis/sender-redis/g' '.env.sender'`
-* `docker network create osnap-network`
-* `docker-compose up --build`
+<p align="center">
+  <img src="content/logo_midjourney.png" alt="Project logo" width="1080">
+</p>
+
+## Table of Contents
+- [How to use in your project](#how-to-use-in-your-project)
+- [Examples](#examples)
+- [Architecture Overview](#architecture-overview)
+- [Next-Ups](#next-ups)
+- [How to Contribute](#how-to-contribute)
+
+# How to use in your project
+Coming soon...
+
+# Examples
+
+First, setup the environment:
+1. Installing dependencies:
+    - If you use poetry, use `pyproject.toml`
+    - Otherwise, create a new [venv](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/) and use `requirements.txt`. 
+2. Adding environment variables:
+    - use `.env.template` to create a `.env` file
+    - every example has a separate `.env` file
+
+## Discord Swarm
+[To Example](examples\discord_swarm\README.md)\
+Discord swarm allows you to deploy multiple independent agents (can be in different networks) and let them communicate with each other over a discord server. For example, agents can ask other bots for help and solve the task colaboratively.
+
+The communication is handleded via the DiscordAdapter and the only think you need to do is to implement the logic of the `SwarmAgentBase`.
+
+# Architecture overview
+<p align="center">
+  <img src="content/architecture_diagram.png" alt="Project diagram" width="720">
+</p>
 
 
-# Flow to test
-
-Open the following URLs:
-
-* http://localhost:8000/ (SENDER)
-* http://localhost:8005/ (RECEIVER)
-
-...
+# Next-ups
+- make adding new models as easy as possible, including custom deployed ones like llama
+- multi-key support for higher scalability
 
 
-
-# Open Swarm Network Agent Protocol (OSNAP)
-
-## Architecture
-
-- FastAPI (Implements the Agent API)
-  - /info (describes the role of the agent)
-  - /tools (describe the tools made available)
-  - /run (invoke other agents to perform tasks)
-  - /listen (listen for task results distributed to other agents)
-  - /finish (agents try and agree they are done)
-- Agent (Python/Langchain)
-  - Agent State
-  - Task Store (Queue, Whatever)
-- Tool Store (Redis)
-  - Self-Describing Format, with Permissions, Preferences, Restrictions
-  - Could be JSON
-  - Could be Vectors
-  
-
-## Call Sequence
-
-1. My user (agent1) gives the objective
-2. Agent1 calls Agent2 /tools endpoint
-3. Agent2 sends back tools response from Tool Store
-4. Agent1 makes plan (ala babyagi) and asks Agent2 to execute the first step *Can potentially explore more traits and roles here*. This is done via a request to agent2's /run endpoint. Agent2 acknowledges that it recieved the task by responding with some status.
-5. Agent1 registers a listener for the task ID.
-6. Agent2 does the thing in the background, and when it's done, send a POST request to Agent1s listen endpoint with the result.
-7. Continue as long as Agent1 wants to in order to solve the problem. 
-8. Agent1 sends a request to the /finish endpoint.
+# How to Contribute
+- follow the SOLID principles and don't break the abstractions
+- create bite-sized PRs
