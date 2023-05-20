@@ -2,7 +2,7 @@ import redis
 import json
 import uuid
 
-from osnap import OSNAPBaseAgent
+from osnap_client.agents import OSNAPBaseAgent
 
 import logging
 
@@ -43,13 +43,12 @@ class AgentRegistry:
 
     def get_agent(self, name):
         agent_data = self.redis_client.hget(f"agent:{name}", name)
-        print("agent_data")
         if agent_data:
             agent_data["tools"] = json.loads(agent_data["tools"])
             return agent_data
         return None
 
-    def add_agent(self, agent: OSNAPBaseAgent) -> OSNAPBaseAgent:
+    def add_agent(self, agent: OSNAPBaseAgent) -> OSNAPBaseAgent | None:
         agent_data = {
             "id": agent.id,
             "name": agent.name,

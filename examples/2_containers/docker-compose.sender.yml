@@ -1,8 +1,8 @@
 version: '3.9'
 
 services:
-  osnap-app-sender:
-    container_name: osnap-app-sender
+  app-sender:
+    container_name: app-sender
     ports:
     - 8000:8000
     build:

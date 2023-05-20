@@ -16,5 +16,5 @@ For a more abstract deep dive into agents:
 .. toctree::
    :maxdepth: 1
 
-   creating_an_agent.md
+   agent_basics.ipynb
    what_are_agents.ipynb

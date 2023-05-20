@@ -4,10 +4,12 @@
 [![Python Version](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
 [![Discord Follow](https://dcbadge.vercel.app/api/server/seKVhCtcAJ?style=flat)](https://discord.gg/seKVhCtcAJ)
 
-The Open Swarm Network Agent Protocol (OSNAP) is a standardized protocol for building autonomous AI agents and swarms or organizations of agents. The primary goal of OSNAP is to facilitate interoperability, collaboration, and ease of development across various autonomous AI systems, similar to how HTTP serves as a standard protocol for the World Wide Web.
 <p align="center">
   <img src="content/logo_midjourney.png" alt="Project logo" width="1080">
 </p>
+
+The Open Swarm Network Agent Protocol (OSNAP) is a standardized toolkit for building AI agents that interact with each other. Currently, the development and implementation of interacting autonomous AI agents and swarms are highly fragmented, with different projects utilizing various custom-built protocols and communication methods. This lack of standardization can lead to difficulties. OSNAP aims to address these issues by providing a well-defined, standardized toolkit for building and interacting with autonomous AI agents and swarms.
+
 
 ## Table of Contents
 - [Why](#why)
@@ -37,6 +39,8 @@ OSNAP aims to address these issues by providing a well-defined, standardized pro
   <img src="content/diagram.png" alt="Project diagram" width="720">
 </p>
 
+## Docker Containers
+[To Example](examples/2_containers/README.md)
 
 # Next-ups
 - make adding new models as easy as possible, including custom deployed ones like llama

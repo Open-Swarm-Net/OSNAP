@@ -4,8 +4,9 @@ from uuid import UUID
 from enum import Enum
 from abc import ABC, abstractmethod
 
+from osnap_client.core import Scope
 
-class OSNAPTask(BaseModel):
+class AgentTask(BaseModel):
     objective: str
     task_id: Union[int, str, UUID]
     task_name: str
@@ -13,34 +14,35 @@ class OSNAPTask(BaseModel):
     task_tool: str = ""
 
 
-class OSNAPAgentRunResponseStatus(str, Enum):
+class AgentRunResponseStatus(str, Enum):
     STARTING = "starting"
     WORKING = "working"
     ERROR = "error"
 
 
-class OSNAPAgentRunResponse(BaseModel):
+class AgentRunResponse(BaseModel):
     """
     The response from an agent's run method.
     """
 
-    status: OSNAPAgentRunResponseStatus
+    status: AgentRunResponseStatus
     message: str
     payload: dict
 
 
-class OSNAPAgentTaskResultStatus(str, Enum):
+class AgentTaskResultStatus(str, Enum):
     SUCCESS = "success"
     ERROR = "error"
 
 
-class OSNAPAgentTaskResult(BaseModel):
+class AgentTaskResult(BaseModel):
     """
     The result of an agent's task.
     Payload might contain metadata like the time it took to run the task
     """
-
-    status: OSNAPAgentRunResponseStatus
+    task_id: Union[int, str, UUID]
+    task_name: str
+    status: AgentTaskResultStatus
     message: str
     payload: dict
 
@@ -54,8 +56,15 @@ class AgentInfo(BaseModel):
     description: str
     id: Union[int, str, UUID, None] = None
     tools: list = []
-    url: str = None
+    url: str = ""
 
+class OSNAPAgent:
+    name: str
+    description: str
+    id: Union[int, str, UUID] = ""
+    tools: list = []
+    url: str = ""
+    scope: Scope = Scope.PUBLIC
 
 class OSNAPBaseAgent(BaseModel, ABC):
     """
@@ -67,9 +76,10 @@ class OSNAPBaseAgent(BaseModel, ABC):
 
     name: str
     description: str
-    id: Union[int, str, UUID] = None
+    id: Union[int, str, UUID] = ""
     tools: list = []
-    url: str = None
+    url: str = ""
+    scope: Scope = Scope.PUBLIC
 
     def info(self) -> AgentInfo:
         """
@@ -86,7 +96,7 @@ class OSNAPBaseAgent(BaseModel, ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def run(self, task: OSNAPTask) -> OSNAPAgentRunResponse:
+    def run(self, task: AgentTask) -> AgentRunResponse:
         """
         Receives a request from another agent.
         Returns a run response with a status and optionally, a payload
@@ -94,13 +104,13 @@ class OSNAPBaseAgent(BaseModel, ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def listen(self, result: OSNAPAgentTaskResult):
+    def listen(self, result: AgentTaskResult):
         """
         Receives a task result from another agent.
         """
         raise NotImplementedError
 
-    def complete(self):
+    def complete(self, payload: dict = {}):
         """
         Completes the current objective.
         Can use this to stop listening for particular task results or stop running a task.

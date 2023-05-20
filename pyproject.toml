@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "osnap-client"
-version = "0.1.1a1"
+version = "0.1.1a3"
 description = ""
 authors = ["Forrest Murray <FMurray@gmail.com>"]
 readme = "README.md"
