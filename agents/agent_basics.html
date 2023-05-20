@@ -1,0 +1,804 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Agent Basics &#8212; OSNAP 0.1.1 documentation</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="What is an agent?" href="what_are_agents.html" />
+    <link rel="prev" title="Agents" href="agents.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">OSNAP 0.1.1 documentation</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Key Concepts
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="agents.html">
+   Agents
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Agent Basics
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="what_are_agents.html">
+     What is an agent?
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../swarms/swarms.html">
+   Swarms
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Use cases
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../use_cases/use_cases.html">
+   Use Cases
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+<a href="https://github.com/open-swarm-net/OSNAP"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="bottom"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/agents/agent_basics.ipynb.txt"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#async-task-handling">
+   Async task handling
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#next-step">
+     Next Step
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#wrapping-up">
+   Wrapping Up
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Agent Basics</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#async-task-handling">
+   Async task handling
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#next-step">
+     Next Step
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#wrapping-up">
+   Wrapping Up
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section id="agent-basics">
+<h1>Agent Basics<a class="headerlink" href="#agent-basics" title="Permalink to this headline">#</a></h1>
+<p>This notebooks walks you through creating two agents that work together to schedule coffee.</p>
+<p>First we create two agents:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">osnap_client.agents</span> <span class="kn">import</span> <span class="p">(</span>
+  <span class="n">OSNAPBaseAgent</span><span class="p">,</span> 
+  <span class="n">AgentInfo</span><span class="p">,</span> 
+  <span class="n">AgentTask</span><span class="p">,</span> 
+  <span class="n">AgentRunResponse</span><span class="p">,</span>
+  <span class="n">AgentTaskResult</span>
+<span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">alice_run</span><span class="p">():</span>
+  <span class="k">pass</span>
+
+<span class="k">def</span> <span class="nf">alice_start</span><span class="p">():</span> 
+  <span class="k">pass</span>
+
+<span class="k">def</span> <span class="nf">alice_listen</span><span class="p">():</span> 
+  <span class="k">pass</span>
+
+<span class="k">def</span> <span class="nf">alice_complete</span><span class="p">():</span>
+  <span class="k">pass</span>
+
+<span class="k">def</span> <span class="nf">alice_terminate</span><span class="p">():</span>
+  <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">AliceAgent</span><span class="p">(</span><span class="n">OSNAPBaseAgent</span><span class="p">):</span>
+  <span class="n">name</span><span class="o">=</span><span class="s2">&quot;alice&quot;</span>
+  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Alice&#39;s personal assistant&quot;</span>
+  <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;calendar&quot;</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="s2">&quot;location&quot;</span><span class="p">]</span>
+  <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;1234&quot;</span>
+
+  <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">:</span> <span class="n">AgentTask</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">alice_run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">)</span>
+
+  <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objective</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">agent_url</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">alice_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objective</span><span class="p">,</span> <span class="n">agent_url</span><span class="p">)</span>
+
+  <span class="k">def</span> <span class="nf">listen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">:</span> <span class="n">AgentTaskResult</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">alice_listen</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+  
+  <span class="k">def</span> <span class="nf">complete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">alice_complete</span><span class="p">()</span>
+  
+  <span class="k">def</span> <span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">alice_terminate</span><span class="p">()</span>
+  
+<span class="n">alice</span> <span class="o">=</span> <span class="n">AliceAgent</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># define the methods so we can test them</span>
+<span class="k">def</span> <span class="nf">bob_run</span><span class="p">():</span>
+  <span class="k">pass</span>
+
+<span class="k">def</span> <span class="nf">bob_start</span><span class="p">():</span>
+  <span class="k">pass</span>
+
+<span class="k">def</span> <span class="nf">bob_listen</span><span class="p">():</span>
+  <span class="k">pass</span>
+
+<span class="k">def</span> <span class="nf">bob_complete</span><span class="p">():</span>
+  <span class="k">pass</span>
+
+<span class="k">def</span> <span class="nf">bob_terminate</span><span class="p">():</span>
+  <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">BobAgent</span><span class="p">(</span><span class="n">OSNAPBaseAgent</span><span class="p">):</span>
+  <span class="n">name</span><span class="o">=</span><span class="s2">&quot;bob&quot;</span>
+  <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Bobs&#39;s personal assistant&quot;</span>
+  <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;calendar&quot;</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="s2">&quot;location&quot;</span><span class="p">]</span>
+  <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;1234&quot;</span>
+
+  <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">:</span> <span class="n">AgentTask</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AgentRunResponse</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">bob_run</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+
+  <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objective</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">agent_url</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">bob_start</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="n">agent_url</span><span class="p">)</span>
+
+  <span class="k">def</span> <span class="nf">listen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">:</span> <span class="n">AgentTaskResult</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">bob_listen</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+  
+  <span class="k">def</span> <span class="nf">complete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payload</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}):</span>
+    <span class="k">return</span> <span class="n">bob_complete</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+  
+  <span class="k">def</span> <span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">bob_terminate</span><span class="p">()</span>
+  
+<span class="n">bob</span> <span class="o">=</span> <span class="n">BobAgent</span><span class="p">()</span>
+
+<span class="n">bob</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AgentInfo(name=&#39;bob&#39;, description=&quot;Bobs&#39;s personal assistant&quot;, id=1234, tools=[&#39;calendar&#39;, &#39;email&#39;, &#39;location&#39;], url=&#39;&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>In your application you will define the required methods when you create an object, but for the purposes of this tutorial we will define them one at a time as we go. Like the following example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">alice_run</span><span class="p">(</span><span class="n">task</span><span class="p">:</span> <span class="n">OSNAPTask</span><span class="p">):</span>
+  <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Alice is running task NOW!! </span><span class="si">{</span><span class="n">task</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+  
+<span class="n">alice</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;something&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>First let’s say that Alice wants her agent to work with Bob’s agent to schedule coffee with him.
+We initialize this request by calling the <code class="docutils literal notranslate"><span class="pre">start</span></code> method on Alice’s agent. In our case, we are going to hardcode some logic into Alice’s agent to make it easier to understand.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">openai</span>
+<span class="kn">import</span> <span class="nn">getpass</span>
+<span class="n">openai</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getpass</span><span class="p">()</span>
+
+<span class="n">bob_info</span> <span class="o">=</span> <span class="n">bob</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">alice_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objective</span><span class="p">,</span> <span class="n">agent_url</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    You are </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="si">}</span><span class="s2">. You have access to the following tools: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">tools</span><span class="si">}</span><span class="s2">.</span>
+
+<span class="s2">    Alice wants to </span><span class="si">{</span><span class="n">objective</span><span class="si">}</span><span class="s2">. Bob&#39;s agent is </span><span class="si">{</span><span class="n">bob_info</span><span class="o">.</span><span class="n">description</span><span class="si">}</span><span class="s2">. Bob&#39;s agent has access to the following tools: </span><span class="si">{</span><span class="n">bob_info</span><span class="o">.</span><span class="n">tools</span><span class="si">}</span><span class="s2">.</span>
+
+<span class="s2">    What are the tasks we need to complete </span><span class="si">{</span><span class="n">objective</span><span class="si">}</span><span class="s2">?</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">response</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">Completion</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+      <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;text-davinci-003&quot;</span><span class="p">,</span>
+      <span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span>
+      <span class="n">temperature</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+      <span class="n">max_tokens</span><span class="o">=</span><span class="mi">200</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">response</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">alice</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">objective</span><span class="o">=</span><span class="s2">&quot;Schedule coffee with Bob&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">task_list</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">task_list</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;&#39;,
+ &#39;1. Determine a suitable date and time for the meeting.&#39;,
+ &quot;2. Send an email to Bob&#39;s agent to confirm the date and time.&quot;,
+ &quot;3. Use the calendar to set a reminder for Alice and Bob&#39;s agent.&quot;,
+ &#39;4. Use the location tool to find a suitable location for the meeting.&#39;,
+ &quot;5. Send an email to Bob&#39;s agent to confirm the location.&quot;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The protocol isn’t opinionated about WHAT your agent does. In this case we are just picking a hardcoded external agent, and then using it’s description and tools directly in the prompt. This allows every agent to define as much logic as they want. The purpose of the protocol is to make them interoperable.</p>
+<p>Now that we have a nice list of tasks, we can start asking Bob’s agent for help</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">You are </span><span class="si">{</span><span class="n">alice</span><span class="o">.</span><span class="n">description</span><span class="si">}</span><span class="s2">. You have access to the following tools: </span><span class="si">{</span><span class="n">alice</span><span class="o">.</span><span class="n">tools</span><span class="si">}</span><span class="s2">.</span>
+<span class="s2">Alice wants to Schedule coffee with Bob. Bob&#39;s agent is </span><span class="si">{</span><span class="n">bob_info</span><span class="o">.</span><span class="n">description</span><span class="si">}</span><span class="s2">. Bob&#39;s agent has access to the following tools: </span><span class="si">{</span><span class="n">bob_info</span><span class="o">.</span><span class="n">tools</span><span class="si">}</span><span class="s2">.</span>
+
+<span class="s2">The first task is to </span><span class="si">{</span><span class="n">task_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">.</span>
+
+<span class="s2">We&#39;re going to make a simple request to Bob&#39;s agent to help. What is the request?</span>
+<span class="s2">Format your request as a simple task for Bob&#39;s agent to complete. </span>
+<span class="s2">You can also specify a tool to use, if you want to be specific.</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">Completion</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+  <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;text-davinci-003&quot;</span><span class="p">,</span>
+  <span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span>
+  <span class="n">temperature</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+  <span class="n">max_tokens</span><span class="o">=</span><span class="mi">200</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">task_map</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">task_map</span><span class="p">[</span><span class="n">response</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now that we have a task ready for Bob’s agent, we’re going to send it to him.
+We give it an id here so that both agents can keep track of it.</p>
+<p>Let’s turn this into an OSNAPTaskRequest:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">task1</span> <span class="o">=</span> <span class="n">AgentTask</span><span class="p">(</span>
+  <span class="n">objective</span><span class="o">=</span><span class="s2">&quot;Schedule coffee with Bob&quot;</span><span class="p">,</span>
+  <span class="n">task_id</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+  <span class="n">task_name</span><span class="o">=</span><span class="n">task_map</span><span class="p">[</span><span class="n">response</span><span class="o">.</span><span class="n">id</span><span class="p">],</span>
+  <span class="n">task_description</span><span class="o">=</span><span class="n">task_map</span><span class="p">[</span><span class="n">response</span><span class="o">.</span><span class="n">id</span><span class="p">],</span>
+  <span class="n">task_tool</span><span class="o">=</span><span class="s2">&quot;calendar&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we can implement the run method on Bob’s agent that we just stubbed out later.</p>
+<p>run takes an OSNAPTask as an input and returns an OSNAPAgentRunResponse.</p>
+<p>Run might be a long running task, so we want to return a status that indicates to the caller if that it’s working on it.
+Let’s just have it return a status of “starting” for now.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">bob_run</span><span class="p">(</span><span class="n">task</span><span class="p">):</span> 
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Incoming task from Alice: &quot;</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">task_name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">AgentRunResponse</span><span class="p">(</span>
+        <span class="n">status</span><span class="o">=</span><span class="s2">&quot;starting&quot;</span><span class="p">,</span>
+        <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Sounds good, I&#39;ll get started on that.&quot;</span><span class="p">,</span>
+        <span class="n">payload</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;tools&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;calendar&quot;</span><span class="p">],</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+
+<span class="n">bob_run_response</span> <span class="o">=</span> <span class="n">bob</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">task1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Incoming task from Alice:  
+Request: Please use the calendar tool to find a suitable date and time for Alice and Bob to meet for coffee.
+</pre></div>
+</div>
+</div>
+</div>
+<section id="async-task-handling">
+<h2>Async task handling<a class="headerlink" href="#async-task-handling" title="Permalink to this headline">#</a></h2>
+<p>Since we mentioned that Agent Tasks can take a while, how does one agent let another know that it’s task is complete? There are many different ways that distributed systems handle this, but OSNAP doesn’t prescribe a particular implementation.</p>
+<p>All that is required is that agents who make task requests register a “listener” that the other agent can use when they have a task result. This is essntially the <a class="reference external" href="https://en.wikipedia.org/wiki/Observer_pattern">Observer Pattern</a>.</p>
+<p>Let’s try it out!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">alice_assigned_tasks</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">alice_completed_tasks</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">if</span> <span class="n">bob_run_response</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;starting&quot;</span> <span class="ow">or</span> <span class="n">bob_run_response</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;working&quot;</span><span class="p">:</span>
+    <span class="n">alice_assigned_tasks</span><span class="p">[</span><span class="n">task1</span><span class="o">.</span><span class="n">task_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">task1</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Alice has assigned the following tasks: &quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">({</span><span class="n">task</span><span class="o">.</span><span class="n">task_name</span> <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">alice_assigned_tasks</span><span class="o">.</span><span class="n">values</span><span class="p">()})</span>
+
+<span class="k">def</span> <span class="nf">alice_listen</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="n">AgentTaskResult</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Bob&#39;s agent has completed the task: &quot;</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">task_name</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Bob&#39;s agent task result says: &quot;</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+    <span class="n">completed</span> <span class="o">=</span> <span class="n">alice_assigned_tasks</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">task_id</span><span class="p">)</span>
+    <span class="n">alice_completed_tasks</span><span class="p">[</span><span class="n">result</span><span class="o">.</span><span class="n">task_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">completed</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Alice has assigned the following tasks: 
+{&#39;\nRequest: Please use the calendar tool to find a suitable date and time for Alice and Bob to meet for coffee.&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+<p>We give alice a <a class="reference external" href="https://docs.python.org/3/tutorial/datastructures.html#sets">Python set</a> of assigned tasks, but this can be implemented however you chose, like with a more sophisticated tool like Kafka or Redis PubSub for example.</p>
+<p>We look at the <code class="docutils literal notranslate"><span class="pre">AgentRunResponse</span></code> that Bob’s agent gave us when we sent the <code class="docutils literal notranslate"><span class="pre">AgentTask</span></code> and see if we want to listen for a result by just checking if the status is <code class="docutils literal notranslate"><span class="pre">&quot;starting&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;working&quot;</span></code>.</p>
+<p>Then in Alice’s listen method, if a task completes, we remove that task from the assigned tasks set.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bob_task_result</span> <span class="o">=</span> <span class="n">AgentTaskResult</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span>
+    <span class="n">task_id</span><span class="o">=</span><span class="n">task1</span><span class="o">.</span><span class="n">task_id</span><span class="p">,</span>
+    <span class="n">task_name</span><span class="o">=</span><span class="n">task1</span><span class="o">.</span><span class="n">task_name</span><span class="p">,</span>
+    <span class="n">status</span><span class="o">=</span><span class="s2">&quot;success&quot;</span><span class="p">,</span>
+    <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Bob is available at 3pm on Tuesday.&quot;</span><span class="p">,</span>
+    <span class="n">payload</span><span class="o">=</span><span class="p">{}</span>
+<span class="p">)</span>
+
+<span class="c1"># bob log? bob loblaw&#39;s law blog?</span>
+<span class="n">bob_log</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="n">bob_task_result</span><span class="p">,</span> <span class="s2">&quot;calendar&quot;</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="n">alice</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="n">bob_task_result</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Alice has assigned the following tasks: &quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">({</span><span class="n">task</span><span class="o">.</span><span class="n">task_name</span> <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">alice_assigned_tasks</span><span class="o">.</span><span class="n">values</span><span class="p">()})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Bob&#39;s agent has completed the task:  
+Request: Please use the calendar tool to find a suitable date and time for Alice and Bob to meet for coffee.
+Bob&#39;s agent task result says:  Bob is available at 3pm on Tuesday.
+Alice has assigned the following tasks: 
+set()
+</pre></div>
+</div>
+</div>
+</div>
+<p>Bob’s agent does some stuff, and decides that Bob is available at 3pm on Tuesday. We will also keep track of the tasks bob did in a task log for reference later. Now Bob’s agent can call Alice’s agent listen method with the task result.</p>
+<p>Now we can see that Alice has removed that task from her listeners. Notice that if you run that cell twice, you’ll get an error. This actually somewhat intentional as it makes sense that Alice has already stopped listening for that task. This isn’t a part of the protocol per se, Alice’s agent could keep listening for more results for a particular task (like for example if she wanted to distribute it to multiple different agents instead), it’s up to you as a devloper to figure out what you want to do.</p>
+<section id="next-step">
+<h3>Next Step<a class="headerlink" href="#next-step" title="Permalink to this headline">#</a></h3>
+<p>Let’s say for the sake of demonstration that Alice’s agent checks her calendar and sees that 3pm on Tuesday works for her as well. Let’s construct a prompt to help Alice’s agent figure out what it wants to do next.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">alice_schedule_response</span> <span class="o">=</span> <span class="s2">&quot;Tuesday at 3pm works for Alice as well&quot;</span>
+
+<span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">You are </span><span class="si">{</span><span class="n">alice</span><span class="o">.</span><span class="n">description</span><span class="si">}</span><span class="s2">. You have access to the following tools: </span><span class="si">{</span><span class="n">alice</span><span class="o">.</span><span class="n">tools</span><span class="si">}</span><span class="s2">.</span>
+
+<span class="s2">Alice wants to schedule coffee with bob. Bob&#39;s agent is </span><span class="si">{</span><span class="n">bob_info</span><span class="o">.</span><span class="n">description</span><span class="si">}</span><span class="s2">. Bob&#39;s agent has access to the following tools: </span><span class="si">{</span><span class="n">bob_info</span><span class="o">.</span><span class="n">tools</span><span class="si">}</span><span class="s2">.</span>
+
+<span class="s2">Previously we had the following tasks: </span><span class="si">{</span><span class="n">task_list</span><span class="si">}</span>
+
+<span class="s2">Bob&#39;s agent has completed the following task: </span><span class="si">{</span><span class="n">bob_task_result</span><span class="o">.</span><span class="n">task_name</span><span class="si">}</span><span class="s2">. Bob&#39;s agent task result says: </span><span class="si">{</span><span class="n">bob_task_result</span><span class="o">.</span><span class="n">message</span><span class="si">}</span>
+
+<span class="si">{</span><span class="n">alice_schedule_response</span><span class="si">}</span>
+
+<span class="s2">What are the remaining tasks we need to the objective of scheduling coffee with bob?</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">Completion</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+  <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;text-davinci-003&quot;</span><span class="p">,</span>
+  <span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span>
+  <span class="n">temperature</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+  <span class="n">max_tokens</span><span class="o">=</span><span class="mi">200</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;&#39;,
+ &quot;1. Send an email to Bob&#39;s agent to confirm the date and time of 3pm on Tuesday.&quot;,
+ &quot;2. Use the calendar to set a reminder for Alice and Bob&#39;s agent.&quot;,
+ &#39;3. Use the location tool to find a suitable location for the meeting.&#39;,
+ &quot;4. Send an email to Bob&#39;s agent to confirm the location.&quot;,
+ &#39;5. Send an email to Alice and Bob to confirm the date, time, and location of the meeting.&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Groovy! The great part of autonomous agents is that they can keep running and completing tasks, sometimes without any user input.</p>
+<p>The agents can continue to work together using the same back and forth protocol we showed above for the rest of the tasks.</p>
+<p>There’s just one last thing we need to do. Alice is satisfied with what her agent has done so far to achieve the <code class="docutils literal notranslate"><span class="pre">Objective</span></code> of scheduling coffee with Bob. She should let Bob’s agent know that. This what the <code class="docutils literal notranslate"><span class="pre">complete</span></code> method is for.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">bob_complete</span><span class="p">(</span><span class="n">payload</span><span class="p">):</span> 
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        I worked with </span><span class="si">{</span><span class="n">payload</span><span class="p">[</span><span class="s1">&#39;agent_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> on the objective: </span><span class="si">{</span><span class="n">payload</span><span class="p">[</span><span class="s1">&#39;objective&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.</span>
+
+<span class="s2">        We completed the following tasks: </span><span class="si">{</span><span class="n">payload</span><span class="p">[</span><span class="s1">&#39;tasks&#39;</span><span class="p">]</span><span class="si">}</span>
+
+<span class="s2">        I used the following tools: </span><span class="si">{</span><span class="p">[</span><span class="n">tool</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="n">tool</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">bob_log</span><span class="p">]</span><span class="si">}</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="p">)</span>
+
+<span class="n">alice_summary</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;agent_name&quot;</span><span class="p">:</span> <span class="n">alice</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+    <span class="s2">&quot;objective&quot;</span><span class="p">:</span> <span class="s2">&quot;Schedule coffee with Bob&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;tasks&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">task</span><span class="o">.</span><span class="n">task_name</span> <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">alice_completed_tasks</span><span class="o">.</span><span class="n">values</span><span class="p">()],</span>
+<span class="p">}</span>
+
+<span class="n">bob</span><span class="o">.</span><span class="n">complete</span><span class="p">(</span><span class="n">payload</span><span class="o">=</span><span class="n">alice_summary</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        I worked with alice on the objective: Schedule coffee with Bob.
+
+        We completed the following tasks: [&#39;\nRequest: Please use the calendar tool to find a suitable date and time for Alice and Bob to meet for coffee.&#39;]
+
+        I used the following tools: [&#39;calendar&#39;]
+    
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="wrapping-up">
+<h2>Wrapping Up<a class="headerlink" href="#wrapping-up" title="Permalink to this headline">#</a></h2>
+<p>This is the very basic, 10,000 foot overview of how to build a very basic two agent flow.</p>
+</section>
+</section>
+
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="agents.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Agents</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="what_are_agents.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">What is an agent?</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Forrest Murray<br/>
+  
+      &copy; Copyright 2023, Forrest Murray.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
