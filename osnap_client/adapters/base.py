@@ -18,16 +18,6 @@ class AdapterBase(ABC):
     def __init__(self) -> None:
         self.event_queue = asyncio.Queue()
 
-    # @staticmethod
-    # def add_to_queue(func):
-    #     @functools.wraps(func)
-    #     async def wrapper(self, *args, **kwargs):
-    #         result = await func(self, *args, **kwargs)
-    #         if not isinstance(result, QueueTaskStruct):
-    #             raise TypeError(f"Expected a QueueTaskStruct to add to the event_queue, got {type(result)}")
-    #         await self.event_queue.put(result)
-    #     return wrapper
-
     async def add_to_queue(self, task):
         if not isinstance(task, QueueTaskStruct):
             raise TypeError(

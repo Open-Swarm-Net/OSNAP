@@ -12,31 +12,34 @@ The Open Swarm Network Agent Protocol (OSNAP) is a standardized toolkit for buil
 
 
 ## Table of Contents
-- [Why](#why)
 - [How to use in your project](#how-to-use-in-your-project)
 - [Examples](#examples)
 - [Architecture Overview](#architecture-overview)
 - [Next-Ups](#next-ups)
 - [How to Contribute](#how-to-contribute)
 
-# Why
-Currently, the development and implementation of autonomous AI agents and swarms are highly fragmented, with different projects utilizing various custom-built protocols and communication methods. This lack of standardization can lead to difficulties in:
-
-Interoperability between different AI systems and swarm implementations.
-Reusability of code, components, and algorithms.
-Collaboration between researchers and practitioners in the field of autonomous AI and swarm intelligence.
-OSNAP aims to address these issues by providing a well-defined, standardized protocol for building and interacting with autonomous AI agents and swarms.
-
-
 # How to use in your project
-1. aaaa
+Coming soon...
 
 # Examples
 
+First, setup the environment:
+1. Installing dependencies:
+    - If you use poetry, use `pyproject.toml`
+    - Otherwise, create a new [venv](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/) and use `requirements.txt`. 
+2. Adding environment variables:
+    - use `.env.template` to create a `.env` file
+    - every example has a separate `.env` file
+
+## Discord Swarm
+[To Example](examples\discord_swarm\README.md)\
+Discord swarm allows you to deploy multiple independent agents (can be in different networks) and let them communicate with each other over a discord server. For example, agents can ask other bots for help and solve the task colaboratively.
+
+The communication is handleded via the DiscordAdapter and the only think you need to do is to implement the logic of the `SwarmAgentBase`.
 
 # Architecture overview
 <p align="center">
-  <img src="content/diagram.png" alt="Project diagram" width="720">
+  <img src="content/architecture_diagram.png" alt="Project diagram" width="720">
 </p>
 
 ## Docker Containers

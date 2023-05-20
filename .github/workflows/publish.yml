@@ -31,5 +31,7 @@ jobs:
           poetry-version: ${{ matrix.poetry-version }}
       - name: poetry install docs dependencies
         run: poetry install --only main
+      - name: Build the package
+        run: poetry build
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
