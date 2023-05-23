@@ -1,2 +1,2 @@
-from .AdapterBase import AdapterBase
-from .DiscordAdapter import DiscordAdapter
+from .base import AdapterBase, QueueTaskStruct
+from .discord_adapter import DiscordAdapter

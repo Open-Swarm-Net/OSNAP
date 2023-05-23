@@ -1,17 +1,28 @@
 from abc import ABC, abstractmethod
 import asyncio
-from osnap_client.adapters.QueueTaskStruct import QueueTaskStruct
+import functools
+
+from pydantic import BaseModel
+
+
+class QueueTaskStruct(BaseModel):
+    """QueueTaskStruct holds the callback function and the arguments to pass to it."""
+
+    command_type: str
+    data: str
+
 
 class AdapterBase(ABC):
-    """This class stores some basic properties that every adapter should implement.
-    """
+    """This class stores some basic properties that every adapter should implement."""
 
     def __init__(self) -> None:
         self.event_queue = asyncio.Queue()
 
     async def add_to_queue(self, task):
         if not isinstance(task, QueueTaskStruct):
-            raise TypeError(f"Expected a QueueTaskStruct to add to the event_queue, got {type(task)}")
+            raise TypeError(
+                f"Expected a QueueTaskStruct to add to the event_queue, got {type(task)}"
+            )
         await self.event_queue.put(task)
         print(f"Added {task} to the event_queue")
 
@@ -21,33 +32,28 @@ class AdapterBase(ABC):
         The output is forwarded to the agent through the event queue.
         """
         raise NotImplementedError
-    
+
     @abstractmethod
     async def on_message(self, message: str) -> QueueTaskStruct:
-        """This method is called when the apter is loaded
-        """
+        """This method is called when the apter is loaded"""
         raise NotImplementedError
 
     @abstractmethod
     async def get_users(self):
-        """Returns the information about the users on the server
-        """
+        """Returns the information about the users on the server"""
         raise NotImplementedError
-    
+
     @abstractmethod
     async def send_message(self, message: str, target_channel: str):
-        """This method is called to send a message to a specific channel
-        """
+        """This method is called to send a message to a specific channel"""
         raise NotImplementedError
-    
+
     @abstractmethod
     async def send_dm(self, message: str, target_user: str):
-        """This method is called to send a message to a specific user
-        """
+        """This method is called to send a message to a specific user"""
         raise NotImplementedError
-    
+
     @abstractmethod
     async def start():
-        """This method is called to start the adapter
-        """
+        """This method is called to start the adapter"""
         raise NotImplementedError

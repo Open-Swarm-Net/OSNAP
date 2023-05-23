@@ -8,4 +8,3 @@ from .osnap import (
     OSNAPResponse,
     OSNAPError,
 )
-from .agent import OSNAPAgent, AgentInfo

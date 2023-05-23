@@ -1,7 +1,7 @@
 import redis
 import uuid
 
-from osnap import OSNAPTool
+from osnap_client.core import OSNAPTool
 
 
 class ToolRegistry:

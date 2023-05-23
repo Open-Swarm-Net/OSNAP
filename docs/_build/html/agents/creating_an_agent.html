@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Agents &#8212; OSNAP 0.1.1 documentation</title>
+    <title>Creating an Agent &#8212; OSNAP 0.1.1 documentation</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -41,8 +41,6 @@
     <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Agent Basics" href="agent_basics.html" />
-    <link rel="prev" title="Getting Started" href="../getting_started/getting_started.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -106,12 +104,12 @@
   Key Concepts
  </span>
 </p>
-<ul class="current nav bd-sidenav">
- <li class="toctree-l1 current active has-children">
-  <a class="current reference internal" href="#">
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="agents.html">
    Agents
   </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
   <label for="toctree-checkbox-1">
    <i class="fas fa-chevron-down">
    </i>
@@ -232,7 +230,7 @@ title="Source repository"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="../_sources/agents/agents.rst.txt"
+        <a href="../_sources/agents/creating_an_agent.md.txt"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -243,7 +241,7 @@ title="Download source file"
 <span class="headerbtn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="headerbtn__text-container">.rst</span>
+<span class="headerbtn__text-container">.md</span>
 </a>
 
       </li>
@@ -269,23 +267,60 @@ title="Print to PDF"
     </ul>
   </div>
 </div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
 
     </div>
 </div>
 
 <!-- Table of contents -->
 <div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#use-the-osnapbaseagent-class">
+   Use the OSNAPBaseAgent class
+  </a>
+ </li>
+</ul>
+
+    </nav>
 </div>
     </div>
     <div class="article row">
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Agents</h1>
+                <h1>Creating an Agent</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
                         
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#use-the-osnapbaseagent-class">
+   Use the OSNAPBaseAgent class
+  </a>
+ </li>
+</ul>
+
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -293,24 +328,47 @@ title="Print to PDF"
                 
               <div>
                 
-  <section id="agents">
-<h1>Agents<a class="headerlink" href="#agents" title="Permalink to this headline">#</a></h1>
-<p>Agents are the core idea of OSNAP. This section of documentation contains discussions about <a class="reference external" href="./what_are_agents.html">what agents are</a>, how to create OSNAP agents, and more.</p>
-<p>Simply put, an agent only has to implement the following contract:</p>
-<ul class="simple">
-<li><p>Expose it’s metadata via an <strong>info</strong> method</p></li>
-<li><p>Accept incoming requests via a <strong>run</strong> method</p></li>
-<li><p>Listen for incoming messages via a <strong>listen</strong> method</p></li>
-<li><p>Complete objectives or tasks with a <strong>complete</strong> method</p></li>
-<li><p>Terminate objectives or tasks with a <strong>terminate</strong> method</p></li>
-</ul>
-<p>For a more abstract deep dive into agents:</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="agent_basics.html">Agent Basics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="what_are_agents.html">What is an agent?</a></li>
-</ul>
+  <section id="creating-an-agent">
+<h1>Creating an Agent<a class="headerlink" href="#creating-an-agent" title="Permalink to this headline">#</a></h1>
+<section id="use-the-osnapbaseagent-class">
+<h2>Use the OSNAPBaseAgent class<a class="headerlink" href="#use-the-osnapbaseagent-class" title="Permalink to this headline">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">osnap_client</span> <span class="kn">import</span> <span class="p">(</span>
+  <span class="n">OSNAPBaseAgent</span><span class="p">,</span>
+  <span class="n">AgentInfo</span><span class="p">,</span>
+  <span class="n">OSNAPTask</span><span class="p">,</span>
+  <span class="n">OSNAPAgentRunResponse</span>
+<span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">MyAgent</span><span class="p">(</span><span class="n">OSNAPBaseAgent</span><span class="p">):</span> 
+  <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;My Agent&quot;</span>
+  <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;My agent does cool things&quot;</span>
+  <span class="n">tools</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;tool1&quot;</span><span class="p">,</span> <span class="s2">&quot;tool2&quot;</span><span class="p">]</span>
+  <span class="nb">id</span> <span class="o">=</span> <span class="s2">&quot;1234&quot;</span>
+  <span class="n">endpoint</span> <span class="o">=</span> <span class="s2">&quot;https://myagent.com/1234&quot;</span>
+
+  <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AgentInfo</span><span class="p">:</span> 
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Info is the only method with a concrete implementation in OSNAPBaseAgent. The default</span>
+<span class="sd">    behavior returns an AgentInfo object constructed</span>
+<span class="sd">    from the __dict__ of the class. </span>
+
+<span class="sd">    You can override this behavior if you want to do something more complex.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+  <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">:</span> <span class="n">OSNAPTask</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OSNAPAgentRunResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is the method that will be called when your agent is invoked with some incoming task.</span>
+
+<span class="sd">    You can implement it&#39;s behavior however you want, but it must return an OSNAPAgentRunResponse. </span>
+
+<span class="sd">    Because the predominant use case of Agents is to do somthing that takes a long time, run returns an </span>
+<span class="sd">    OSNAPAgentRunResponse object that contains a way for another agent to keep track of it&#39;s progress without blocking. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+</pre></div>
 </div>
+</section>
 </section>
 
 
@@ -321,20 +379,6 @@ title="Print to PDF"
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="../getting_started/getting_started.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Getting Started</p>
-        </div>
-    </a>
-    <a class='right-next' id="next-link" href="agent_basics.html" title="next page">
-    <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Agent Basics</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
-    </a>
 </div>
             </footer>
         </div>

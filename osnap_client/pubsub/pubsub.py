@@ -3,6 +3,9 @@ import os
 import redis.asyncio as redis
 from fastapi import WebSocket
 
+from dotenv import load_dotenv
+load_dotenv(".env.sender")
+
 REDIS_HOST = os.getenv("REDIS_HOST")
 REDIS_PORT = os.getenv("REDIS_PORT")
 REDIS_USERNAME = os.getenv("REDIS_USERNAME")

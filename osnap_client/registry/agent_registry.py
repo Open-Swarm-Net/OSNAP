@@ -2,7 +2,7 @@ import redis
 import json
 import uuid
 
-from osnap import OSNAPAgent
+from osnap_client.agents import OSNAPBaseAgent
 
 import logging
 
@@ -19,7 +19,7 @@ class AgentRegistry:
             decode_responses=True,
         )
 
-    def register(self, agent: OSNAPAgent):
+    def register(self, agent: OSNAPBaseAgent):
         return self.get_or_create_agent(agent)
 
     def get_agents(self, scope):
@@ -34,7 +34,7 @@ class AgentRegistry:
             agents.append(agent)
         return agents
 
-    def get_or_create_agent(self, agent: OSNAPAgent):
+    def get_or_create_agent(self, agent: OSNAPBaseAgent):
         if self.redis_client.hexists(f"agent:{agent.name}", agent.name):
             return self.get_agent(agent.name)
         else:
@@ -43,13 +43,12 @@ class AgentRegistry:
 
     def get_agent(self, name):
         agent_data = self.redis_client.hget(f"agent:{name}", name)
-        print("agent_data")
         if agent_data:
             agent_data["tools"] = json.loads(agent_data["tools"])
             return agent_data
         return None
 
-    def add_agent(self, agent: OSNAPAgent) -> OSNAPAgent:
+    def add_agent(self, agent: OSNAPBaseAgent) -> OSNAPBaseAgent | None:
         agent_data = {
             "id": agent.id,
             "name": agent.name,
