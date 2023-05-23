@@ -35,7 +35,7 @@ First, setup the environment:
 [To Example](examples\discord_swarm\README.md)\
 Discord swarm allows you to deploy multiple independent agents (can be in different networks) and let them communicate with each other over a discord server. For example, agents can ask other bots for help and solve the task colaboratively.
 
-The communication is handleded via the DiscordAdapter and the only think you need to do is to implement the logic of the `SwarmAgentBase`.
+The communication is handleded via the DiscordAdapter and the only think you need to do is to implement the logic of the `SwarmAgent`.
 
 # Architecture overview
 <p align="center">

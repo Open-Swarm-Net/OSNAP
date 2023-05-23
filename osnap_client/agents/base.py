@@ -81,6 +81,14 @@ class OSNAPBaseAgent(BaseModel, ABC):
     url: str = ""
     scope: Scope = Scope.PUBLIC
 
+    def __init_subclass__(cls, **kwargs):
+        cls._register_command()
+    
+    @classmethod
+    def _register_command(cls):
+        print("registering a new command")
+
+
     def info(self) -> AgentInfo:
         """
         Returns the agent's name, description, and public tools.

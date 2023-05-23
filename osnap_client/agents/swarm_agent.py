@@ -4,24 +4,20 @@ import time
 import threading
 
 from osnap_client.adapters import AdapterBase, QueueTaskStruct
+from .base import OSNAPBaseAgent
 
-
-class SwarmAgentBase(ABC):
+class SwarmAgent(OSNAPBaseAgent):
     """
-    This is a base class that the user needs to implement to define the logic of the bot
-    for request handling and sending.
+    Concrete implementation of an OSNAPBaseAgent
     """
 
     def __init__(self, name: str, description: str, swarm_adapter: AdapterBase) -> None:
-        super().__init__()
-        self.name = name
-        self.description = description
         self.swarm_adapter = swarm_adapter
-        self.event_queue = swarm_adapter.event_queue
-        self.command_map = {}
+        # self.event_queue = swarm_adapter.event_queue
+        # self.command_map = {}
 
         # Register "ready" command
-        self.command_map["on_ready"] = self.on_ready
+        # self.command_map["on_ready"] = self.on_ready
 
     def command(self, name: str):
         def decorator(func):

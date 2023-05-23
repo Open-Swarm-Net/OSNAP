@@ -7,9 +7,9 @@ file_path = Path(__file__).absolute()
 sys.path.append(str(file_path.parent.parent.parent))
 
 from osnap_client.adapters import DiscordAdapter
-from osnap_client.agents import SwarmAgentBase
+from osnap_client.agents import SwarmAgent
 
-class ExampleSwarmAgent(SwarmAgentBase):
+class ExampleSwarmAgent(SwarmAgent):
     def __init__(self, name, description, swarm_adapter):
         super().__init__(name, description, swarm_adapter)
         self.num_pings = 0

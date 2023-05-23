@@ -2,7 +2,7 @@ import sys, os, time
 from dotenv import load_dotenv
 from pytest import fixture
 
-from osnap_client.adapters import DiscordSwarmAdapter
+from osnap_client.adapters import DiscordAdapter 
 
 
 @fixture
