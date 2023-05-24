@@ -17,23 +17,32 @@ class DalleAgent(SwarmAgentBase):
 
         self.dalle_engine = DalleEngine()
 
-        # @self.command(name="on_ready")
-        # async def on_ready(message: AgentCommand):
-        #     await self.swarm_adapter.send_message("$subscribe imagine", "general")
-
         @self.command(name="imagine")
         async def imagine(message: AgentCommand):
-            prompt = message.data
-            image = self.dalle_engine.imagine(prompt)
+            try:
+                prompt = message.payload
+                image = self.dalle_engine.imagine(prompt)
 
-            response = AgentCommand(
-                sender=self.name,
-                receiver="agent",
-                command_type=AgentCommandType.SUBMIT,
-                task_name="imagine",
-                data=image,
-            ).json()
-            await self.swarm_adapter.send_dm(response, message.sender, file=image)
+                response = AgentCommand(
+                    sender=self.name,
+                    receiver="agent",
+                    command_type=AgentCommandType.SUBMIT,
+                    task_name="imagine",
+                    payload_type = 'attachment',
+                    payload='' # cannot send bytes over discord because of the 4000 character limit
+                )
+                await self.swarm_adapter.send_dm(response, message.sender, file=image)
+            except Exception as e:
+                print(f"Error in imagine command: {e}")
+                response = AgentCommand(
+                    sender=self.name,
+                    receiver="agent",
+                    command_type=AgentCommandType.ERROR,
+                    task_name="imagine",
+                    payload_type = 'str',
+                    payload=f"505: Internal Server Error",
+                )
+                await self.swarm_adapter.send_dm(response, message.sender)
 
 def main():
     """

@@ -10,6 +10,7 @@ class AgentCommandType(Enum):
     TASK = "task"
     SUBMIT = "submit"
     REGISTER = "register"
+    INFO = "info"
     # add more command types as needed
 
 class AgentCommand(BaseModel):
@@ -23,13 +24,15 @@ class AgentCommand(BaseModel):
         receiver (str): Can be another agent on swarm, can be a channel. CanNOT be the adapter.
         command (AgentCommandType): The type of command. Purely technical, not used by the agent directly.
         task_name (str): The name of the task to be executed by the agent
-        data (str): The data to be sent
+        data_type (str): The type of the data to be sent
+        data (Any): The data to be sent
     """
     sender: str
     receiver: str
     command_type: AgentCommandType
     task_name: str
-    data: str
+    payload_type: str
+    payload: Any
 
     # def from_dict(self, data: Dict[str, Any]):
     #     return self.parse_obj(data)

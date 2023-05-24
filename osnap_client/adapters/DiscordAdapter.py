@@ -1,7 +1,7 @@
 # discord_adapter.py
 import logging
 import discord
-import queue
+from io import BytesIO
 from osnap_client.adapters.AdapterBase import AdapterBase
 from osnap_client.protocol import AgentCommand, AgentCommandType
 import asyncio
@@ -44,7 +44,8 @@ class DiscordAdapter(AdapterBase):
             receiver='agent',
             command_type=AgentCommandType.ON_READY,
             task_name = 'on_ready',
-            data=""
+            payload="",
+            payload_type = 'str'
         )
         await self.add_to_queue(response)
 
@@ -68,7 +69,8 @@ class DiscordAdapter(AdapterBase):
                 receiver='agent',
                 command_type=AgentCommandType.REQUEST,
                 task_name = command_name,
-                data=command_data
+                payload_type = 'str',
+                payload=command_data
             )
             await self.add_to_queue(message)
         elif message.content.startswith('{'):
@@ -83,7 +85,8 @@ class DiscordAdapter(AdapterBase):
                     receiver='agent',
                     command_type=AgentCommandType.ERROR,
                     task_name = 'fix',
-                    data=f"Failed to parse message {message.id}:\n {e}"
+                    payload_type = 'str',
+                    payload=f"Failed to parse message {message.id}:\n {e}"
                 )
 
     async def get_users(self):
@@ -102,6 +105,11 @@ class DiscordAdapter(AdapterBase):
             self.guild = self._get_start_guild()
 
         message_json = message.json()
+        if file is not None:
+            with BytesIO() as image_binary:
+                image_binary.write(file)
+                image_binary.seek(0)
+                file = discord.File(image_binary, filename='image.png')
 
         # Find the channel by its name
         for channel in self.guild.channels:
@@ -111,21 +119,6 @@ class DiscordAdapter(AdapterBase):
                 return
 
         raise ValueError(f"Could not find the channel {target_channel} in the list of channels: {self.guild.channels}.")
-    
-    async def subscribe_to_tasks(self, task_names: list):
-        """Subscribes to the specified tasks"""
-        message = f"$subscribe {','.join(task_names)}"
-        target_channel = "general"
-
-        # Find the channel by its name
-        for channel in self.guild.channels:
-            if channel.name == target_channel and isinstance(channel, discord.TextChannel):
-                await channel.send(message)
-                print(f"Sent message {message} to channel {target_channel}")
-                return
-        
-        raise ValueError(f"Could not find the channel {target_channel} in the list of channels: {self.guild.channels}.")
-
 
     async def send_dm(self, message: AgentCommand, target_user: str, file: bytes = None):
         """Sends a direct message to the specified user"""
@@ -133,10 +126,15 @@ class DiscordAdapter(AdapterBase):
             self.guild = self._get_start_guild()
 
         message_json = message.json()
+        if file is not None:
+            with BytesIO() as image_binary:
+                image_binary.write(file)
+                image_binary.seek(0)
+                file = discord.File(image_binary, filename='image.png')
 
-        for user in self.client.guild.members:
+        for user in self.guild.members:
             if user.name == target_user:
-                await user.send(message_json)
+                await user.send(message_json, file=file)
         
         raise ValueError(f"Could not find the user {target_user} in the list of users: {self.guild.members}.")
 

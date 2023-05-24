@@ -1,0 +1,1 @@
+{"sender": "DalleBot", "receiver": "swarm", "command_type": "register", "task_name": "register", "payload_type": "dict", "payload": {"description": "I am a bot who can generate images", "available_commands": ["imagine"]}}

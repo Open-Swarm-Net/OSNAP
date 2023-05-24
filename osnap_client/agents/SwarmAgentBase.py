@@ -35,8 +35,7 @@ class SwarmAgentBase(ABC):
                 message = self.swarm_adapter.log_queue.get_nowait()
                 print(message)
             except asyncio.QueueEmpty:
-                time.sleep(0.5)
-                continue
+                pass
             command_obj = None
             try:
                 command_obj = self.event_queue.get_nowait()
@@ -72,12 +71,17 @@ class SwarmAgentBase(ABC):
 
     async def on_ready(self, data: str):
         """This method is called when the apter is loaded."""
+        available_commands = [command for command in self.command_map.keys() if command != "on_ready"]
         self_description = AgentCommand(
             sender=self.name,
             receiver="swarm",
             command_type=AgentCommandType.REGISTER,
             task_name="register",
-            data=self.description
+            payload_type = 'dict',
+            payload={
+                "description": self.description,
+                "available_commands": available_commands
+            }
         )
         await self.swarm_adapter.send_message(self_description, "intros")
 
