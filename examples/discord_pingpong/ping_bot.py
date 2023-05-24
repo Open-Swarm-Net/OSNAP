@@ -8,6 +8,7 @@ sys.path.append(str(file_path.parent.parent.parent))
 
 from osnap_client.adapters import DiscordAdapter
 from osnap_client.agents import SwarmAgentBase
+from osnap_client.protocol import AgentCommand
 
 class ExampleSwarmAgent(SwarmAgentBase):
     def __init__(self, name, description, swarm_adapter):
@@ -16,12 +17,11 @@ class ExampleSwarmAgent(SwarmAgentBase):
         self.max_pings = 5
 
         @self.command(name="hello")
-        async def hello(message):
+        async def hello(message: AgentCommand):
             await self.swarm_adapter.send_message("Hello!", "general")
-            # await self.send_message("Hello!", "general")
 
         @self.command(name="ping")
-        async def ping(message):
+        async def ping(message: AgentCommand):
             if self.num_pings >= self.max_pings:
                 await self.swarm_adapter.send_message("I'm done pinging!", "general")
                 return
@@ -30,7 +30,7 @@ class ExampleSwarmAgent(SwarmAgentBase):
             await self.swarm_adapter.send_message("$pong", "general")
 
         @self.command(name="reset")
-        async def reset(message):
+        async def reset(message: AgentCommand):
             self.num_pings = 0
             await self.swarm_adapter.send_message("I'm reset!", "general")
 
@@ -49,7 +49,7 @@ def main():
     )
 
     agent = ExampleSwarmAgent(
-        name="Agent Smith", description="I am a bot that pings", swarm_adapter=adapter
+        name="Agent Freeman", description="I am a bot who pings", swarm_adapter=adapter
     )
     agent.run()
 

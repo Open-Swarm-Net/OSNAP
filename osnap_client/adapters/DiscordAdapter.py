@@ -1,7 +1,9 @@
 # discord_adapter.py
+import logging
 import discord
+import queue
 from osnap_client.adapters.AdapterBase import AdapterBase
-from osnap_client.adapters.QueueTaskStruct import QueueTaskStruct
+from osnap_client.protocol import AgentCommand, AgentCommandType
 import asyncio
 
 class DiscordAdapter(AdapterBase):
@@ -22,14 +24,35 @@ class DiscordAdapter(AdapterBase):
         self.start_server_name = start_server
         self.guild = None
 
+        # Set up an event handler for the log queue
+        self.logger  = logging.getLogger('discord')
+        self.logger.setLevel(logging.DEBUG)
+        self.logger.addHandler(self.log_queue_handler)
+
+        # file handler
+        log_file_name = "discord.log"
+        open(log_file_name, 'w').close()
+        file_handler = logging.FileHandler(filename=log_file_name, encoding='utf-8', mode='w')
+        file_handler.setLevel(logging.DEBUG)
+        self.logger.addHandler(file_handler)
+
     async def on_ready(self):
         """This method is called automatically by the discord library when the bot is ready to start working.
         """
-        response = QueueTaskStruct(command_type='on_ready', data='')
+        response = AgentCommand(
+            sender='discord_adapter',
+            receiver='agent',
+            command_type=AgentCommandType.ON_READY,
+            task_name = 'on_ready',
+            data=""
+        )
         await self.add_to_queue(response)
 
-    async def on_message(self, message):
+    async def on_message(self, message: discord.Message):
         """This method is called automatically by the discord library when a message is received.
+
+        Args:
+        - message (str): The message can be a normal message like "$hello xxx" or a jsonified AgentCommand object like {"sender": "agent", "receiver": "discord_adapter", "command": "request", "task_name": "hello", "data": "xxx"}
         """
         if message.author == self.client.user:
             return
@@ -39,8 +62,29 @@ class DiscordAdapter(AdapterBase):
         if message.content.startswith('$'):
             command_name = message_content.split(' ')[0][1:]
             command_data = ' '.join(message_content.split(' ')[1:])
-            response = QueueTaskStruct(command_type=command_name, data=command_data)
-            await self.add_to_queue(response)
+            sender = message.author.name
+            message = AgentCommand(
+                sender=sender,
+                receiver='agent',
+                command_type=AgentCommandType.REQUEST,
+                task_name = command_name,
+                data=command_data
+            )
+            await self.add_to_queue(message)
+        elif message.content.startswith('{'):
+            try:
+                message_json = message_content
+                message_obj = AgentCommand.parse_raw(message_json)
+                await self.add_to_queue(message_obj)
+            except Exception as e:
+                print(f"Error parsing message: {e}")
+                message = AgentCommand(
+                    sender='discord_adapter',
+                    receiver='agent',
+                    command_type=AgentCommandType.ERROR,
+                    task_name = 'fix',
+                    data=f"Failed to parse message {message.id}:\n {e}"
+                )
 
     async def get_users(self):
         """Returns the information about the users on the server
@@ -52,10 +96,26 @@ class DiscordAdapter(AdapterBase):
             users.append(user.name)
         return users
 
-    async def send_message(self, message: str, target_channel="general"):
+    async def send_message(self, message: AgentCommand, target_channel="general", file: bytes = None):
         """Sends a message to the specified channel"""
         if self.guild is None:
             self.guild = self._get_start_guild()
+
+        message_json = message.json()
+
+        # Find the channel by its name
+        for channel in self.guild.channels:
+            if channel.name == target_channel and isinstance(channel, discord.TextChannel):
+                await channel.send(message_json)
+                print(f"Sent message {message_json} to channel {target_channel}")
+                return
+
+        raise ValueError(f"Could not find the channel {target_channel} in the list of channels: {self.guild.channels}.")
+    
+    async def subscribe_to_tasks(self, task_names: list):
+        """Subscribes to the specified tasks"""
+        message = f"$subscribe {','.join(task_names)}"
+        target_channel = "general"
 
         # Find the channel by its name
         for channel in self.guild.channels:
@@ -63,17 +123,20 @@ class DiscordAdapter(AdapterBase):
                 await channel.send(message)
                 print(f"Sent message {message} to channel {target_channel}")
                 return
-
+        
         raise ValueError(f"Could not find the channel {target_channel} in the list of channels: {self.guild.channels}.")
-    
-    async def send_dm(self, message: str, target_user: str):
+
+
+    async def send_dm(self, message: AgentCommand, target_user: str, file: bytes = None):
         """Sends a direct message to the specified user"""
         if self.guild is None:
             self.guild = self._get_start_guild()
 
+        message_json = message.json()
+
         for user in self.client.guild.members:
             if user.name == target_user:
-                await user.send(message)
+                await user.send(message_json)
         
         raise ValueError(f"Could not find the user {target_user} in the list of users: {self.guild.members}.")
 
@@ -83,6 +146,13 @@ class DiscordAdapter(AdapterBase):
         self.client.event(self.on_message)
         # need to launch the adapter loop
         self.adapter_loop.run_until_complete(self.client.start(self.token))
+
+    def stop(self):
+        #self.adapter_loop.create_task(self.client.close())
+        tasks = asyncio.all_tasks(loop=self.adapter_loop)
+        for task in tasks:
+            task.cancel()
+        self.adapter_loop.close()
 
     def _unpack_intents(self, intents_list: list) -> discord.Intents:
         intents_obj = discord.Intents.default()

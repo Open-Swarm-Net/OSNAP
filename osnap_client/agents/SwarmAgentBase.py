@@ -4,7 +4,7 @@ import time
 import threading
 
 from osnap_client.adapters.AdapterBase import AdapterBase
-from osnap_client.adapters.QueueTaskStruct import QueueTaskStruct
+from osnap_client.protocol import AgentCommand, AgentCommandType
 
 class SwarmAgentBase(ABC):
     """
@@ -30,19 +30,25 @@ class SwarmAgentBase(ABC):
     
     async def on_callback_event_listener(self):
         while True:
-            task = None
+            
             try:
-                task = self.event_queue.get_nowait()
+                message = self.swarm_adapter.log_queue.get_nowait()
+                print(message)
             except asyncio.QueueEmpty:
                 time.sleep(0.5)
                 continue
-            if not isinstance(task, QueueTaskStruct):
-                raise TypeError(f"Expected a QueueTaskStruct, got {type(task)}")
+            command_obj = None
+            try:
+                command_obj = self.event_queue.get_nowait()
+            except asyncio.QueueEmpty:
+                time.sleep(0.5)
+                continue
+            if not isinstance(command_obj, AgentCommand):
+                raise TypeError(f"Expected a AgentCommand, got {type(command_obj)}")
             
-            command = task.command_type
-            data = task.data
+            task_name = command_obj.task_name
 
-            if command in self.command_map:
+            if task_name in self.command_map:
                 # check if the adapter loop is running
                 if not self.swarm_adapter.adapter_loop.is_running():
                     print("Adapter loop is not running, starting it now")
@@ -54,11 +60,11 @@ class SwarmAgentBase(ABC):
                         raise Exception("Adapter loop is still not running after starting it")
                 
                 try:
-                    asyncio.run_coroutine_threadsafe(self.command_map[command](data), self.swarm_adapter.adapter_loop)
+                    asyncio.run_coroutine_threadsafe(self.command_map[task_name](command_obj), self.swarm_adapter.adapter_loop)
                 except Exception as e:
-                    print(f"Error in {command} command: {e}")
+                    print(f"Error in {task_name} command: {e}")
             else:
-                print(f"Unknown command: {command}")
+                print(f"Unknown command: {task_name}")
 
     def start_adapter(self):
         adapter_thread = threading.Thread(target=self.swarm_adapter.start)
@@ -66,7 +72,13 @@ class SwarmAgentBase(ABC):
 
     async def on_ready(self, data: str):
         """This method is called when the apter is loaded."""
-        self_description = f"Hi everyone!\nName: {self.name}\nDescription: {self.description}"
+        self_description = AgentCommand(
+            sender=self.name,
+            receiver="swarm",
+            command_type=AgentCommandType.REGISTER,
+            task_name="register",
+            data=self.description
+        )
         await self.swarm_adapter.send_message(self_description, "intros")
 
     def run(self):
@@ -86,4 +98,10 @@ class SwarmAgentBase(ABC):
 
         # run the event listener in the main thread
         agent_loop = asyncio.get_event_loop()
-        agent_loop.run_until_complete(self.on_callback_event_listener())
+        try:
+            agent_loop.run_until_complete(self.on_callback_event_listener())
+        except KeyboardInterrupt:
+            print("Exiting...")
+            agent_loop.close()
+            self.swarm_adapter.stop()
+            exit(0)

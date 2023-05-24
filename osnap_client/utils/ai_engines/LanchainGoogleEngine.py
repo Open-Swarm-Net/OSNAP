@@ -2,7 +2,7 @@ import os
 import openai
 import tiktoken
 
-from osnap.utils.ai_engines.EngineBase import EngineBase
+from .ConversEngineBase import ConversEngineBase
 from langchain.agents import load_tools
 from langchain.agents import initialize_agent
 from langchain.agents import AgentType
@@ -10,7 +10,7 @@ from langchain.llms import OpenAI
 
 from langchain.utilities import GoogleSearchAPIWrapper
 
-class LanchainGoogleEngine(EngineBase):
+class LanchainGoogleEngine(ConversEngineBase):
     """
     gpt-4, gpt-4-0314, gpt-4-32k, gpt-4-32k-0314, gpt-3.5-turbo, gpt-3.5-turbo-0301
     """

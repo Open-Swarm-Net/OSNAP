@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-class EngineBase(ABC):
+class ConversEngineBase(ABC):
     """Abstract base class for the AI engines.
     Engines define the API for the AI engines that can be used in the swarm.
     """
