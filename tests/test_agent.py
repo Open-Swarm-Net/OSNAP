@@ -71,7 +71,7 @@ from unittest.mock import patch
 
 def test_register_command_called():
     with patch.object(OSNAPBaseAgent, "_register_command") as mock_register:
-        class MyAgent(OSNAPBaseAgent):
-            pass
+
+        agent = FakeAgent()
 
         mock_register.assert_called_once()

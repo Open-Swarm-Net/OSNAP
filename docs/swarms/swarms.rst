@@ -54,3 +54,9 @@ benefit of that much time. Therefore we need to develop new mechanisms and rules
 to keep the swarm healthy and alive.
 
 **Job 4: Keep the swarm healthy and alive.**
+
+
+.. toctree::
+    :maxdepth: 1
+
+    how_swarms_work.md
