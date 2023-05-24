@@ -405,3 +405,5 @@ FodyWeavers.xsd
 
 # Python Virtualenv
 venv/
+
+docs/_build/
