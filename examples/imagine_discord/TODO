@@ -1,0 +1,12 @@
+#- treat the swarm manager as another bot that uses a discord adapter
+#- task map
+- some tasks depend on the results of other tasks
+- 'who' parsing by individual bots
+- only bot->task queue -> bot communication allowed (no bot-bot)
+- task id and status tracking on the manager
+- health check
+- swarm manager database abstraction: data  models, abstracted db engine
+
+- use case: generating a marketing image
+-- user -> ping bot ($ping cute cat)
+==> ping bot creates a task with subtasks to research image generation and another task to prompt image generation

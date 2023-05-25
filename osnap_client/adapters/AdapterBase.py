@@ -50,13 +50,13 @@ class AdapterBase(ABC):
         raise NotImplementedError
     
     @abstractmethod
-    async def send_message(self, message: str, target_channel: str):
+    async def send_message(self, message: AgentCommand, target_channel: str):
         """This method is called to send a message to a specific channel
         """
         raise NotImplementedError
     
     @abstractmethod
-    async def send_dm(self, message: str, target_user: str):
+    async def send_dm(self, message: AgentCommand, target_user: str):
         """This method is called to send a message to a specific user
         """
         raise NotImplementedError

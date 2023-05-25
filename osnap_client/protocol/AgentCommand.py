@@ -24,6 +24,7 @@ class AgentCommand(BaseModel):
         receiver (str): Can be another agent on swarm, can be a channel. CanNOT be the adapter.
         command (AgentCommandType): The type of command. Purely technical, not used by the agent directly.
         task_name (str): The name of the task to be executed by the agent
+        status (int): The status. Same as HTTP status codes. 200 = OK, 400 = Bad Request, 500 = Internal Server Error
         data_type (str): The type of the data to be sent
         data (Any): The data to be sent
     """

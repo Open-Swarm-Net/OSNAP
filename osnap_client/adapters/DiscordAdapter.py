@@ -59,12 +59,12 @@ class DiscordAdapter(AdapterBase):
             return
         
         message_content = message.content
+        sender = message.author.name
         
         if message.content.startswith('$'):
             command_name = message_content.split(' ')[0][1:]
             command_data = ' '.join(message_content.split(' ')[1:])
-            sender = message.author.name
-            message = AgentCommand(
+            message_obj = AgentCommand(
                 sender=sender,
                 receiver='agent',
                 command_type=AgentCommandType.REQUEST,
@@ -72,11 +72,12 @@ class DiscordAdapter(AdapterBase):
                 payload_type = 'str',
                 payload=command_data
             )
-            await self.add_to_queue(message)
+            await self.add_to_queue(message_obj)
         elif message.content.startswith('{'):
             try:
                 message_json = message_content
                 message_obj = AgentCommand.parse_raw(message_json)
+                message_obj.sender = sender
                 await self.add_to_queue(message_obj)
             except Exception as e:
                 print(f"Error parsing message: {e}")
@@ -88,6 +89,7 @@ class DiscordAdapter(AdapterBase):
                     payload_type = 'str',
                     payload=f"Failed to parse message {message.id}:\n {e}"
                 )
+                await message.reply(message.json())
 
     async def get_users(self):
         """Returns the information about the users on the server

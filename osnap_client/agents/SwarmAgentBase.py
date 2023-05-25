@@ -4,7 +4,7 @@ import time
 import threading
 
 from osnap_client.adapters.AdapterBase import AdapterBase
-from osnap_client.protocol import AgentCommand, AgentCommandType
+from osnap_client.protocol import AgentCommand, AgentCommandType, TaskMap, Task
 
 class SwarmAgentBase(ABC):
     """
@@ -18,6 +18,7 @@ class SwarmAgentBase(ABC):
         self.swarm_adapter = swarm_adapter
         self.event_queue = swarm_adapter.event_queue
         self.command_map = {}
+        self.task_map = TaskMap()
 
         # Register "ready" command
         self.command_map["on_ready"] = self.on_ready
@@ -62,8 +63,17 @@ class SwarmAgentBase(ABC):
                     asyncio.run_coroutine_threadsafe(self.command_map[task_name](command_obj), self.swarm_adapter.adapter_loop)
                 except Exception as e:
                     print(f"Error in {task_name} command: {e}")
+                    response = AgentCommand(
+                        sender=self.name,
+                        receiver="agent",
+                        command_type=AgentCommandType.ERROR,
+                        task_name=task_name,
+                        payload_type = 'str',
+                        payload=f"505: Internal Server Error: {e}",
+                    )
+                    await self.swarm_adapter.send_dm(response, message.sender)
             else:
-                print(f"Unknown command: {task_name}")
+                pass
 
     def start_adapter(self):
         adapter_thread = threading.Thread(target=self.swarm_adapter.start)

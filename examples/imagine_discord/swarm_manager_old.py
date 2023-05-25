@@ -139,12 +139,6 @@ class SwarmManager:
                         message = f'$available_task {command}'
                         await user.send(message)
 
-    async def add_command(self, message_obj: discord.Message, data: str):
-        data=data.replace(' ', '_')
-        username = message_obj.author.name
-        self.conn.execute(self.commands_table.insert().values(name=data, user=username))
-        await message_obj.reply(f'Command ${data} added.')
-
     async def register_bot(self, message_obj: discord.Message, data: AgentCommand):
         author_name = message_obj.author.name
         if author_name != data.sender:
