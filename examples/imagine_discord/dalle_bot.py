@@ -1,5 +1,6 @@
 import sys, os, time
 from dotenv import load_dotenv
+import base64
 
 # adding the lates version of the osnap_client to the path
 from pathlib import Path
@@ -8,7 +9,7 @@ sys.path.append(str(file_path.parent.parent.parent))
 
 from osnap_client.adapters import DiscordAdapter
 from osnap_client.agents import SwarmAgentBase
-from osnap_client.protocol import AgentCommand, AgentCommandType
+from osnap_client.protocol import AgentCommand, AgentCommandType, Task, TaskMedia
 from osnap_client.utils.ai_engines import DalleEngine
 
 class DalleAgent(SwarmAgentBase):
@@ -20,16 +21,28 @@ class DalleAgent(SwarmAgentBase):
         @self.command(name="imagine")
         async def imagine(message: AgentCommand):
             try:
-                prompt = message.payload
+                if message.payload_type == "task":
+                    task = Task.from_json(message.payload)
+                    prompt = task.task_description
+                    task_id = task.task_id
+                elif message.payload_type == "str":
+                    prompt = message.payload
+                    task_id = None
+                    task = Task(task_name="imagine", task_description=prompt)
+
                 image = self.dalle_engine.imagine(prompt)
+
+                task.result = prompt
+                task.related_media = [TaskMedia(media_type="Pil.Image", media=base64.b64encode(image).decode('utf-8'))]
+                task.status = "submitted"
 
                 response = AgentCommand(
                     sender=self.name,
                     receiver="agent",
                     command_type=AgentCommandType.SUBMIT,
-                    task_name="imagine",
-                    payload_type = 'attachment',
-                    payload='' # cannot send bytes over discord because of the 4000 character limit
+                    task_type="imagine",
+                    payload_type='task',
+                    payload=task.json(),
                 )
                 await self.swarm_adapter.send_dm(response, message.sender, file=image)
             except Exception as e:
@@ -38,7 +51,7 @@ class DalleAgent(SwarmAgentBase):
                     sender=self.name,
                     receiver="agent",
                     command_type=AgentCommandType.ERROR,
-                    task_name="imagine",
+                    task_type="imagine",
                     payload_type = 'str',
                     payload=f"505: Internal Server Error",
                 )

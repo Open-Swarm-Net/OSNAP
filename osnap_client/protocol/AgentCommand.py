@@ -31,7 +31,7 @@ class AgentCommand(BaseModel):
     sender: str
     receiver: str
     command_type: AgentCommandType
-    task_name: str
+    task_type: str
     payload_type: str
     payload: Any
 

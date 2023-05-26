@@ -23,7 +23,7 @@ class Task:
     - result (str): The result of the task, if any
     
     """
-    def __init__(self, task_description, related_media: list=[]):
+    def __init__(self, task_description, related_media: list=[], suptask=None):
         """Constructor for the Task class
 
         Args:
@@ -38,6 +38,7 @@ class Task:
                 raise TypeError(f"Expected a TaskMedia object, got {type(el)}")
         self.related_media = related_media
         self.subtasks = set()
+        self.suptask = None
         self.status = "pending"
         self.result = None
 
@@ -60,28 +61,77 @@ class Task:
                 out[k] = list(v)
             else:
                 out[k] = v
+        return out
+    
+    def json(self):
+        return json.dumps(self.copy())
+    
+    @staticmethod
+    def from_dict(task_dict):
+        try:
+            task = Task(task_dict["task_description"], task_dict["related_media"])
+            task.task_id = task_dict["task_id"]
+            task.created_at = task_dict["created_at"]
+            task.subtasks = set(task_dict["subtasks"])
+            task.suptask = task_dict["suptask"]
+            task.status = task_dict["status"]
+            task.result = task_dict["result"]
+        except KeyError as e:
+            raise ValueError("Invalid task dictionary") from e
+        return task
+
+    @staticmethod
+    def from_json(json_str):
+        try:
+            task_dict = json.loads(json_str)
+        except json.JSONDecodeError as e:
+            raise ValueError("Invalid JSON string") from e
+        return Task.from_dict(task_dict)
 
 class TaskMap:
+    """Class to represent a map of tasks.
+    Tasks can only be solved if all of their subtasks are solved.    
+    """
     def __init__(self):
         self.tasks = {}
         self.lock = Lock()
 
     def create_task(self, task_info: str, related_media: list=[]):
+        """Create a new task
+
+        Args:
+        - task_info (str): A description of the task
+        - related_media (list, TaskMedia): A list of TaskMedia objects that are related to the task
+
+        Returns:
+        - str: The task id of the created task
+        - dict: A copy of the created task
+        """
         with self.lock:
             task = Task(task_info, related_media)
             self.tasks[task.task_id] = task
-            return task.task_id
+            return task.task_id, task
 
     def update_task(self, task_id: str, status, result=None, related_media=[]):
         with self.lock:
             self.tasks[task_id].update(status, result, related_media)
 
     def add_subtask(self, task_id, subtask_info, related_media=[]):
+        """Add a subtask to an existing task
+
+        Args:
+        - task_id (str): The task id of the parent task
+        - subtask_info (str): A description of the subtask
+
+        Returns:
+        - str: The task id of the created subtask
+        - dict: A copy of the created subtask
+        """
         with self.lock:
-            subtask = Task(subtask_info, related_media)
+            subtask = Task(subtask_info, related_media, suptask=task_id)
             self.tasks[subtask.task_id] = subtask
             self.tasks[task_id].add_subtask(subtask.task_id)
-            return subtask.task_id
+            return subtask.task_id, subtask
 
     def get_task(self, task_id):
         with self.lock:

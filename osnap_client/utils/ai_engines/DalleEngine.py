@@ -2,6 +2,8 @@ import os
 import openai
 import tiktoken
 import requests
+from PIL import Image
+from io import BytesIO
 
 class DalleEngine:
     def __init__(self, size="256x256"):
@@ -20,7 +22,7 @@ class DalleEngine:
         - prompt (str): The prompt to generate an image from.
 
         Returns:
-        - image (bytes): The image as bytes.
+        - image (PIL.Image): The generated image.
         """
         response = openai.Image.create(
             prompt=prompt,
@@ -31,5 +33,9 @@ class DalleEngine:
 
         # download image
         image = requests.get(image_url, allow_redirects=True)
-        return image.content
+
+        # convert to image
+        img = Image.open(BytesIO(image))
+
+        return img
 

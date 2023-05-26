@@ -9,7 +9,7 @@ sys.path.append(str(file_path.parent.parent.parent))
 
 from osnap_client.adapters import DiscordAdapter
 from osnap_client.agents import SwarmAgentBase
-from osnap_client.protocol import AgentCommand, AgentCommandType
+from osnap_client.protocol import AgentCommand, AgentCommandType, Task
 from osnap_client.utils.ai_engines import LanchainGoogleEngine, GPTConversEngine
 
 class GooglingAgent(SwarmAgentBase):
@@ -22,7 +22,15 @@ class GooglingAgent(SwarmAgentBase):
         @self.command(name="research")
         async def research(message: AgentCommand):
             try:
-                payload = message.payload
+                if message.payload_type == "task":
+                    task = Task.from_json(message.payload)
+                    payload = task.task_description
+                    task_id = task.task_id
+                elif message.payload_type == "str":
+                    payload = message.payload
+                    task_id = None
+                    task = Task(task_name="research", task_description=payload)
+                
                 if message.payload_type != "str":
                     raise ValueError(f"Expected payload_type to be 'str' but got {message.payload_type}")
                 
@@ -33,23 +41,25 @@ class GooglingAgent(SwarmAgentBase):
                     raise ValueError(f"Expected payload to be of type str but got {type(payload)}")
 
                 research_results = self._research(payload)
-
+                task.result = research_results
+                task.status = "submitted"
+                
                 response = AgentCommand(
                     sender=self.name,
                     receiver="agent",
                     command_type=AgentCommandType.SUBMIT,
-                    task_name="imagine",
-                    payload_type = 'str',
-                    payload=research_results 
+                    task_type="research",
+                    payload_type='task',
+                    payload=task.json(),
                 )
                 await self.swarm_adapter.send_dm(response, message.sender)
             except Exception as e:
-                print(f"Error in imagine command: {e}")
+                print(f"Error in research command: {e}")
                 response = AgentCommand(
                     sender=self.name,
                     receiver="agent",
                     command_type=AgentCommandType.ERROR,
-                    task_name="imagine",
+                    task_type="research",
                     payload_type = 'str',
                     payload=f"505: Internal Server Error: {e}",
                 )

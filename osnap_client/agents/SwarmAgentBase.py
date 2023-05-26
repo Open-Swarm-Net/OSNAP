@@ -46,7 +46,7 @@ class SwarmAgentBase(ABC):
             if not isinstance(command_obj, AgentCommand):
                 raise TypeError(f"Expected a AgentCommand, got {type(command_obj)}")
             
-            task_name = command_obj.task_name
+            task_name = command_obj.task_type
 
             if task_name in self.command_map:
                 # check if the adapter loop is running
@@ -67,7 +67,7 @@ class SwarmAgentBase(ABC):
                         sender=self.name,
                         receiver="agent",
                         command_type=AgentCommandType.ERROR,
-                        task_name=task_name,
+                        task_type=task_name,
                         payload_type = 'str',
                         payload=f"505: Internal Server Error: {e}",
                     )
@@ -86,7 +86,7 @@ class SwarmAgentBase(ABC):
             sender=self.name,
             receiver="swarm",
             command_type=AgentCommandType.REGISTER,
-            task_name="register",
+            task_type="register",
             payload_type = 'dict',
             payload={
                 "description": self.description,

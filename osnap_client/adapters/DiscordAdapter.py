@@ -43,7 +43,7 @@ class DiscordAdapter(AdapterBase):
             sender='discord_adapter',
             receiver='agent',
             command_type=AgentCommandType.ON_READY,
-            task_name = 'on_ready',
+            task_type = 'on_ready',
             payload="",
             payload_type = 'str'
         )
@@ -68,7 +68,7 @@ class DiscordAdapter(AdapterBase):
                 sender=sender,
                 receiver='agent',
                 command_type=AgentCommandType.REQUEST,
-                task_name = command_name,
+                task_type = command_name,
                 payload_type = 'str',
                 payload=command_data
             )
@@ -85,7 +85,7 @@ class DiscordAdapter(AdapterBase):
                     sender='discord_adapter',
                     receiver='agent',
                     command_type=AgentCommandType.ERROR,
-                    task_name = 'fix',
+                    task_type = 'fix',
                     payload_type = 'str',
                     payload=f"Failed to parse message {message.id}:\n {e}"
                 )

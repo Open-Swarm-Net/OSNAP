@@ -133,7 +133,7 @@ class SwarmManager:
                             sender="Task Manager",
                             receiver=user.name,
                             command_type=AgentCommandType.TASK,
-                            task_name=task_type,
+                            task_type=task_type,
                             payload=task_description
                         ).json()
                         message = f'$available_task {command}'
@@ -191,7 +191,7 @@ class SwarmManager:
             sender="swarm",
             receiver=message_obj.author.name,
             command_type=AgentCommandType.INFO,
-            task_name="who",
+            task_type="who",
             payload_type = 'dict',
             payload=users_dict
         ).json()
@@ -212,7 +212,7 @@ class SwarmManager:
             sender="swarm",
             receiver=message_obj.author.name,
             command_type=AgentCommandType.INFO,
-            task_name="what",
+            task_type="what",
             payload_type = 'dict',
             payload=commands_dict
         ).json()
@@ -233,7 +233,7 @@ class SwarmManager:
             sender="swarm",
             receiver=message_obj.author.name,
             command_type=AgentCommandType.INFO,
-            task_name="whats_going",
+            task_type="whats_going",
             payload_type = 'dict',
             payload=tasks
         ).json()

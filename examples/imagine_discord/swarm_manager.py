@@ -33,6 +33,10 @@ class SwarmManager(SwarmAgentBase):
         async def whats_going(message: AgentCommand):
             await self.whats_going_on(message)
 
+        @self.command(name="task")
+        async def task(message: AgentCommand):
+            await self.handle_task(message)
+
         self._init_db()
         self._self_register()
 
@@ -70,7 +74,7 @@ class SwarmManager(SwarmAgentBase):
             sender=self.name,
             receiver="agent",
             command_type=AgentCommandType.REGISTER,
-            task_name="register",
+            task_type="register",
             payload_type = 'str',
             payload=f"200: OK",
         )
@@ -94,7 +98,7 @@ class SwarmManager(SwarmAgentBase):
             sender="swarm",
             receiver=data.sender,
             command_type=AgentCommandType.INFO,
-            task_name="who",
+            task_type="who",
             payload_type = 'dict',
             payload=users_dict
         )
@@ -114,7 +118,7 @@ class SwarmManager(SwarmAgentBase):
             sender="swarm",
             receiver=data.sender,
             command_type=AgentCommandType.INFO,
-            task_name="what",
+            task_type="what",
             payload_type = 'dict',
             payload=commands_dict
         )
@@ -135,12 +139,21 @@ class SwarmManager(SwarmAgentBase):
             sender="swarm",
             receiver=data.sender,
             command_type=AgentCommandType.INFO,
-            task_name="whats_going",
+            task_type="whats_going",
             payload_type = 'dict',
             payload=tasks
         )
 
         await self.swarm_adapter.send_dm(response, data.sender)       
+
+    async def handle_task(self, data: AgentCommand):
+        """Agents in the swarm exchange tasks with each other.
+        1. Extract task from the payload: task = Task.from_json(data.payload) if data.payload_type == 'task' else error
+        2. Check if the given task is in the database
+        3. if yes, update the status of the task and send it to the relevant agent 
+        4. if no, add the task to the database and send it to the relevant agent
+        """
+        self.log('Handling task')
 
     def _init_db(self):
         self.engine = create_engine('sqlite:///tasks.db', echo=True)
