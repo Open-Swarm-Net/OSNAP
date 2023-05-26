@@ -1,6 +1,6 @@
 from .base import (
-    OSNAPBaseAgent,
-    OSNAPAgent,
+    SwarmAgent,
+    SwarmAgentBase,
     AgentInfo,
     AgentTask,
     AgentRunResponse,
@@ -10,8 +10,8 @@ from .base import (
 from .swarm_agent import SwarmAgent
 
 __all__ = [
-    "OSNAPBaseAgent",
-    "OSNAPAgent",
+    "SwarmAgent",
+    "SwarmAgentBase",
     "AgentInfo",
     "AgentTask",
     "AgentRunResponse",

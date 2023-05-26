@@ -1,4 +1,5 @@
 from pydantic import BaseModel, validate_arguments, ValidationError
+from pydantic.dataclasses import dataclass
 from typing import List, Union
 from uuid import UUID
 from enum import Enum
@@ -58,7 +59,8 @@ class AgentInfo(BaseModel):
     tools: list = []
     url: str = ""
 
-class OSNAPAgent:
+@dataclass
+class SwarmAgent:
     name: str
     description: str
     id: Union[int, str, UUID] = ""
@@ -66,7 +68,7 @@ class OSNAPAgent:
     url: str = ""
     scope: Scope = Scope.PUBLIC
 
-class OSNAPBaseAgent(BaseModel, ABC):
+class SwarmAgentBase(BaseModel, ABC):
     """
     Agents are the core of the OSNAP system. They are the entities that interact with one another,
     or themselves to perform tasks.
