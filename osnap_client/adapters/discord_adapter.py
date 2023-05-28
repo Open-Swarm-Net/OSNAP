@@ -1,10 +1,10 @@
 # discord_adapter.py
 import discord
-from .base import AdapterBase, QueueTaskStruct
+from .base import SwarmAdapterBase, QueueTaskStruct
 import asyncio
 
 
-class DiscordAdapter(AdapterBase):
+class DiscordAdapter(SwarmAdapterBase):
     """This is an adapter that allows the agent to communicate with Discord and receive/send messages.
 
     Args:
