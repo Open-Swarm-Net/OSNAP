@@ -6,7 +6,7 @@ import uvicorn
 from urllib.parse import urlparse
 
 from .base import SwarmAdapterBase
-from osnap_client.managers.base import SwarmJoinResponse
+from osnap_client.managers.swarm_schemas import SwarmJoinResponse
 
 class FastAPISwarmAdapter(SwarmAdapterBase):
 
@@ -69,7 +69,7 @@ class FastAPISwarmAdapter(SwarmAdapterBase):
             swarm_manager_id: str
 
         @self.app.post("/join")
-        async def join_swarm_manager_endpoint(join_request: JoinRequest, response_model=SwarmJoinResponse):
+        async def join_swarm_manager_endpoint(join_request: JoinRequest, response_model: SwarmJoinResponse):
             print(join_request)
             try:
                 # self.join_swarm_manager(swarm_manager_id)

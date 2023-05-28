@@ -1,4 +1,4 @@
-from .base import SwarmManagerBase
+from .SwarmManagerBase import SwarmManagerBase
 
 __all__ = [
     "SwarmManagerBase",

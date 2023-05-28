@@ -1,16 +1,6 @@
 from pydantic import BaseModel
 from abc import abstractmethod, ABC
-
-class SwarmConnection: 
-    pass
-
-class SwarmJoinResponse(BaseModel):
-    """
-    The response to a join request.
-    """
-    accepted: bool
-    swarm_manager_id: str
-    message: str
+from osnap_client.managers.swarm_schemas import SwarmJoinResponse
 
 class SwarmManagerBase(ABC): 
     """

@@ -1,4 +1,3 @@
-from .api import OSNAP
 from .osnap import (
     OSNAPApp,
     OSNAPTool,
