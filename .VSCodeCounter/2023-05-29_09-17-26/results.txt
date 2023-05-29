@@ -1,0 +1,48 @@
+Date : 2023-05-29 09:17:26
+Directory : /Users/vlad/1OSNAP/OSNAP/osnap_client
+Total : 17 files,  495 codes, 136 comments, 134 blanks, all 765 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| Python   |         17 |        495 |        136 |        134 |        765 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++--------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                           | files      | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                              |         17 |        495 |        136 |        134 |        765 |
+| . (Files)                                                                      |          1 |          0 |          0 |          1 |          1 |
+| adapters                                                                       |          3 |         46 |         11 |         16 |         73 |
+| agents                                                                         |          3 |         97 |         45 |         29 |        171 |
+| core                                                                           |          2 |        163 |         16 |         40 |        219 |
+| schemas                                                                        |          4 |         35 |         10 |          7 |         52 |
+| utils                                                                          |          4 |        154 |         54 |         41 |        249 |
+| utils/ai_engines                                                               |          4 |        154 |         54 |         41 |        249 |
++--------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++--------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                       | language | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| /Users/vlad/1OSNAP/OSNAP/osnap_client/__init__.py                              | Python   |          0 |          0 |          1 |          1 |
+| /Users/vlad/1OSNAP/OSNAP/osnap_client/adapters/CentralControllerAdapter.py     | Python   |         30 |          9 |         11 |         50 |
+| /Users/vlad/1OSNAP/OSNAP/osnap_client/adapters/SwarmAdapterBase.py             | Python   |         14 |          2 |          5 |         21 |
+| /Users/vlad/1OSNAP/OSNAP/osnap_client/adapters/__init__.py                     | Python   |          2 |          0 |          0 |          2 |
+| /Users/vlad/1OSNAP/OSNAP/osnap_client/agents/SwarmAgentBase.py                 | Python   |         39 |         23 |         14 |         76 |
+| /Users/vlad/1OSNAP/OSNAP/osnap_client/agents/__init__.py                       | Python   |          1 |          0 |          0 |          1 |
+| /Users/vlad/1OSNAP/OSNAP/osnap_client/agents/swarm_agent.py                    | Python   |         57 |         22 |         15 |         94 |
+| /Users/vlad/1OSNAP/OSNAP/osnap_client/core/__init__.py                         | Python   |          9 |          0 |          1 |         10 |
+| /Users/vlad/1OSNAP/OSNAP/osnap_client/core/osnap.py                            | Python   |        154 |         16 |         39 |        209 |
+| /Users/vlad/1OSNAP/OSNAP/osnap_client/schemas/AgentRunResponse.py              | Python   |         10 |          3 |          3 |         16 |
+| /Users/vlad/1OSNAP/OSNAP/osnap_client/schemas/AgentTask.py                     | Python   |         17 |          4 |          3 |         24 |
+| /Users/vlad/1OSNAP/OSNAP/osnap_client/schemas/SwarmJoinResponse.py             | Python   |          5 |          3 |          1 |          9 |
+| /Users/vlad/1OSNAP/OSNAP/osnap_client/schemas/__init__.py                      | Python   |          3 |          0 |          0 |          3 |
+| /Users/vlad/1OSNAP/OSNAP/osnap_client/utils/ai_engines/EngineBase.py           | Python   |         35 |         29 |         11 |         75 |
+| /Users/vlad/1OSNAP/OSNAP/osnap_client/utils/ai_engines/GPTConversEngine.py     | Python   |         60 |         12 |         14 |         86 |
+| /Users/vlad/1OSNAP/OSNAP/osnap_client/utils/ai_engines/LanchainGoogleEngine.py | Python   |         56 |         13 |         16 |         85 |
+| /Users/vlad/1OSNAP/OSNAP/osnap_client/utils/ai_engines/__init__.py             | Python   |          3 |          0 |          0 |          3 |
+| Total                                                                          |          |        495 |        136 |        134 |        765 |
++--------------------------------------------------------------------------------+----------+------------+------------+------------+------------+

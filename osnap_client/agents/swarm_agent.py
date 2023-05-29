@@ -4,7 +4,7 @@ import time
 import threading
 
 from osnap_client.adapters import AdapterBase, QueueTaskStruct
-from .base import OSNAPBaseAgent
+from .SwarmAgentBase import OSNAPBaseAgent
 
 class SwarmAgent(OSNAPBaseAgent):
     """

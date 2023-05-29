@@ -1,0 +1,17 @@
+- agents
+    - join/leave swarm using tokens
+    - run loop for the agents
+    - public vs private agents
+
+- tasks
+    - task table on the server
+    - post, claim tasks
+
+
+- user ~database~ table (for similicity)
+    - ##user table
+    - ##user and token authentication
+    - spent/earned token balance for the users
+    - issuing tokens
+
+- swagger documentation for the go server
