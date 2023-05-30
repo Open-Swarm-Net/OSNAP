@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from pydantic.dataclasses import dataclass
 from abc import abstractmethod, ABC
 
 class SwarmConnection: 
@@ -11,6 +12,11 @@ class SwarmJoinResponse(BaseModel):
     accepted: bool
     swarm_manager_id: str
     message: str
+
+@dataclass
+class SwarmManager: 
+    swarm_id: int
+    name: str
 
 class SwarmManagerBase(ABC): 
     """

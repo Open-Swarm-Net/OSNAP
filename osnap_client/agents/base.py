@@ -1,5 +1,7 @@
 from pydantic import BaseModel, validate_arguments, ValidationError
 from pydantic.dataclasses import dataclass
+import dataclasses
+
 from typing import List, Union
 from uuid import UUID
 from enum import Enum
@@ -64,7 +66,8 @@ class SwarmAgent:
     name: str
     description: str
     id: Union[int, str, UUID] = ""
-    tools: list = []
+    # if we want tools here, we need a way to serialize it better with registry
+    # tools: list = dataclasses.field(default_factory=lambda: [])
     url: str = ""
     scope: Scope = Scope.PUBLIC
 

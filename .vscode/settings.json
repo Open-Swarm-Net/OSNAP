@@ -3,5 +3,10 @@
   "[python]": {
     "editor.defaultFormatter": "ms-python.black-formatter"
   },
-  "esbonio.sphinx.confDir": ""
+  "esbonio.sphinx.confDir": "",
+  "python.testing.pytestArgs": [
+    "."
+  ],
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true
 }

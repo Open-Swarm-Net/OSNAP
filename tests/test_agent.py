@@ -1,8 +1,8 @@
-from osnap_client.agents import OSNAPBaseAgent, AgentInfo, AgentTaskResult
+from osnap_client.agents import SwarmAgentBase, AgentInfo, AgentTaskResult
 from uuid import uuid4
 
 
-class FakeAgent(OSNAPBaseAgent):
+class FakeAgent(SwarmAgentBase):
     name = "test_agent"
     description = "test agent"
     tools = ["test_tool"]
@@ -28,7 +28,7 @@ def test_agent_creation():
     # validate arguments
     try:
 
-        class BadAgent(OSNAPBaseAgent):
+        class BadAgent(SwarmAgentBase):
             name = 1
             description = 2
             tools = 3
@@ -39,7 +39,7 @@ def test_agent_creation():
 
 
 def test_agent_required_methods():
-    class FakeAgentWithoutMethods(OSNAPBaseAgent):
+    class FakeAgentWithoutMethods(SwarmAgentBase):
         name = "test_agent"
         description = "test agent"
         tools = ["test_tool"]
@@ -70,7 +70,7 @@ from unittest.mock import patch
 
 
 def test_register_command_called():
-    with patch.object(OSNAPBaseAgent, "_register_command") as mock_register:
+    with patch.object(SwarmAgentBase, "_register_command") as mock_register:
 
         agent = FakeAgent()
 
