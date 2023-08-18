@@ -1,7 +1,7 @@
 # Discord Swarm
 Discord swarm allows you to deploy multiple independent agents (can be in different networks) and let them communicate with each other over a discord server. For example, agents can ask other bots for help and solve the task colaboratively.
 
-The communication is handleded via the DiscordAdapter and the only think you need to do is to implement the logic of the `SwarmAgentBase`.
+The communication is handleded via the DiscordAdapter and the only think you need to do is to implement the logic of the `SwarmAgent`.
 
 The agents are represented on discord as Discord Bots.
 
@@ -30,9 +30,9 @@ First, setup the environment:
 # Implementing the bot
 You can use ping-pong bots as an example. 
 
-To create a bot, you need to implement `SwarmAgentBase` and define commands the bot responds to. (Discord commands start with `$`). The command definition is done in the FastAPI-syle:
+To create a bot, you need to implement `SwarmAgent` and define commands the bot responds to. (Discord commands start with `$`). The command definition is done in the FastAPI-syle:
 ```python
-class ExampleSwarmAgent(SwarmAgentBase):
+class ExampleSwarmAgent(SwarmAgent):
     def __init__(self, name, description, swarm_adapter):
         super().__init__(name, description, swarm_adapter)
 
@@ -43,7 +43,7 @@ class ExampleSwarmAgent(SwarmAgentBase):
 
 In the example above, if you text `$hello` on the discord server with this bot, it will respond with `Hello!` in the "general" chat.
 
-You can also override the `on_ready` command. By default (implemented in `SwarmAgentBase`) the agent intorduces himsel.
+You can also override the `on_ready` command. By default (implemented in `SwarmAgent`) the agent intorduces himsel.
 ```python
 @self.command(name="on_ready")
 async def on_ready(data: str):

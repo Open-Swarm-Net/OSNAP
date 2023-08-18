@@ -1,10 +1,8 @@
-from osnap_client import OSNAPBaseAgent, AgentInfo
+from osnap_client.agents import SwarmAgentBase, AgentInfo, AgentTaskResult
 from uuid import uuid4
 
-from osnap_client.core.agent import OSNAPAgentTaskResult
 
-
-class TestAgent(OSNAPBaseAgent):
+class FakeAgent(SwarmAgentBase):
     name = "test_agent"
     description = "test agent"
     tools = ["test_tool"]
@@ -14,7 +12,7 @@ class TestAgent(OSNAPBaseAgent):
     def run(self, task):
         pass
 
-    def listen(self, result: OSNAPAgentTaskResult):
+    def listen(self, result: AgentTaskResult):
         return super().listen(result)
 
     def start(self, objective: str, agent_url=None):
@@ -22,7 +20,7 @@ class TestAgent(OSNAPBaseAgent):
 
 
 def test_agent_creation():
-    agent = TestAgent()
+    agent = FakeAgent()
     assert agent.name == "test_agent"
     assert agent.description == "test agent"
     assert agent.tools == ["test_tool"]
@@ -30,7 +28,7 @@ def test_agent_creation():
     # validate arguments
     try:
 
-        class BadAgent(OSNAPBaseAgent):
+        class BadAgent(SwarmAgentBase):
             name = 1
             description = 2
             tools = 3
@@ -41,7 +39,7 @@ def test_agent_creation():
 
 
 def test_agent_required_methods():
-    class TestAgentWithoutMethods(OSNAPBaseAgent):
+    class FakeAgentWithoutMethods(SwarmAgentBase):
         name = "test_agent"
         description = "test agent"
         tools = ["test_tool"]
@@ -49,14 +47,14 @@ def test_agent_required_methods():
         url = "foobar"
 
     try:
-        agent = TestAgentWithoutMethods()
+        agent = FakeAgentWithoutMethods()
     except Exception as e:
         assert e.__class__.__name__ == "TypeError"
 
 
 # Agents should have a /info endpoint that returns the agent's name, description, and scope.
 def test_agent_info():
-    agent = TestAgent()
+    agent = FakeAgent()
 
     assert agent.info() == AgentInfo(
         **{
@@ -67,3 +65,13 @@ def test_agent_info():
             "url": "foobar",
         }
     )
+
+from unittest.mock import patch
+
+
+def test_register_command_called():
+    with patch.object(SwarmAgentBase, "_register_command") as mock_register:
+
+        agent = FakeAgent()
+
+        mock_register.assert_called_once()

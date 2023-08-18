@@ -1,4 +1,7 @@
 from pydantic import BaseModel, validate_arguments, ValidationError
+from pydantic.dataclasses import dataclass
+import dataclasses
+
 from typing import List, Union
 from uuid import UUID
 from enum import Enum
@@ -58,15 +61,18 @@ class AgentInfo(BaseModel):
     tools: list = []
     url: str = ""
 
-class OSNAPAgent:
+@dataclass
+class SwarmAgent:
     name: str
     description: str
     id: Union[int, str, UUID] = ""
-    tools: list = []
+    type = "agent"
+    # if we want tools here, we need a way to serialize it better with registry
+    # tools: list = dataclasses.field(default_factory=lambda: [])
     url: str = ""
     scope: Scope = Scope.PUBLIC
 
-class OSNAPBaseAgent(BaseModel, ABC):
+class SwarmAgentBase(BaseModel, ABC):
     """
     Agents are the core of the OSNAP system. They are the entities that interact with one another,
     or themselves to perform tasks.
@@ -80,6 +86,14 @@ class OSNAPBaseAgent(BaseModel, ABC):
     tools: list = []
     url: str = ""
     scope: Scope = Scope.PUBLIC
+
+    def __init__(self, **data):
+        super().__init__(**data)
+        self._register_command()
+
+    @classmethod
+    def _register_command(cls):
+        print("registering a new command")
 
     def info(self) -> AgentInfo:
         """

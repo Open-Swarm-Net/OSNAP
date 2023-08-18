@@ -2,7 +2,7 @@ import redis
 import json
 import uuid
 
-from osnap_client.agents import OSNAPBaseAgent
+from osnap_client.agents import SwarmAgentBase
 
 import logging
 
@@ -19,7 +19,7 @@ class AgentRegistry:
             decode_responses=True,
         )
 
-    def register(self, agent: OSNAPBaseAgent):
+    def register(self, agent: SwarmAgentBase):
         return self.get_or_create_agent(agent)
 
     def get_agents(self, scope):
@@ -34,7 +34,7 @@ class AgentRegistry:
             agents.append(agent)
         return agents
 
-    def get_or_create_agent(self, agent: OSNAPBaseAgent):
+    def get_or_create_agent(self, agent: SwarmAgentBase):
         if self.redis_client.hexists(f"agent:{agent.name}", agent.name):
             return self.get_agent(agent.name)
         else:
@@ -48,7 +48,7 @@ class AgentRegistry:
             return agent_data
         return None
 
-    def add_agent(self, agent: OSNAPBaseAgent) -> OSNAPBaseAgent | None:
+    def add_agent(self, agent: SwarmAgentBase) -> SwarmAgentBase | None:
         agent_data = {
             "id": agent.id,
             "name": agent.name,
