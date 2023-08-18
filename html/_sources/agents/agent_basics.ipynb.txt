@@ -1,0 +1,582 @@
+{
+ "cells": [
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Agent Basics\n",
+    "\n",
+    "This notebooks walks you through creating two agents that work together to schedule coffee.\n",
+    "\n",
+    "First we create two agents: "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from osnap_client.agents import (\n",
+    "  OSNAPBaseAgent, \n",
+    "  AgentInfo, \n",
+    "  AgentTask, \n",
+    "  AgentRunResponse,\n",
+    "  AgentTaskResult\n",
+    ")\n",
+    "\n",
+    "def alice_run():\n",
+    "  pass\n",
+    "\n",
+    "def alice_start(): \n",
+    "  pass\n",
+    "\n",
+    "def alice_listen(): \n",
+    "  pass\n",
+    "\n",
+    "def alice_complete():\n",
+    "  pass\n",
+    "\n",
+    "def alice_terminate():\n",
+    "  pass\n",
+    "\n",
+    "class AliceAgent(OSNAPBaseAgent):\n",
+    "  name=\"alice\"\n",
+    "  description=\"Alice's personal assistant\"\n",
+    "  tools=[\"calendar\", \"email\", \"location\"]\n",
+    "  id=\"1234\"\n",
+    "\n",
+    "  def run(self, task: AgentTask):\n",
+    "    return alice_run(self, task)\n",
+    "\n",
+    "  def start(self, objective: str, agent_url=None):\n",
+    "    return alice_start(self, objective, agent_url)\n",
+    "\n",
+    "  def listen(self, result: AgentTaskResult):\n",
+    "    return alice_listen(result)\n",
+    "  \n",
+    "  def complete(self):\n",
+    "    return alice_complete()\n",
+    "  \n",
+    "  def terminate(self):\n",
+    "    return alice_terminate()\n",
+    "  \n",
+    "alice = AliceAgent()\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 48,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "AgentInfo(name='bob', description=\"Bobs's personal assistant\", id=1234, tools=['calendar', 'email', 'location'], url='')"
+      ]
+     },
+     "execution_count": 48,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# define the methods so we can test them\n",
+    "def bob_run():\n",
+    "  pass\n",
+    "\n",
+    "def bob_start():\n",
+    "  pass\n",
+    "\n",
+    "def bob_listen():\n",
+    "  pass\n",
+    "\n",
+    "def bob_complete():\n",
+    "  pass\n",
+    "\n",
+    "def bob_terminate():\n",
+    "  pass\n",
+    "\n",
+    "class BobAgent(OSNAPBaseAgent):\n",
+    "  name=\"bob\"\n",
+    "  description=\"Bobs's personal assistant\"\n",
+    "  tools=[\"calendar\", \"email\", \"location\"]\n",
+    "  id=\"1234\"\n",
+    "\n",
+    "  def run(self, task: AgentTask) -> AgentRunResponse:\n",
+    "    return bob_run(task)\n",
+    "\n",
+    "  def start(self, objective: str, agent_url=None):\n",
+    "    return bob_start(objective, agent_url)\n",
+    "\n",
+    "  def listen(self, result: AgentTaskResult):\n",
+    "    return bob_listen(result)\n",
+    "  \n",
+    "  def complete(self, payload: dict = {}):\n",
+    "    return bob_complete(payload)\n",
+    "  \n",
+    "  def terminate(self):\n",
+    "    return bob_terminate()\n",
+    "  \n",
+    "bob = BobAgent()\n",
+    "\n",
+    "bob.info()"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In your application you will define the required methods when you create an object, but for the purposes of this tutorial we will define them one at a time as we go. Like the following example:\n",
+    "\n",
+    "```python \n",
+    "def alice_run(task: OSNAPTask):\n",
+    "  print(f\"Alice is running task NOW!! {task}\")\n",
+    "  \n",
+    "alice.run(\"something\")\n",
+    "```   \n",
+    "\n",
+    "First let's say that Alice wants her agent to work with Bob's agent to schedule coffee with him. \n",
+    "We initialize this request by calling the `start` method on Alice's agent. In our case, we are going to hardcode some logic into Alice's agent to make it easier to understand. \n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import openai\n",
+    "import getpass\n",
+    "openai.api_key = getpass.getpass()\n",
+    "\n",
+    "bob_info = bob.info()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def alice_start(self, objective, agent_url=None):\n",
+    "    prompt = f\"\"\"\n",
+    "    You are {self.description}. You have access to the following tools: {self.tools}.\n",
+    "\n",
+    "    Alice wants to {objective}. Bob's agent is {bob_info.description}. Bob's agent has access to the following tools: {bob_info.tools}.\n",
+    "\n",
+    "    What are the tasks we need to complete {objective}?\n",
+    "    \"\"\"\n",
+    "\n",
+    "    response = openai.Completion.create(\n",
+    "      engine=\"text-davinci-003\",\n",
+    "      prompt=prompt,\n",
+    "      temperature=0.5,\n",
+    "      max_tokens=200\n",
+    "    )\n",
+    "\n",
+    "    return response"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "response = alice.start(objective=\"Schedule coffee with Bob\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "task_list = response.choices[0].text.split(\"\\n\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['',\n",
+       " '1. Determine a suitable date and time for the meeting.',\n",
+       " \"2. Send an email to Bob's agent to confirm the date and time.\",\n",
+       " \"3. Use the calendar to set a reminder for Alice and Bob's agent.\",\n",
+       " '4. Use the location tool to find a suitable location for the meeting.',\n",
+       " \"5. Send an email to Bob's agent to confirm the location.\"]"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "task_list"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The protocol isn't opinionated about WHAT your agent does. In this case we are just picking a hardcoded external agent, and then using it's description and tools directly in the prompt. This allows every agent to define as much logic as they want. The purpose of the protocol is to make them interoperable. \n",
+    "\n",
+    "Now that we have a nice list of tasks, we can start asking Bob's agent for help"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "prompt = f\"\"\"\n",
+    "You are {alice.description}. You have access to the following tools: {alice.tools}.\n",
+    "Alice wants to Schedule coffee with Bob. Bob's agent is {bob_info.description}. Bob's agent has access to the following tools: {bob_info.tools}.\n",
+    "\n",
+    "The first task is to {task_list[1]}.\n",
+    "\n",
+    "We're going to make a simple request to Bob's agent to help. What is the request?\n",
+    "Format your request as a simple task for Bob's agent to complete. \n",
+    "You can also specify a tool to use, if you want to be specific.\n",
+    "\"\"\"\n",
+    "response = openai.Completion.create(\n",
+    "  engine=\"text-davinci-003\",\n",
+    "  prompt=prompt,\n",
+    "  temperature=0.5,\n",
+    "  max_tokens=200\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "task_map = {}\n",
+    "task_map[response.id] = response.choices[0].text"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Now that we have a task ready for Bob's agent, we're going to send it to him. \n",
+    "We give it an id here so that both agents can keep track of it.\n",
+    "\n",
+    "Let's turn this into an OSNAPTaskRequest:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "task1 = AgentTask(\n",
+    "  objective=\"Schedule coffee with Bob\",\n",
+    "  task_id=response.id,\n",
+    "  task_name=task_map[response.id],\n",
+    "  task_description=task_map[response.id],\n",
+    "  task_tool=\"calendar\"\n",
+    ")"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Now we can implement the run method on Bob's agent that we just stubbed out later. \n",
+    "\n",
+    "run takes an OSNAPTask as an input and returns an OSNAPAgentRunResponse. \n",
+    "\n",
+    "Run might be a long running task, so we want to return a status that indicates to the caller if that it's working on it.\n",
+    "Let's just have it return a status of \"starting\" for now."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Incoming task from Alice:  \n",
+      "Request: Please use the calendar tool to find a suitable date and time for Alice and Bob to meet for coffee.\n"
+     ]
+    }
+   ],
+   "source": [
+    "def bob_run(task): \n",
+    "    print(\"Incoming task from Alice: \", task.task_name)\n",
+    "    return AgentRunResponse(\n",
+    "        status=\"starting\",\n",
+    "        message=\"Sounds good, I'll get started on that.\",\n",
+    "        payload={\n",
+    "            \"tools\": [\"calendar\"],\n",
+    "        }\n",
+    "    )\n",
+    "\n",
+    "bob_run_response = bob.run(task1)"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Async task handling \n",
+    "\n",
+    "Since we mentioned that Agent Tasks can take a while, how does one agent let another know that it's task is complete? There are many different ways that distributed systems handle this, but OSNAP doesn't prescribe a particular implementation. \n",
+    "\n",
+    "All that is required is that agents who make task requests register a \"listener\" that the other agent can use when they have a task result. This is essntially the [Observer Pattern](https://en.wikipedia.org/wiki/Observer_pattern). \n",
+    "\n",
+    "Let's try it out!"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 40,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Alice has assigned the following tasks: \n",
+      "{'\\nRequest: Please use the calendar tool to find a suitable date and time for Alice and Bob to meet for coffee.'}\n"
+     ]
+    }
+   ],
+   "source": [
+    "alice_assigned_tasks = {}\n",
+    "alice_completed_tasks = {}\n",
+    "\n",
+    "if bob_run_response.status == \"starting\" or bob_run_response.status == \"working\":\n",
+    "    alice_assigned_tasks[task1.task_id] = task1\n",
+    "    print(\"Alice has assigned the following tasks: \")\n",
+    "    print({task.task_name for task in alice_assigned_tasks.values()})\n",
+    "\n",
+    "def alice_listen(result: AgentTaskResult):\n",
+    "    print(\"Bob's agent has completed the task: \", result.task_name)\n",
+    "    print(\"Bob's agent task result says: \", result.message)\n",
+    "    completed = alice_assigned_tasks.pop(result.task_id)\n",
+    "    alice_completed_tasks[result.task_id] = completed\n"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We give alice a [Python set](https://docs.python.org/3/tutorial/datastructures.html#sets) of assigned tasks, but this can be implemented however you chose, like with a more sophisticated tool like Kafka or Redis PubSub for example. \n",
+    "\n",
+    "We look at the `AgentRunResponse` that Bob's agent gave us when we sent the `AgentTask` and see if we want to listen for a result by just checking if the status is `\"starting\"` or `\"working\"`. \n",
+    "\n",
+    "Then in Alice's listen method, if a task completes, we remove that task from the assigned tasks set. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 41,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Bob's agent has completed the task:  \n",
+      "Request: Please use the calendar tool to find a suitable date and time for Alice and Bob to meet for coffee.\n",
+      "Bob's agent task result says:  Bob is available at 3pm on Tuesday.\n",
+      "Alice has assigned the following tasks: \n",
+      "set()\n"
+     ]
+    }
+   ],
+   "source": [
+    "bob_task_result = AgentTaskResult.construct(\n",
+    "    task_id=task1.task_id,\n",
+    "    task_name=task1.task_name,\n",
+    "    status=\"success\",\n",
+    "    message=\"Bob is available at 3pm on Tuesday.\",\n",
+    "    payload={}\n",
+    ")\n",
+    "\n",
+    "# bob log? bob loblaw's law blog?\n",
+    "bob_log = [\n",
+    "    (bob_task_result, \"calendar\")\n",
+    "]\n",
+    "\n",
+    "alice.listen(bob_task_result)\n",
+    "print(\"Alice has assigned the following tasks: \")\n",
+    "print({task.task_name for task in alice_assigned_tasks.values()})"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Bob's agent does some stuff, and decides that Bob is available at 3pm on Tuesday. We will also keep track of the tasks bob did in a task log for reference later. Now Bob's agent can call Alice's agent listen method with the task result. \n",
+    "\n",
+    "Now we can see that Alice has removed that task from her listeners. Notice that if you run that cell twice, you'll get an error. This actually somewhat intentional as it makes sense that Alice has already stopped listening for that task. This isn't a part of the protocol per se, Alice's agent could keep listening for more results for a particular task (like for example if she wanted to distribute it to multiple different agents instead), it's up to you as a devloper to figure out what you want to do. \n",
+    "\n",
+    "### Next Step\n",
+    "\n",
+    "Let's say for the sake of demonstration that Alice's agent checks her calendar and sees that 3pm on Tuesday works for her as well. Let's construct a prompt to help Alice's agent figure out what it wants to do next."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 31,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "alice_schedule_response = \"Tuesday at 3pm works for Alice as well\"\n",
+    "\n",
+    "prompt = f\"\"\"\n",
+    "You are {alice.description}. You have access to the following tools: {alice.tools}.\n",
+    "\n",
+    "Alice wants to schedule coffee with bob. Bob's agent is {bob_info.description}. Bob's agent has access to the following tools: {bob_info.tools}.\n",
+    "\n",
+    "Previously we had the following tasks: {task_list}\n",
+    "\n",
+    "Bob's agent has completed the following task: {bob_task_result.task_name}. Bob's agent task result says: {bob_task_result.message}\n",
+    "\n",
+    "{alice_schedule_response}\n",
+    "\n",
+    "What are the remaining tasks we need to the objective of scheduling coffee with bob?\n",
+    "\"\"\"\n",
+    "\n",
+    "response = openai.Completion.create(\n",
+    "  engine=\"text-davinci-003\",\n",
+    "  prompt=prompt,\n",
+    "  temperature=0.5,\n",
+    "  max_tokens=200\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 33,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['',\n",
+       " \"1. Send an email to Bob's agent to confirm the date and time of 3pm on Tuesday.\",\n",
+       " \"2. Use the calendar to set a reminder for Alice and Bob's agent.\",\n",
+       " '3. Use the location tool to find a suitable location for the meeting.',\n",
+       " \"4. Send an email to Bob's agent to confirm the location.\",\n",
+       " '5. Send an email to Alice and Bob to confirm the date, time, and location of the meeting.']"
+      ]
+     },
+     "execution_count": 33,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "response.choices[0].text.split(\"\\n\")"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Groovy! The great part of autonomous agents is that they can keep running and completing tasks, sometimes without any user input. \n",
+    "\n",
+    "The agents can continue to work together using the same back and forth protocol we showed above for the rest of the tasks. \n",
+    "\n",
+    "There's just one last thing we need to do. Alice is satisfied with what her agent has done so far to achieve the `Objective` of scheduling coffee with Bob. She should let Bob's agent know that. This what the `complete` method is for. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 51,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "\n",
+      "        I worked with alice on the objective: Schedule coffee with Bob.\n",
+      "\n",
+      "        We completed the following tasks: ['\\nRequest: Please use the calendar tool to find a suitable date and time for Alice and Bob to meet for coffee.']\n",
+      "\n",
+      "        I used the following tools: ['calendar']\n",
+      "    \n"
+     ]
+    }
+   ],
+   "source": [
+    "def bob_complete(payload): \n",
+    "    print(f\"\"\"\n",
+    "        I worked with {payload['agent_name']} on the objective: {payload['objective']}.\n",
+    "\n",
+    "        We completed the following tasks: {payload['tasks']}\n",
+    "\n",
+    "        I used the following tools: {[tool for _, tool in bob_log]}\n",
+    "    \"\"\")\n",
+    "\n",
+    "alice_summary = {\n",
+    "    \"agent_name\": alice.name,\n",
+    "    \"objective\": \"Schedule coffee with Bob\",\n",
+    "    \"tasks\": [task.task_name for task in alice_completed_tasks.values()],\n",
+    "}\n",
+    "\n",
+    "bob.complete(payload=alice_summary)"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Wrapping Up\n",
+    "\n",
+    "This is the very basic, 10,000 foot overview of how to build a very basic two agent flow. "
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "base",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.11.3"
+  },
+  "orig_nbformat": 4
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

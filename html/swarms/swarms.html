@@ -41,7 +41,7 @@
     <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Use Cases" href="../use_cases/use_cases.html" />
+    <link rel="next" title="How Swarms Work" href="how_swarms_work.html" />
     <link rel="prev" title="What is an agent?" href="../agents/what_are_agents.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -91,18 +91,6 @@
     <div class="bd-toc-item active">
         <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Getting Started
- </span>
-</p>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../getting_started/getting_started.html">
-   Getting Started
-  </a>
- </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
   Key Concepts
  </span>
 </p>
@@ -129,10 +117,22 @@
    </li>
   </ul>
  </li>
- <li class="toctree-l1 current active">
+ <li class="toctree-l1 current active has-children">
   <a class="current reference internal" href="#">
    Swarms
   </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="how_swarms_work.html">
+     How Swarms Work
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
@@ -269,12 +269,63 @@ title="Print to PDF"
     </ul>
   </div>
 </div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
 
     </div>
 </div>
 
 <!-- Table of contents -->
 <div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-swarms">
+   Why Swarms?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#design-rationale-jobs-of-a-swarm">
+   Design Rationale: Jobs of a Swarm
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#design-principle-1">
+     Design Principle 1
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#design-principle-2">
+     Design Principle 2
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#design-principle-3">
+     Design Principle 3
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#design-principle-4">
+     Design Principle 4
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </nav>
 </div>
     </div>
     <div class="article row">
@@ -286,6 +337,46 @@ title="Print to PDF"
                 <div id="print-main-content">
                     <div id="jb-print-toc">
                         
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-swarms">
+   Why Swarms?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#design-rationale-jobs-of-a-swarm">
+   Design Rationale: Jobs of a Swarm
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#design-principle-1">
+     Design Principle 1
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#design-principle-2">
+     Design Principle 2
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#design-principle-3">
+     Design Principle 3
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#design-principle-4">
+     Design Principle 4
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -295,7 +386,58 @@ title="Print to PDF"
                 
   <section id="swarms">
 <h1>Swarms<a class="headerlink" href="#swarms" title="Permalink to this headline">#</a></h1>
-<p>Swarms are collections of Agents</p>
+<p>If it’s the Open <strong>SWARM</strong> Network Agent Protocol, what is a swarm anyway?
+Simply put, a swarm is a group of one or more agents. Think about it like bees:
+there is a hive of bees, and each bee is an agent. The hive is the swarm.</p>
+<section id="why-swarms">
+<h2>Why Swarms?<a class="headerlink" href="#why-swarms" title="Permalink to this headline">#</a></h2>
+<p>We think that a swarm of agents is more than the sum of it’s parts. If we look
+at the biological world for inspiration, <a class="reference external" href="https://en.wikipedia.org/wiki/Swarm_behaviour">we can see</a> that even simple organisms
+can do amazing things when they work together. We want to unlock the potential
+of swarms for emergent superintelligence, while providing a protocol that allows
+us to do so efficiently, extensibly, and securely.</p>
+</section>
+<section id="design-rationale-jobs-of-a-swarm">
+<h2>Design Rationale: Jobs of a Swarm<a class="headerlink" href="#design-rationale-jobs-of-a-swarm" title="Permalink to this headline">#</a></h2>
+<p>Let’s continue with the analogy of the bee hive and thing about the basic functions
+that a swarm needs to do:</p>
+<section id="design-principle-1">
+<h3>Design Principle 1<a class="headerlink" href="#design-principle-1" title="Permalink to this headline">#</a></h3>
+<p>The hive has rules for making new bees. If it senses the queen’s pheromones, are
+dwindling, it will start making a new queen.</p>
+<p><strong>Job 1: Allow agents to join and leave the swarm,
+and to know who is in the swarm.</strong></p>
+</section>
+<section id="design-principle-2">
+<h3>Design Principle 2<a class="headerlink" href="#design-principle-2" title="Permalink to this headline">#</a></h3>
+<p>Bees communicate through a complex mechanism including <a class="reference external" href="https://www.youtube.com/watch?v=eKV7PiRTuSg">movement</a> and <a class="reference external" href="https://www.ncbi.nlm.nih.gov/books/NBK200983/#:~:text=In%20honey%20bees%2C%20as%20in,both%20developmental%20and%20behavioral%20changes.">pheromones</a>.
+These are the “primitives” that allow the swarm to communicate about internal events,
+like a queen dying, or external events, like a new flower blooming.</p>
+<p><strong>Job 2: Allow agents to communicate with each other within the swarm and with the outside world.</strong></p>
+</section>
+<section id="design-principle-3">
+<h3>Design Principle 3<a class="headerlink" href="#design-principle-3" title="Permalink to this headline">#</a></h3>
+<p>Bees of course have a hive. The hive isn’t the swarm, in fact they will
+periodically go <a class="reference external" href="https://blogs.ifas.ufl.edu/wakullaco/2019/03/18/swarming-is-a-sign-of-bees-looking-for-a-new-home/#:~:text=Soon%20scout%20worker%20honeybees%20begin,location%20for%20the%20new%20nest.">look for a new hive</a>.
+Instead, the hive is a place where the swarm can store food, raise young, and get
+protection from the outside world.</p>
+<p><strong>Job 3: Allow agents to store data, and to protect that data from the outside world.</strong></p>
+</section>
+<section id="design-principle-4">
+<h3>Design Principle 4<a class="headerlink" href="#design-principle-4" title="Permalink to this headline">#</a></h3>
+<p>Overall, all of the above principles are a means to an end: the swarm needs to
+survive. If the swarm dies, the agents die. The complex mechanisms of the swarm
+have devloped over at least 65 million years of evolution, and we don’t have the
+benefit of that much time. Therefore we need to develop new mechanisms and rules
+to keep the swarm healthy and alive.</p>
+<p><strong>Job 4: Keep the swarm healthy and alive.</strong></p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="how_swarms_work.html">How Swarms Work</a></li>
+</ul>
+</div>
+</section>
+</section>
 </section>
 
 
@@ -313,10 +455,10 @@ title="Print to PDF"
             <p class="prev-next-title">What is an agent?</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="../use_cases/use_cases.html" title="next page">
+    <a class='right-next' id="next-link" href="how_swarms_work.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Use Cases</p>
+        <p class="prev-next-title">How Swarms Work</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
